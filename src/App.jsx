@@ -32,22 +32,88 @@ function Icon({ name, size = 22, className = "" }) {
 
 const products = [
   {
-    name: "BMTB Scamming",
-    desc: "Immersive street-card cloning, burner phone jobs, ATM flow, heat system, and crew gameplay.",
-    price: "$24.99",
-    tag: "Featured",
+    name: "BMTB PODS 2.0",
+    desc: "Advanced FiveM props/pods system for immersive server interactions.",
+    price: "FREE",
+    tag: "Free",
   },
   {
-    name: "BMTB RealEstate",
-    desc: "Starter apartments, shells, property tools, bills integration, and admin testing support.",
-    price: "$34.99",
+    name: "BMTB Chains As Items",
+    desc: "Wearable chain items with inventory/shop integration for ESX/QBCore.",
+    price: "$1",
+    tag: "Utility",
+  },
+  {
+    name: "Watermark Server Logo Script",
+    desc: "Simple server logo watermark display script for FiveM servers.",
+    price: "FREE",
+    tag: "Free",
+  },
+  {
+    name: "BMTB Loading Screen",
+    desc: "Premium animated loading screen with customizable branding support.",
+    price: "FREE",
+    tag: "Free",
+  },
+  {
+    name: "BMTB Cooking",
+    desc: "Interactive cooking/crafting gameplay system for roleplay servers.",
+    price: "FREE",
+    tag: "Free",
+  },
+  {
+    name: "BMTB Weapon Repair",
+    desc: "Weapon repair bench system with immersive crafting and repair flow.",
+    price: "$20",
     tag: "Premium",
   },
   {
-    name: "BMTB TextUI",
-    desc: "Advanced standalone TextUI and 3D prompts with ox_lib-style flexibility and clean animations.",
-    price: "$14.99",
+    name: "BMTB Wigs",
+    desc: "Wig/hair inventory system with clothing integration and UI support.",
+    price: "$1",
     tag: "Utility",
+  },
+  {
+    name: "BMTB Chopshop",
+    desc: "Vehicle chopshop gameplay with immersive roleplay mechanics.",
+    price: "FREE",
+    tag: "Free",
+  },
+  {
+    name: "BMTB Tuning",
+    desc: "Audio/tuning customization system for immersive vehicle upgrades.",
+    price: "FREE",
+    tag: "Free",
+  },
+  {
+    name: "BMTB Car Wipe",
+    desc: "Vehicle wipe/cleanup utility script for FiveM administrators.",
+    price: "FREE",
+    tag: "Free",
+  },
+  {
+    name: "BMTB Givecar",
+    desc: "Vehicle giveaway and ownership transfer utility script.",
+    price: "FREE",
+    tag: "Free",
+  },
+  {
+    name: "BMTB NoCrosshair",
+    desc: "Lightweight no-crosshair immersion script for realistic combat.",
+    price: "FREE",
+    tag: "Free",
+  },
+  {
+    name: "BMTB Itemslist",
+    desc: "Clean item list viewer for ESX/QBCore inventory systems.",
+    price: "FREE",
+    tag: "Free",
+  },
+  {
+    name: "BMTB Moneywash",
+    desc: "Dirty money washing system with ESX, QBCore, and Qbox support.",
+    price: "FREE",
+    tag: "Free",
   },
 ];
 
