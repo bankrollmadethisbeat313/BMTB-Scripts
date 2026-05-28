@@ -471,6 +471,35 @@ function SupportSection() {
   );
 }
 
+function SupportPage() {
+  return <SupportSection />;
+}
+
+function FeaturesPage() {
+  return (
+    <section className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+      <div className="mb-10 text-center">
+        <p className="text-sm font-black uppercase tracking-[0.3em] text-yellow-400">Why BMTB</p>
+        <h1 className="mt-3 text-4xl font-black md:text-5xl">Built for premium roleplay servers</h1>
+        <p className="mx-auto mt-4 max-w-2xl text-zinc-400">
+          Every BMTB resource is designed for performance, immersion, and modern FiveM server stacks.
+        </p>
+      </div>
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        {features.map((feature) => (
+          <div key={feature.title} className="rounded-3xl border border-zinc-800 bg-zinc-950/70 p-6 shadow-xl shadow-black/20">
+            <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-400 text-black">
+              <Icon name={feature.icon} size={24} />
+            </div>
+            <h2 className="text-xl font-black">{feature.title}</h2>
+            <p className="mt-3 text-sm leading-6 text-zinc-400">{feature.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function SiteHeader() {
   return (
     <header className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
@@ -489,8 +518,8 @@ function SiteHeader() {
       </Link>
       <nav className="hidden items-center gap-8 text-sm text-zinc-300 md:flex">
         <Link to="/scripts" className="hover:text-yellow-300">Scripts</Link>
-        <a href="/#features" className="hover:text-yellow-300">Features</a>
-        <a href="/#support" className="hover:text-yellow-300">Support</a>
+        <Link to="/features" className="hover:text-yellow-300">Features</Link>
+        <Link to="/support" className="hover:text-yellow-300">Support</Link>
       </nav>
       <div className="flex items-center gap-3">
         <Link to="/scripts" className="hidden rounded-full border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-xs font-bold text-white transition hover:border-yellow-400/60 md:inline-flex">
@@ -581,24 +610,6 @@ function HomePage() {
             </div>
           </div>
         </motion.div>
-      </section>
-
-      <section id="features" className="mx-auto max-w-7xl px-6 py-16">
-        <div className="mb-10 text-center">
-          <p className="text-sm font-black uppercase tracking-[0.3em] text-yellow-400">Why BMTB</p>
-          <h2 className="mt-3 text-4xl font-black">Built for premium roleplay servers</h2>
-        </div>
-        <div className="grid gap-5 md:grid-cols-4">
-          {features.map((feature) => (
-            <div key={feature.title} className="rounded-3xl border border-zinc-800 bg-zinc-950/70 p-6 shadow-xl shadow-black/20">
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-400 text-black">
-                <Icon name={feature.icon} size={24} />
-              </div>
-              <h3 className="text-xl font-black">{feature.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-zinc-400">{feature.text}</p>
-            </div>
-          ))}
-        </div>
       </section>
 
       <section id="popular" className="mx-auto max-w-7xl px-6 py-16">
@@ -1077,9 +1088,10 @@ export default function BMTBScriptsWebsite() {
           <Route path="/" element={<HomePage />} />
           <Route path="/scripts" element={<ScriptsCatalogPage />} />
           <Route path="/scripts/:slug" element={<ScriptInfoPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/support" element={<SupportPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        <SupportSection />
         <section className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="text-center text-4xl font-black">Latest Changelog</h2>
           <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
@@ -1096,7 +1108,7 @@ export default function BMTBScriptsWebsite() {
           <div className="mt-8 space-y-4">
             {[
               ["Do the scripts support ESX and QBCore?", "Most BMTB resources can be built with ESX/QBCore support depending on the script. Add compatibility details per product."],
-              ["How do customers get support?", "Use the Support section to email bankrollmadethisbeat@gmail.com or join the BMTB Discord for help."],
+              ["How do customers get support?", "Visit the Support page to email bankrollmadethisbeat@gmail.com or join the BMTB Discord for help."],
               ["Where do I download scripts?", "Use the Download button on each script card for Tebex, or open the script info page for Tebex and Gumroad download links."],
             ].map(([q, a]) => (
               <div key={q} className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
@@ -1119,7 +1131,7 @@ export default function BMTBScriptsWebsite() {
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
               <p className="font-black">Support</p>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">Email bankrollmadethisbeat@gmail.com through the Support form or join Discord for setup help after downloading from Tebex or Gumroad.</p>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">Email bankrollmadethisbeat@gmail.com on the Support page or join Discord for setup help after downloading from Tebex or Gumroad.</p>
             </div>
           </div>
         </section>
