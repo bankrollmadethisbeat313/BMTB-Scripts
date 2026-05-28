@@ -67,6 +67,28 @@ const products = [
     ],
   },
   {
+    slug: "bmtb-lean",
+    name: "BMTB Lean",
+    desc: "Full lean workflow with custom props, animations, and BMTB UI for ESX servers.",
+    fullDesc: "Lean bottle pouring, Feyzo soda cup prep, mixed variants, sip FX, and in-world cup carry — built for polished roleplay servers with ox_inventory support and 14 locale options.",
+    price: "$10",
+    tag: "PREMIUM",
+    downloads: 0,
+    version: "v1.1.0",
+    updatedOn: "2026-05-28",
+    imageUrl: "https://dunb17ur4ymx4.cloudfront.net/packages/images/89df115a0ecfdc8b20fcb81c3a69b58c9023bbc8.png",
+    youtubeEmbed: "",
+    buyUrl: "https://bmtbscripts.tebex.io/package/7452186",
+    requirements: ["ox_lib", "ESX Legacy (or compatible auto-detect)", "ox_inventory recommended"],
+    installSteps: [
+      "Drop the resource in your [scripts] folder.",
+      "Add items from the install folder to your inventory.",
+      "Ensure order: ensure ox_lib, ensure ox_inventory, ensure bmtb_lean",
+      "Edit config.lua for language, sip FX, props, and notify duration.",
+      "Restart and test in-game.",
+    ],
+  },
+  {
     slug: "bmtb-chains-as-items",
     name: "BMTB Chains As Items",
     desc: "Wearable chain items with inventory/shop integration for ESX/QBCore.",
@@ -125,7 +147,7 @@ const products = [
     name: "BMTB Weapon Repair",
     desc: "Weapon repair bench system with immersive crafting and repair flow.",
     fullDesc: "Bench-based repair mechanics with configurable costs and immersive interactions for realistic server economy gameplay.",
-    price: "$20",
+    price: "$10",
     tag: "PREMIUM",
     downloads: 0,
     assetId: "934956",
@@ -133,7 +155,7 @@ const products = [
     updatedOn: "2026-03-25",
     imageUrl: "/bmtb-weapon-repair-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/MvgPu0LbuGM?si=plSjTNBaXd5G8xF_",
-    buyUrl: "https://www.paypal.com/ncp/payment/QUDACFLFZBWG6",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtbweaponrepair",
     tebexUrl: "https://bmtbscripts.tebex.io/package/bmtbweaponrepair",
     infoHeading: "BMTB Weapon Repair - Release Build",
     updateNotes: [
@@ -177,7 +199,7 @@ const products = [
     updatedOn: "2026-04-23",
     imageUrl: "https://dunb17ur4ymx4.cloudfront.net/packages/images/581b5174063646063e13bb2d9d6bdf1416188bda.png",
     youtubeEmbed: "https://www.youtube.com/embed/2mXbZH_iDxE?si=BHjRtOqM0P_22bmd",
-    buyUrl: "https://www.paypal.com/ncp/payment/7RQTKDXGP74XE",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtbwigs",
     tebexUrl: "https://bmtbscripts.tebex.io/package/bmtbwigs",
   },
   {
@@ -220,7 +242,27 @@ const products = [
     updatedOn: "2026-04-16",
     imageUrl: "/bmtb-car-wipe-thumb.png",
     youtubeEmbed: "",
-    buyUrl: TEBEX_FREE_CATEGORY_URL,
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-carwipe",
+  },
+  {
+    slug: "bmtb-recycle-job",
+    name: "BMTB Recycle Job",
+    desc: "Beginner-friendly recycling side hustle with foreman NPC, sorting, and cash payouts.",
+    fullDesc: "Clock in at the yard, grab boxes, sort recyclable material, and sell for cash. Supports ESX, QBCore, and Qbox with ox_lib menus, carry animations, and configurable locations and payouts.",
+    price: "FREE",
+    tag: "FREE",
+    downloads: 0,
+    updatedOn: "2026-05-28",
+    imageUrl: "/bmtb-recycle-job-thumb.png",
+    youtubeEmbed: "",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-recyclejob",
+    requirements: ["ox_lib", "ESX Legacy / QBCore / Qbox", "ox_inventory recommended"],
+    installSteps: [
+      "Drop the resource into your server resources folder.",
+      "Add recycle_material to your inventory items.",
+      "Add ensure bmtb_recyclingjob to server.cfg.",
+      "Edit config.lua for locations, payout, and blip settings.",
+    ],
   },
   {
     slug: "bmtb-givecar",
@@ -977,7 +1019,7 @@ export default function BMTBScriptsWebsite() {
             {[
               ["Do the scripts support ESX and QBCore?", "Most BMTB resources can be built with ESX/QBCore support depending on the script. Add compatibility details per product."],
               ["How do customers get support?", "Send customers to the Discord and create private ticket channels for verified buyers."],
-              ["Can I add Tebex or another checkout later?", "Yes. Replace the Buy / Info buttons with your product checkout links when your store is ready."],
+              ["Where do I buy scripts?", "Free and premium scripts are available on the BMTB Tebex store. Use the Buy Now button on each script card to go directly to checkout."],
             ].map(([q, a]) => (
               <div key={q} className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
                 <p className="font-black">{q}</p>
