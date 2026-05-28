@@ -4,7 +4,9 @@ import { Link, Navigate, Route, Routes, useParams } from "react-router-dom";
 
 const DISCORD_URL = "https://discord.gg/5rRMZ2R9EP";
 const CFX_CREATED_ASSETS_URL = "https://portal.cfx.re/assets/created-assets?page=1&sort=asset.id&direction=desc";
+const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
+const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com";
 
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
@@ -375,6 +377,20 @@ function getNumericPrice(price) {
   return Number(String(price).replace(/[^0-9.]/g, "")) || 0;
 }
 
+function getTebexLink(product) {
+  if (product?.buyUrl?.includes("tebex.io")) {
+    return product.buyUrl;
+  }
+  if (product?.tebexUrl) {
+    return product.tebexUrl;
+  }
+  return product?.price === "FREE" ? TEBEX_FREE_CATEGORY_URL : `${TEBEX_STORE_URL}/category/premium-scripts`;
+}
+
+function getGumroadLink(product) {
+  return product?.gumroadUrl || GUMROAD_STORE_URL;
+}
+
 function SiteHeader() {
   return (
     <header className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
@@ -720,27 +736,11 @@ function ScriptsCatalogPage() {
 function ScriptInfoPage() {
   const { slug } = useParams();
   const product = productBySlug[slug];
-  const buyLink = product?.buyUrl || DISCORD_URL;
+  const tebexLink = product ? getTebexLink(product) : TEBEX_FREE_CATEGORY_URL;
+  const gumroadLink = product ? getGumroadLink(product) : GUMROAD_STORE_URL;
+  const buyLink = tebexLink;
   const cfxLink = product?.cfxUrl || product?.tebexUrl || product?.buyUrl || "";
-  const [ticketCopied, setTicketCopied] = useState(false);
   const [assetIdCopied, setAssetIdCopied] = useState(false);
-  const ticketTemplate = `BMTB Purchase Verification
-Script: ${product?.name || ""}
-Discord Username:
-Payment Method: PayPal
-Transaction ID:
-Email used at checkout:
-Additional notes:`;
-
-  const handleCopyTicketTemplate = async () => {
-    try {
-      await navigator.clipboard.writeText(ticketTemplate);
-      setTicketCopied(true);
-      setTimeout(() => setTicketCopied(false), 1800);
-    } catch {
-      setTicketCopied(false);
-    }
-  };
 
   const handleCopyAssetId = async () => {
     if (!product?.assetId) {
@@ -928,7 +928,7 @@ Additional notes:`;
                 rel="noreferrer"
                 className="inline-flex justify-center rounded-xl border border-zinc-700 bg-zinc-900/70 px-5 py-3 text-sm font-black text-white transition hover:border-yellow-400/60"
               >
-                Join Discord After Purchase
+                Join Discord for Support
               </a>
               {product.assetId && (
                 <button
@@ -949,28 +949,41 @@ Additional notes:`;
 
           <div className="rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6">
             <p className="text-sm font-black uppercase tracking-[0.25em] text-yellow-400">How to Receive Files</p>
+            <p className="mt-3 text-sm leading-6 text-zinc-400">
+              Download from either store below. Both deliver the script files instantly after checkout.
+            </p>
             <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-6 text-zinc-300">
-              <li>Complete your payment using the Download button.</li>
-              <li>Join the Discord server right after purchase.</li>
-              <li>Open a purchase ticket and include your payment proof or transaction ID.</li>
-              <li>Your script files will be delivered in the ticket once verified.</li>
+              <li>Open <strong className="text-white">Tebex</strong> or <strong className="text-white">Gumroad</strong> using the buttons below.</li>
+              <li>Add the script to your basket on Tebex, or open the product on Gumroad and complete checkout (free scripts included).</li>
+              <li>Download the files from your Tebex account or Gumroad library right after checkout.</li>
+              <li>Extract the resource folder into your server&apos;s <code className="rounded bg-zinc-900 px-1.5 py-0.5 text-yellow-200">resources</code> directory and follow the setup steps on this page.</li>
+              <li>Join Discord if you need install help or support.</li>
             </ol>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-wrap gap-2">
               <a
-                href={DISCORD_URL}
+                href={tebexLink}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex rounded-xl bg-yellow-400 px-4 py-2 text-sm font-black text-black transition hover:scale-[1.02]"
               >
-                Open Discord Ticket
+                Download on Tebex
               </a>
-              <button
-                type="button"
-                onClick={handleCopyTicketTemplate}
-                className="ml-2 inline-flex rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm font-black text-white transition hover:border-yellow-400/60"
+              <a
+                href={gumroadLink}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm font-black text-white transition hover:border-yellow-400/60"
               >
-                {ticketCopied ? "Template Copied" : "Copy Ticket Template"}
-              </button>
+                Download on Gumroad
+              </a>
+              <a
+                href={DISCORD_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm font-black text-white transition hover:border-yellow-400/60"
+              >
+                Discord Support
+              </a>
             </div>
           </div>
         </div>
@@ -1019,7 +1032,7 @@ export default function BMTBScriptsWebsite() {
             {[
               ["Do the scripts support ESX and QBCore?", "Most BMTB resources can be built with ESX/QBCore support depending on the script. Add compatibility details per product."],
               ["How do customers get support?", "Send customers to the Discord and create private ticket channels for verified buyers."],
-              ["Where do I buy scripts?", "Free and premium scripts are available on the BMTB Tebex store. Use the Download button on each script card to go directly to checkout."],
+              ["Where do I download scripts?", "Use the Download button on each script card for Tebex, or open the script info page for Tebex and Gumroad download links."],
             ].map(([q, a]) => (
               <div key={q} className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
                 <p className="font-black">{q}</p>
@@ -1041,7 +1054,7 @@ export default function BMTBScriptsWebsite() {
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
               <p className="font-black">Support</p>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">Open a Discord ticket with your transaction ID and script name for setup help, updates, and access verification.</p>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">Join Discord for setup help, updates, and support after downloading from Tebex or Gumroad.</p>
             </div>
           </div>
         </section>
