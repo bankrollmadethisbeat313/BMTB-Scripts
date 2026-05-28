@@ -550,7 +550,7 @@ function HomePage() {
                     rel="noreferrer"
                     className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black transition hover:bg-yellow-400"
                   >
-                    {product.buyUrl ? "Buy Now" : "Discord"}
+                    {product.buyUrl ? "Download" : "Discord"}
                   </a>
                   <Link to={`/scripts/${product.slug}`} className="rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm font-black text-white transition hover:border-yellow-400/60">
                     Info
@@ -703,7 +703,7 @@ function ScriptsCatalogPage() {
                   rel="noreferrer"
                   className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black transition hover:bg-yellow-400"
                 >
-                  {product.buyUrl ? "Buy Now" : "Discord"}
+                  {product.buyUrl ? "Download" : "Discord"}
                 </a>
                 <Link to={`/scripts/${product.slug}`} className="rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm font-black text-white transition hover:border-yellow-400/60">
                   Info
@@ -777,7 +777,7 @@ Additional notes:`;
 
       <div className="sticky bottom-3 z-20 mt-4 grid grid-cols-3 gap-2 rounded-2xl border border-zinc-700 bg-black/80 p-2 backdrop-blur md:hidden">
         <a href={buyLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-yellow-400 px-3 py-2 text-xs font-black text-black">
-          Buy Now
+          Download
         </a>
         <a href={cfxLink || CFX_CREATED_ASSETS_URL} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl border border-zinc-600 bg-zinc-900 px-3 py-2 text-xs font-black text-white">
           CFX Asset
@@ -902,7 +902,7 @@ Additional notes:`;
                 rel="noreferrer"
                 className="inline-flex justify-center rounded-xl bg-yellow-400 px-5 py-3 text-sm font-black text-black transition hover:scale-[1.02]"
               >
-                {product.buyUrl ? "Buy Now" : "Discord"}
+                {product.buyUrl ? "Download" : "Discord"}
               </a>
               {cfxLink ? (
                 <a
@@ -950,7 +950,7 @@ Additional notes:`;
           <div className="rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6">
             <p className="text-sm font-black uppercase tracking-[0.25em] text-yellow-400">How to Receive Files</p>
             <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-6 text-zinc-300">
-              <li>Complete your payment using the Buy Now button.</li>
+              <li>Complete your payment using the Download button.</li>
               <li>Join the Discord server right after purchase.</li>
               <li>Open a purchase ticket and include your payment proof or transaction ID.</li>
               <li>Your script files will be delivered in the ticket once verified.</li>
@@ -1019,7 +1019,7 @@ export default function BMTBScriptsWebsite() {
             {[
               ["Do the scripts support ESX and QBCore?", "Most BMTB resources can be built with ESX/QBCore support depending on the script. Add compatibility details per product."],
               ["How do customers get support?", "Send customers to the Discord and create private ticket channels for verified buyers."],
-              ["Where do I buy scripts?", "Free and premium scripts are available on the BMTB Tebex store. Use the Buy Now button on each script card to go directly to checkout."],
+              ["Where do I buy scripts?", "Free and premium scripts are available on the BMTB Tebex store. Use the Download button on each script card to go directly to checkout."],
             ].map(([q, a]) => (
               <div key={q} className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
                 <p className="font-black">{q}</p>
