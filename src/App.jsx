@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link, Navigate, Route, Routes, useParams } from "react-router-dom";
 
 const DISCORD_URL = "https://discord.gg/5rRMZ2R9EP";
+const SUPPORT_EMAIL = "bankrollmadethisbeat@gmail.com";
 const CFX_CREATED_ASSETS_URL = "https://portal.cfx.re/assets/created-assets?page=1&sort=asset.id&direction=desc";
 const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
@@ -391,6 +392,85 @@ function getGumroadLink(product) {
   return product?.gumroadUrl || GUMROAD_STORE_URL;
 }
 
+function SupportSection() {
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSendEmail = (event) => {
+    event.preventDefault();
+    const emailSubject = encodeURIComponent(subject.trim() || "BMTB Scripts Support Request");
+    const emailBody = encodeURIComponent(message.trim());
+    window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${emailSubject}&body=${emailBody}`;
+  };
+
+  return (
+    <section id="support" className="mx-auto max-w-7xl px-6 py-16">
+      <div className="rounded-[2rem] border border-zinc-800 bg-zinc-950/80 p-8 md:p-10">
+        <div className="mb-8 text-center md:text-left">
+          <p className="text-sm font-black uppercase tracking-[0.3em] text-yellow-400">Support</p>
+          <h2 className="mt-3 text-4xl font-black">Get help from BMTB</h2>
+          <p className="mt-3 max-w-2xl text-zinc-400">
+            Send us an email for setup help, script questions, or store issues. You can also join Discord for faster community support.
+          </p>
+        </div>
+
+        <form onSubmit={handleSendEmail} className="grid gap-4">
+          <div>
+            <label htmlFor="support-subject" className="mb-2 block text-sm font-bold text-zinc-300">
+              Subject
+            </label>
+            <input
+              id="support-subject"
+              type="text"
+              value={subject}
+              onChange={(event) => setSubject(event.target.value)}
+              placeholder="What do you need help with?"
+              required
+              className="w-full rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 text-sm text-white outline-none transition focus:border-yellow-400/60"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="support-message" className="mb-2 block text-sm font-bold text-zinc-300">
+              Message
+            </label>
+            <textarea
+              id="support-message"
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              placeholder="Describe your issue, script name, framework, and any error messages."
+              required
+              rows={6}
+              className="w-full resize-y rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 text-sm text-white outline-none transition focus:border-yellow-400/60"
+            />
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center rounded-xl bg-yellow-400 px-6 py-3 text-sm font-black text-black transition hover:scale-[1.02]"
+            >
+              Send Email
+            </button>
+            <a
+              href={DISCORD_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center rounded-xl border border-zinc-700 bg-zinc-900/70 px-6 py-3 text-sm font-black text-white transition hover:border-yellow-400/60"
+            >
+              <Icon name="message" className="mr-2" size={18} /> Join Discord
+            </a>
+          </div>
+
+          <p className="text-xs text-zinc-500">
+            Send opens your email app with your message addressed to {SUPPORT_EMAIL}.
+          </p>
+        </form>
+      </div>
+    </section>
+  );
+}
+
 function SiteHeader() {
   return (
     <header className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
@@ -578,22 +658,6 @@ function HomePage() {
         </div>
       </section>
 
-      <section id="support" className="mx-auto max-w-7xl px-6 py-16">
-        <div className="rounded-[2rem] border border-yellow-400/20 bg-gradient-to-r from-yellow-400 to-yellow-300 p-8 text-black md:p-12">
-          <div className="grid gap-8 md:grid-cols-[1.5fr_0.8fr] md:items-center">
-            <div>
-              <p className="font-black uppercase tracking-[0.25em]">BMTB Community</p>
-              <h2 className="mt-3 text-4xl font-black md:text-5xl">Need support or want previews?</h2>
-              <p className="mt-4 max-w-2xl text-lg font-semibold text-black/70">
-                Join the Discord to see updates, ask questions, get setup help, and follow new BMTB script releases.
-              </p>
-            </div>
-            <a href={DISCORD_URL} className="inline-flex items-center justify-center rounded-2xl bg-black px-8 py-5 text-lg font-black text-white shadow-xl transition hover:scale-105">
-              <Icon name="message" className="mr-3" /> Join Discord
-            </a>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
@@ -1015,6 +1079,7 @@ export default function BMTBScriptsWebsite() {
           <Route path="/scripts/:slug" element={<ScriptInfoPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        <SupportSection />
         <section className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="text-center text-4xl font-black">Latest Changelog</h2>
           <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
@@ -1031,7 +1096,7 @@ export default function BMTBScriptsWebsite() {
           <div className="mt-8 space-y-4">
             {[
               ["Do the scripts support ESX and QBCore?", "Most BMTB resources can be built with ESX/QBCore support depending on the script. Add compatibility details per product."],
-              ["How do customers get support?", "Send customers to the Discord and create private ticket channels for verified buyers."],
+              ["How do customers get support?", "Use the Support section to email bankrollmadethisbeat@gmail.com or join the BMTB Discord for help."],
               ["Where do I download scripts?", "Use the Download button on each script card for Tebex, or open the script info page for Tebex and Gumroad download links."],
             ].map(([q, a]) => (
               <div key={q} className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
@@ -1054,7 +1119,7 @@ export default function BMTBScriptsWebsite() {
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
               <p className="font-black">Support</p>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">Join Discord for setup help, updates, and support after downloading from Tebex or Gumroad.</p>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">Email bankrollmadethisbeat@gmail.com through the Support form or join Discord for setup help after downloading from Tebex or Gumroad.</p>
             </div>
           </div>
         </section>
