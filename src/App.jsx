@@ -254,7 +254,7 @@ const products = [
     downloads: 1,
     updatedOn: "2026-05-28",
     imageUrl: "/bmtb-recycle-job-thumb.png",
-    youtubeEmbed: "",
+    youtubeEmbed: "https://www.youtube.com/embed/HXxlSWHGpBg",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-recyclejob",
     requirements: ["ox_lib", "ESX Legacy / QBCore / Qbox", "ox_inventory recommended"],
     installSteps: [
