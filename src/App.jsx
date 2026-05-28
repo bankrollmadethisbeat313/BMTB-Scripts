@@ -675,7 +675,7 @@ function HomePage() {
 
 function ScriptsCatalogPage() {
   const [query, setQuery] = useState("");
-  const [sortBy, setSortBy] = useState("downloads-desc");
+  const [sortBy, setSortBy] = useState("updated-desc");
   const catalogProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     const filtered = products.filter((product) => {
@@ -750,8 +750,8 @@ function ScriptsCatalogPage() {
           onChange={(event) => setSortBy(event.target.value)}
           className="rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 text-sm font-bold text-white outline-none transition focus:border-yellow-400/60"
         >
-          <option value="downloads-desc">Sort: Most Downloaded</option>
           <option value="updated-desc">Sort: Newest Updated</option>
+          <option value="downloads-desc">Sort: Most Downloaded</option>
           <option value="price-asc">Sort: Price Low to High</option>
           <option value="price-desc">Sort: Price High to Low</option>
           <option value="name-asc">Sort: Name A-Z</option>
