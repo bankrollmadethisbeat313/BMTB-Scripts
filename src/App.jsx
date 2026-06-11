@@ -7,7 +7,7 @@ const SUPPORT_EMAIL = "bankrollmadethisbeat@gmail.com";
 const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
-const TRAPHONE_RELEASE_AT = new Date("2026-05-15T14:00:00-04:00");
+const TRAPHONE_RELEASE_AT = new Date("2026-06-15T18:00:00Z");
 
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
@@ -23,17 +23,14 @@ const icons = {
 
 function getCountdownParts(targetDate) {
   const diffMs = targetDate.getTime() - Date.now();
-  if (diffMs <= 0) {
-    return null;
-  }
-
-  const totalSeconds = Math.floor(diffMs / 1000);
+  const isLive = diffMs <= 0;
+  const totalSeconds = Math.max(0, Math.floor(diffMs / 1000));
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
 
-  return { days, hours, minutes, seconds };
+  return { days, hours, minutes, seconds, isLive };
 }
 
 function TrapPhoneCountdown() {
@@ -47,14 +44,6 @@ function TrapPhoneCountdown() {
     return () => window.clearInterval(timer);
   }, []);
 
-  if (!countdown) {
-    return (
-      <p className="mt-3 text-sm font-black uppercase tracking-wide text-black/80">
-        Release live — check the store for BMTB TRAPHONE.
-      </p>
-    );
-  }
-
   const units = [
     { label: "Days", value: countdown.days },
     { label: "Hrs", value: countdown.hours },
@@ -64,8 +53,7 @@ function TrapPhoneCountdown() {
 
   return (
     <div className="mt-4">
-      <p className="text-xs font-bold uppercase tracking-wide text-black/60">Releases May 15, 2026 at 2:00 PM ET</p>
-      <div className="mt-3 grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2">
         {units.map((unit) => (
           <div key={unit.label} className="rounded-xl bg-black/10 px-2 py-2 text-center">
             <p className="text-xl font-black leading-none">{String(unit.value).padStart(2, "0")}</p>
@@ -73,6 +61,11 @@ function TrapPhoneCountdown() {
           </div>
         ))}
       </div>
+      {countdown.isLive && (
+        <p className="mt-3 text-sm font-black uppercase tracking-wide text-black/80">
+          Release live — check the store for BMTB TRAPHONE.
+        </p>
+      )}
     </div>
   );
 }
