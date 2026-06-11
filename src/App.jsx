@@ -194,8 +194,7 @@ const products = [
     updatedOn: "2026-05-06",
     imageUrl: "/bmtb-chains-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/H_YG2Vr96bE?si=a3qN9aNwu3i16FKc",
-    buyUrl: "https://www.paypal.com/ncp/payment/EZRYQ7P92Q9A4",
-    tebexUrl: "https://bmtbscripts.tebex.io/category/premium-scripts",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-chains",
   },
   {
     slug: "watermark-server-logo-script",
