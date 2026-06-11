@@ -1,13 +1,13 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, Navigate, Route, Routes, useParams } from "react-router-dom";
 
 const DISCORD_URL = "https://discord.gg/5rRMZ2R9EP";
 const SUPPORT_EMAIL = "bankrollmadethisbeat@gmail.com";
-const CFX_CREATED_ASSETS_URL = "https://portal.cfx.re/assets/created-assets?page=1&sort=asset.id&direction=desc";
 const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
+const TRAPHONE_RELEASE_AT = new Date("2026-05-15T14:00:00-04:00");
 
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
@@ -20,6 +20,62 @@ const icons = {
   message: "M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z",
   chevron: "M9 5 16 12l-7 7-1.5-1.5L13 12 7.5 6.5 9 5Z",
 };
+
+function getCountdownParts(targetDate) {
+  const diffMs = targetDate.getTime() - Date.now();
+  if (diffMs <= 0) {
+    return null;
+  }
+
+  const totalSeconds = Math.floor(diffMs / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return { days, hours, minutes, seconds };
+}
+
+function TrapPhoneCountdown() {
+  const [countdown, setCountdown] = useState(() => getCountdownParts(TRAPHONE_RELEASE_AT));
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setCountdown(getCountdownParts(TRAPHONE_RELEASE_AT));
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  if (!countdown) {
+    return (
+      <p className="mt-3 text-sm font-black uppercase tracking-wide text-black/80">
+        Release live — check the store for BMTB TRAPHONE.
+      </p>
+    );
+  }
+
+  const units = [
+    { label: "Days", value: countdown.days },
+    { label: "Hrs", value: countdown.hours },
+    { label: "Min", value: countdown.minutes },
+    { label: "Sec", value: countdown.seconds },
+  ];
+
+  return (
+    <div className="mt-4">
+      <p className="text-xs font-bold uppercase tracking-wide text-black/60">Releases May 15, 2026 at 2:00 PM ET</p>
+      <div className="mt-3 grid grid-cols-4 gap-2">
+        {units.map((unit) => (
+          <div key={unit.label} className="rounded-xl bg-black/10 px-2 py-2 text-center">
+            <p className="text-xl font-black leading-none">{String(unit.value).padStart(2, "0")}</p>
+            <p className="mt-1 text-[10px] font-bold uppercase tracking-wide text-black/60">{unit.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function Icon({ name, size = 22, className = "" }) {
   return (
@@ -80,7 +136,7 @@ const products = [
     version: "v1.1.0",
     updatedOn: "2026-05-28",
     imageUrl: "https://dunb17ur4ymx4.cloudfront.net/packages/images/89df115a0ecfdc8b20fcb81c3a69b58c9023bbc8.png",
-    youtubeEmbed: "",
+    youtubeEmbed: "https://www.youtube.com/embed/NvCfSDMEXDA",
     buyUrl: "https://bmtbscripts.tebex.io/package/7452186",
     requirements: ["ox_lib", "ESX Legacy (or compatible auto-detect)", "ox_inventory recommended"],
     installSteps: [
@@ -89,6 +145,42 @@ const products = [
       "Ensure order: ensure ox_lib, ensure ox_inventory, ensure bmtb_lean",
       "Edit config.lua for language, sip FX, props, and notify duration.",
       "Restart and test in-game.",
+    ],
+  },
+  {
+    slug: "bmtb-gofetch",
+    name: "BMTB GoFetch",
+    desc: "Delivery tablet with live shop catalogs, NPC fleet delivery, and multi-framework support.",
+    fullDesc: "GoFetch lets players browse live shop catalogs from ox_inventory, qb-shops, and other inventories, place orders, pay cash or bank, and receive items through an NPC burrito van courier with optional GoFetch Express upgrades.",
+    price: "$1",
+    tag: "PREMIUM",
+    downloads: 0,
+    version: "v1.0.0",
+    updatedOn: "2026-05-28",
+    imageUrl: "/bmtb-gofetch-thumb.png",
+    youtubeEmbed: "https://www.youtube.com/embed/tNFsXiSSogM",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-gofetch",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bvejnk",
+    requirements: [
+      "ox_lib",
+      "oxmysql",
+      "ESX Legacy / QBCore / Qbox",
+      "ox_inventory, qb-inventory, or compatible inventory",
+      "ox_target or qb-target (optional — E-key fallback)",
+    ],
+    installSteps: [
+      "Drop bmtb_gofetch into resources/[bmtb]/ and merge install-me items into your inventory.",
+      "Ensure ox_lib, oxmysql, your framework, inventory, and qb-shops (QBCore) start before GoFetch.",
+      "Add ensure bmtb_gofetch and add_ace group.admin bmtb.gofetch.admin allow to server.cfg.",
+      "Restart inventory + GoFetch, then test with /giveitem [id] gofetch_tablet 1.",
+    ],
+    infoHeading: "BMTB GoFetch v1.0.0",
+    updateNotes: [
+      "Live shop catalog from ox_inventory, qb-shops, and other popular inventory backends.",
+      "Server-authoritative checkout with validated prices and anti-exploit collect gates.",
+      "NPC fleet delivery with burrito van courier and optional GoFetch Express upgrade.",
+      "Supports ESX, QBCore, and Qbox with auto-detected inventory and payment bridges.",
+      "Up to 2 active orders per player with order history and Discord logging.",
     ],
   },
   {
@@ -362,7 +454,7 @@ function getProductStatuses(product) {
   return [
     product.price === "FREE" ? "Free" : "Paid",
     product.buyUrl ? "Direct Buy" : "Discord Delivery",
-    product.cfxUrl || product.assetId ? "CFX Ready" : "CFX Pending",
+    product.gumroadUrl ? "Gumroad" : "Gumroad Store",
     product.updateNotes?.length ? "Updated" : null,
   ].filter(Boolean);
 }
@@ -390,6 +482,10 @@ function getTebexLink(product) {
 
 function getGumroadLink(product) {
   return product?.gumroadUrl || GUMROAD_STORE_URL;
+}
+
+function sortProductsByUpdatedOn(list) {
+  return [...list].sort((a, b) => new Date(b.updatedOn || 0).getTime() - new Date(a.updatedOn || 0).getTime());
 }
 
 function SupportSection() {
@@ -534,14 +630,11 @@ function SiteHeader() {
 }
 
 function HomePage() {
-  const popularProducts = [...products]
-    .filter((product) => typeof product.downloads === "number" && product.downloads > 0)
-    .sort((a, b) => b.downloads - a.downloads)
-    .slice(0, 3);
+  const latestProducts = sortProductsByUpdatedOn(products).slice(0, 3);
   const popularJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: popularProducts.map((product, index) => ({
+    itemListElement: latestProducts.map((product, index) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
@@ -604,8 +697,9 @@ function HomePage() {
               </div>
               <div className="mt-6 rounded-2xl bg-yellow-400 p-5 text-black">
                 <p className="text-sm font-bold uppercase tracking-widest">Coming Soon</p>
-                <p className="mt-1 text-2xl font-black">BMTB Scamming</p>
-                <p className="mt-2 text-sm font-semibold text-black/70">New script details will be announced soon.</p>
+                <p className="mt-1 text-2xl font-black">BMTB TRAPHONE</p>
+                <p className="mt-2 text-sm font-semibold text-black/70">Trap phone script dropping soon on Tebex and Gumroad.</p>
+                <TrapPhoneCountdown />
               </div>
             </div>
           </div>
@@ -616,12 +710,12 @@ function HomePage() {
         <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.3em] text-yellow-400">Store</p>
-            <h2 className="mt-3 text-4xl font-black">Most Downloaded Scripts</h2>
+            <h2 className="mt-3 text-4xl font-black">Latest Scripts</h2>
           </div>
-          <p className="max-w-lg text-zinc-400">Showing only your top downloaded/popular scripts based on your latest store stats.</p>
+          <p className="max-w-lg text-zinc-400">Recently updated BMTB scripts, newest first.</p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
-          {popularProducts.map((product) => (
+          {latestProducts.map((product) => (
             <div key={product.name} className="group rounded-[2rem] border border-zinc-800 bg-zinc-950/80 p-6 transition hover:-translate-y-1 hover:border-yellow-400/40">
               {product.imageUrl && (
                 <div className="mb-5 overflow-hidden rounded-2xl border border-zinc-800">
@@ -652,12 +746,12 @@ function HomePage() {
                 <p className="text-2xl font-black text-yellow-400">{product.price}</p>
                 <div className="flex items-center gap-2">
                   <a
-                    href={product.buyUrl || DISCORD_URL}
+                    href={getTebexLink(product)}
                     target="_blank"
                     rel="noreferrer"
                     className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black transition hover:bg-yellow-400"
                   >
-                    {product.buyUrl ? "Download" : "Discord"}
+                    Download
                   </a>
                   <Link to={`/scripts/${product.slug}`} className="rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm font-black text-white transition hover:border-yellow-400/60">
                     Info
@@ -675,7 +769,6 @@ function HomePage() {
 
 function ScriptsCatalogPage() {
   const [query, setQuery] = useState("");
-  const [sortBy, setSortBy] = useState("updated-desc");
   const catalogProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     const filtered = products.filter((product) => {
@@ -689,22 +782,8 @@ function ScriptsCatalogPage() {
       );
     });
 
-    return [...filtered].sort((a, b) => {
-      if (sortBy === "downloads-desc") {
-        return (b.downloads || 0) - (a.downloads || 0);
-      }
-      if (sortBy === "updated-desc") {
-        return new Date(b.updatedOn || 0).getTime() - new Date(a.updatedOn || 0).getTime();
-      }
-      if (sortBy === "price-asc") {
-        return getNumericPrice(a.price) - getNumericPrice(b.price);
-      }
-      if (sortBy === "price-desc") {
-        return getNumericPrice(b.price) - getNumericPrice(a.price);
-      }
-      return a.name.localeCompare(b.name);
-    });
-  }, [query, sortBy]);
+    return sortProductsByUpdatedOn(filtered);
+  }, [query]);
 
   const catalogJsonLd = {
     "@context": "https://schema.org",
@@ -738,24 +817,13 @@ function ScriptsCatalogPage() {
         </div>
         <p className="max-w-lg text-zinc-400">Browse the full BMTB Scripts catalog with previews, pricing, and info pages.</p>
       </div>
-      <div className="mb-8 grid gap-3 md:grid-cols-[1fr_auto]">
+      <div className="mb-8">
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Search scripts by name, tag, or description"
-          className="rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 text-sm text-white outline-none transition focus:border-yellow-400/60"
+          className="w-full rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 text-sm text-white outline-none transition focus:border-yellow-400/60"
         />
-        <select
-          value={sortBy}
-          onChange={(event) => setSortBy(event.target.value)}
-          className="rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 text-sm font-bold text-white outline-none transition focus:border-yellow-400/60"
-        >
-          <option value="updated-desc">Sort: Newest Updated</option>
-          <option value="downloads-desc">Sort: Most Downloaded</option>
-          <option value="price-asc">Sort: Price Low to High</option>
-          <option value="price-desc">Sort: Price High to Low</option>
-          <option value="name-asc">Sort: Name A-Z</option>
-        </select>
       </div>
       <div className="grid gap-6 md:grid-cols-3">
         {catalogProducts.map((product) => (
@@ -789,12 +857,12 @@ function ScriptsCatalogPage() {
               <p className="text-2xl font-black text-yellow-400">{product.price}</p>
               <div className="flex items-center gap-2">
                 <a
-                  href={product.buyUrl || DISCORD_URL}
+                  href={getTebexLink(product)}
                   target="_blank"
                   rel="noreferrer"
                   className="rounded-xl bg-white px-4 py-2 text-sm font-black text-black transition hover:bg-yellow-400"
                 >
-                  {product.buyUrl ? "Download" : "Discord"}
+                  Download
                 </a>
                 <Link to={`/scripts/${product.slug}`} className="rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm font-black text-white transition hover:border-yellow-400/60">
                   Info
@@ -813,8 +881,6 @@ function ScriptInfoPage() {
   const product = productBySlug[slug];
   const tebexLink = product ? getTebexLink(product) : TEBEX_FREE_CATEGORY_URL;
   const gumroadLink = product ? getGumroadLink(product) : GUMROAD_STORE_URL;
-  const buyLink = tebexLink;
-  const cfxLink = product?.cfxUrl || product?.tebexUrl || product?.buyUrl || "";
   const [assetIdCopied, setAssetIdCopied] = useState(false);
 
   const handleCopyAssetId = async () => {
@@ -851,11 +917,11 @@ function ScriptInfoPage() {
       </Link>
 
       <div className="sticky bottom-3 z-20 mt-4 grid grid-cols-3 gap-2 rounded-2xl border border-zinc-700 bg-black/80 p-2 backdrop-blur md:hidden">
-        <a href={buyLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-yellow-400 px-3 py-2 text-xs font-black text-black">
+        <a href={tebexLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-yellow-400 px-3 py-2 text-xs font-black text-black">
           Download
         </a>
-        <a href={cfxLink || CFX_CREATED_ASSETS_URL} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl border border-zinc-600 bg-zinc-900 px-3 py-2 text-xs font-black text-white">
-          CFX Asset
+        <a href={gumroadLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl border border-zinc-600 bg-zinc-900 px-3 py-2 text-xs font-black text-white">
+          Gumroad
         </a>
         <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl border border-zinc-600 bg-zinc-900 px-3 py-2 text-xs font-black text-white">
           Discord
@@ -972,31 +1038,21 @@ function ScriptInfoPage() {
             <p className="text-sm font-black uppercase tracking-[0.25em] text-yellow-400">Actions</p>
             <div className="mt-4 grid gap-3">
               <a
-                href={buyLink}
+                href={tebexLink}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex justify-center rounded-xl bg-yellow-400 px-5 py-3 text-sm font-black text-black transition hover:scale-[1.02]"
               >
-                {product.buyUrl ? "Download" : "Discord"}
+                Download
               </a>
-              {cfxLink ? (
-                <a
-                  href={cfxLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex justify-center rounded-xl border border-yellow-400/50 bg-yellow-400/10 px-5 py-3 text-sm font-black text-yellow-200 transition hover:border-yellow-300 hover:bg-yellow-400/20"
-                >
-                  CFX Asset
-                </a>
-              ) : (
-                <button
-                  type="button"
-                  disabled
-                  className="inline-flex cursor-not-allowed justify-center rounded-xl border border-zinc-700 bg-zinc-900/60 px-5 py-3 text-sm font-black text-zinc-500"
-                >
-                  CFX Asset (Not Linked Yet)
-                </button>
-              )}
+              <a
+                href={gumroadLink}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex justify-center rounded-xl border border-yellow-400/50 bg-yellow-400/10 px-5 py-3 text-sm font-black text-yellow-200 transition hover:border-yellow-300 hover:bg-yellow-400/20"
+              >
+                Gumroad
+              </a>
               <a
                 href={DISCORD_URL}
                 target="_blank"
@@ -1018,7 +1074,7 @@ function ScriptInfoPage() {
             <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-bold uppercase tracking-wide text-zinc-400">
               <span className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1">Instant Delivery</span>
               <span className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1">Discord Support</span>
-              <span className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1">{product.assetId ? "CFX Ready" : "CFX Pending"}</span>
+              <span className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1">{product.gumroadUrl ? "Gumroad" : "Gumroad Store"}</span>
             </div>
           </div>
 
