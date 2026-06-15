@@ -7,7 +7,7 @@ const SUPPORT_EMAIL = "bankrollmadethisbeat@gmail.com";
 const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
-const TRAPHONE_RELEASE_AT = new Date("2026-06-15T18:00:00Z");
+const PILL_PRESS_RELEASE_AT = new Date("2026-06-22T18:00:00Z");
 
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
@@ -33,12 +33,12 @@ function getCountdownParts(targetDate) {
   return { days, hours, minutes, seconds, isLive };
 }
 
-function TrapPhoneCountdown() {
-  const [countdown, setCountdown] = useState(() => getCountdownParts(TRAPHONE_RELEASE_AT));
+function ComingSoonCountdown() {
+  const [countdown, setCountdown] = useState(() => getCountdownParts(PILL_PRESS_RELEASE_AT));
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setCountdown(getCountdownParts(TRAPHONE_RELEASE_AT));
+      setCountdown(getCountdownParts(PILL_PRESS_RELEASE_AT));
     }, 1000);
 
     return () => window.clearInterval(timer);
@@ -63,7 +63,7 @@ function TrapPhoneCountdown() {
       </div>
       {countdown.isLive && (
         <p className="mt-3 text-sm font-black uppercase tracking-wide text-black/80">
-          Release live — check the store for BMTB TRAPHONE.
+          Release live — check the store for BMTB Pill Press.
         </p>
       )}
     </div>
@@ -86,6 +86,7 @@ const products = [
     fullDesc: "BMTB PODS 2.0 adds configurable prop and pod placements to support immersive server scenes and interactions.",
     price: "FREE",
     tag: "FREE",
+    frameworks: ["ESX", "QBCore"],
     downloads: 339,
     assetId: "934971",
     version: "v2.0",
@@ -93,6 +94,7 @@ const products = [
     imageUrl: "/bmtb-pods-2-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/hW0s1sO1F9A?si=pa2eww6S7jxc42-O",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtbpods",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/grnuy",
     infoHeading: "UPDATED - NEW LOOK",
     updateNotes: [
       "Reworked to a full modernized Figma-based interface for cleaner visuals and better UX.",
@@ -125,12 +127,14 @@ const products = [
     fullDesc: "Lean bottle pouring, Feyzo soda cup prep, mixed variants, sip FX, and in-world cup carry — built for polished roleplay servers with ox_inventory support and 14 locale options.",
     price: "$10",
     tag: "PREMIUM",
+    frameworks: ["ESX"],
     downloads: 1,
     version: "v1.1.0",
     updatedOn: "2026-05-28",
     imageUrl: "https://dunb17ur4ymx4.cloudfront.net/packages/images/89df115a0ecfdc8b20fcb81c3a69b58c9023bbc8.png",
     youtubeEmbed: "https://www.youtube.com/embed/NvCfSDMEXDA",
     buyUrl: "https://bmtbscripts.tebex.io/package/7452186",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtblean",
     requirements: ["ox_lib", "ESX Legacy (or compatible auto-detect)", "ox_inventory recommended"],
     installSteps: [
       "Drop the resource in your [scripts] folder.",
@@ -147,6 +151,7 @@ const products = [
     fullDesc: "GoFetch lets players browse live shop catalogs from ox_inventory, qb-shops, and other inventories, place orders, pay cash or bank, and receive items through an NPC burrito van courier with optional GoFetch Express upgrades.",
     price: "$1",
     tag: "PREMIUM",
+    frameworks: ["ESX", "QBCore"],
     downloads: 0,
     version: "v1.0.0",
     updatedOn: "2026-05-28",
@@ -177,17 +182,58 @@ const products = [
     ],
   },
   {
+    slug: "bmtb-trapphone",
+    name: "BMTB Trap Phone",
+    desc: "Full street-trap economy for ESX Legacy — trap runs, deliveries, plugs, rep, and heat.",
+    fullDesc: "Trap phone NUI with calls, messages, status, deliveries, and Trapperz.net demand index. Run street sales, plug meetups, delivery drops, bagging loops, reputation tiers, and police heat — built for ESX Legacy with ox_inventory.",
+    price: "$15",
+    tag: "PREMIUM",
+    frameworks: ["ESX"],
+    downloads: 0,
+    version: "v1.0.0",
+    updatedOn: "2026-06-15",
+    imageUrl: "/bmtb-trapphone-thumb.png",
+    youtubeEmbed: "https://www.youtube.com/embed/PURhGct3rM4",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-trapphone",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/acmig",
+    requirements: [
+      "ESX Legacy (es_extended)",
+      "ox_lib",
+      "oxmysql",
+      "ox_inventory",
+      "ox_target (optional — E-key fallback)",
+    ],
+    installSteps: [
+      "Drop bmtb_trapphone into resources/[scripts]/ and import bmtb_trapphone.sql if needed.",
+      "Ensure order: oxmysql, es_extended, ox_lib, bmtb_trapphone, then ox_inventory.",
+      "Add trap phone and drug items to ox_inventory/data/items.lua per README.",
+      "Add ensure bmtb_trapphone and add_ace group.admin bmtb.trapphone.admin allow to server.cfg.",
+      "Restart and test with /giveitem [id] bmtb_trapphone 1.",
+    ],
+    infoHeading: "BMTB Trap Phone v1.0.0",
+    updateNotes: [
+      "Trap phone NUI with calls, messages, status, settings, Trapperz.net, wallpapers, and ringtones.",
+      "Street trap runs with buyer spawns, handoffs, robbery/chase, and optional ox_target sell.",
+      "Delivery missions with incoming calls, GPS drops, and incapacitation cancel.",
+      "Plug system with rotating plugs, chat, trust/mood, front orders, meetups, and debt tabs.",
+      "8 reputation tiers, career stats, Trapperz demand index, and police heat on bad rep.",
+      "Drug loops: bagging, blow brick pack/unpack, weed pound unpack, and sellable item list.",
+    ],
+  },
+  {
     slug: "bmtb-chains-as-items",
     name: "BMTB Chains As Items",
     desc: "Wearable chain items with inventory/shop integration for ESX/QBCore.",
     fullDesc: "Wearable chain system with inventory and shop flow. Includes item setup support for modern FiveM frameworks and clean, simple integration.",
     price: "$1",
     tag: "PREMIUM",
+    frameworks: ["ESX", "QBCore"],
     downloads: 6,
     updatedOn: "2026-05-06",
     imageUrl: "/bmtb-chains-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/H_YG2Vr96bE?si=a3qN9aNwu3i16FKc",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-chains",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/vxdcr",
   },
   {
     slug: "watermark-server-logo-script",
@@ -201,6 +247,7 @@ const products = [
     imageUrl: "/bmtb-watermark-thumb.png",
     youtubeEmbed: "",
     buyUrl: TEBEX_FREE_CATEGORY_URL,
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/xrfdt",
   },
   {
     slug: "bmtb-loading-screen",
@@ -214,6 +261,7 @@ const products = [
     imageUrl: "/bmtb-loading-screen-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/7WA86HFSyPY?si=dtLFYxR1Y6FcvYeA",
     buyUrl: TEBEX_FREE_CATEGORY_URL,
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bpysy",
   },
   {
     slug: "bmtb-cooking",
@@ -222,12 +270,14 @@ const products = [
     fullDesc: "Roleplay-focused cooking and crafting system with configurable recipes and progression-ready gameplay loops.",
     price: "FREE",
     tag: "FREE",
+    frameworks: ["ESX", "QBCore"],
     downloads: 88,
     assetId: "934974",
     updatedOn: "2026-04-30",
     imageUrl: "/bmtb-cooking-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/F44NM6_q-bM?si=edqVb7DIYfm5nnde",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtbcooking",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/qoupl",
   },
   {
     slug: "bmtb-weapon-repair",
@@ -236,6 +286,7 @@ const products = [
     fullDesc: "Bench-based repair mechanics with configurable costs and immersive interactions for realistic server economy gameplay.",
     price: "$10",
     tag: "PREMIUM",
+    frameworks: ["ESX", "QBCore"],
     downloads: 0,
     assetId: "934956",
     version: "v1.2",
@@ -243,6 +294,7 @@ const products = [
     imageUrl: "/bmtb-weapon-repair-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/MvgPu0LbuGM?si=plSjTNBaXd5G8xF_",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtbweaponrepair",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/rsclql",
     tebexUrl: "https://bmtbscripts.tebex.io/package/bmtbweaponrepair",
     infoHeading: "BMTB Weapon Repair - Release Build",
     updateNotes: [
@@ -281,12 +333,14 @@ const products = [
     fullDesc: "Inventory-backed wig system with appearance handling and framework-compatible integration hooks.",
     price: "$1",
     tag: "PREMIUM",
+    frameworks: ["ESX", "QBCore"],
     downloads: 17,
     assetId: "934961",
     updatedOn: "2026-04-23",
     imageUrl: "https://dunb17ur4ymx4.cloudfront.net/packages/images/581b5174063646063e13bb2d9d6bdf1416188bda.png",
     youtubeEmbed: "https://www.youtube.com/embed/2mXbZH_iDxE?si=BHjRtOqM0P_22bmd",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtbwigs",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/qtoaao",
     tebexUrl: "https://bmtbscripts.tebex.io/package/bmtbwigs",
   },
   {
@@ -296,12 +350,14 @@ const products = [
     fullDesc: "Vehicle dismantling and chopshop progression flow built for immersive roleplay and risk/reward gameplay.",
     price: "FREE",
     tag: "FREE",
+    frameworks: ["ESX", "QBCore"],
     downloads: 84,
     assetId: "929525",
     updatedOn: "2026-03-19",
     imageUrl: "/bmtb-chopshop-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/b-TVVsLpa9w?si=TPmmcreaORLX7gCR",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtbchopshop",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/gsgrww",
   },
   {
     slug: "bmtb-tuning",
@@ -310,12 +366,14 @@ const products = [
     fullDesc: "Customization-focused tuning setup designed to improve vehicle identity and immersive server car culture.",
     price: "FREE",
     tag: "FREE",
+    frameworks: ["ESX", "QBCore"],
     downloads: 45,
     assetId: "953633",
     updatedOn: "2026-04-11",
     imageUrl: "/bmtb-tuning-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/_ynXdeLBico?si=8d2lLynUDBTyXTi9",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtbtuning",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtbtuning",
   },
   {
     slug: "bmtb-car-wipe",
@@ -330,6 +388,7 @@ const products = [
     imageUrl: "/bmtb-car-wipe-thumb.png",
     youtubeEmbed: "",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-carwipe",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtbcarwipe",
   },
   {
     slug: "bmtb-recycle-job",
@@ -338,11 +397,13 @@ const products = [
     fullDesc: "Clock in at the yard, grab boxes, sort recyclable material, and sell for cash. Supports ESX, QBCore, and Qbox with ox_lib menus, carry animations, and configurable locations and payouts.",
     price: "FREE",
     tag: "FREE",
+    frameworks: ["ESX", "QBCore"],
     downloads: 1,
     updatedOn: "2026-05-28",
     imageUrl: "/bmtb-recycle-job-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/HXxlSWHGpBg",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-recyclejob",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/faxqs",
     requirements: ["ox_lib", "ESX Legacy / QBCore / Qbox", "ox_inventory recommended"],
     installSteps: [
       "Drop the resource into your server resources folder.",
@@ -358,12 +419,14 @@ const products = [
     fullDesc: "Simple and reliable vehicle ownership assignment utility for staff workflows and giveaways.",
     price: "FREE",
     tag: "FREE",
+    frameworks: ["ESX"],
     downloads: 43,
     assetId: "958555",
     updatedOn: "2026-04-16",
     imageUrl: "/bmtb-givecar-thumb.png",
     youtubeEmbed: "",
     buyUrl: "https://bmtbscripts.tebex.io/package/7397118",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtbgivecar",
   },
   {
     slug: "bmtb-nocrosshair",
@@ -378,6 +441,7 @@ const products = [
     imageUrl: "/bmtb-nocrosshair-thumb.png",
     youtubeEmbed: "",
     buyUrl: "https://bmtbscripts.tebex.io/package/7397124",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtbnocrosshair",
   },
   {
     slug: "bmtb-itemslist",
@@ -386,12 +450,14 @@ const products = [
     fullDesc: "Item browser and quick lookup page for inventory systems so players and staff can view available items easily.",
     price: "FREE",
     tag: "FREE",
+    frameworks: ["ESX", "QBCore"],
     downloads: 32,
     assetId: "958558",
     updatedOn: "2026-04-16",
     imageUrl: "/bmtb-itemslist-thumb.png",
     youtubeEmbed: "",
     buyUrl: "https://bmtbscripts.tebex.io/package/7397120",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtbitemslist",
   },
   {
     slug: "bmtb-moneywash",
@@ -400,12 +466,14 @@ const products = [
     fullDesc: "Money wash script with progress UX and framework support across ESX, QBCore, and Qbox, designed for realistic economy loops.",
     price: "FREE",
     tag: "FREE",
+    frameworks: ["ESX", "QBCore"],
     downloads: 40,
     assetId: "967147",
     updatedOn: "2026-04-24",
     imageUrl: "/bmtb-moneywash-thumb.png",
     youtubeEmbed: "https://www.youtube.com/embed/FwjHLkQs1O0?si=0BDRXL3dVHHUKANS",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtbmoneywash",
+    gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtbmoneywash",
   },
 ];
 
@@ -449,6 +517,50 @@ function getProductStatuses(product) {
     product.gumroadUrl ? "Gumroad" : "Gumroad Store",
     product.updateNotes?.length ? "Updated" : null,
   ].filter(Boolean);
+}
+
+const FRAMEWORK_TAG_STYLES = {
+  ESX: "border-emerald-400/40 bg-emerald-400/10 text-emerald-200",
+  QBCore: "border-orange-400/40 bg-orange-400/10 text-orange-200",
+};
+
+function isProductNew(product) {
+  return product?.slug === "bmtb-trapphone";
+}
+
+function NewBadge({ size = "sm" }) {
+  const sizeClass = size === "md"
+    ? "px-3 py-1 text-xs"
+    : "px-2.5 py-1 text-[10px]";
+
+  return (
+    <span className={`rounded-full border border-fuchsia-400/50 bg-fuchsia-400/15 font-bold uppercase tracking-wide text-fuchsia-200 ${sizeClass}`}>
+      New
+    </span>
+  );
+}
+
+function FrameworkTags({ frameworks, size = "sm" }) {
+  if (!frameworks?.length) {
+    return null;
+  }
+
+  const sizeClass = size === "md"
+    ? "px-3 py-1 text-xs"
+    : "px-2.5 py-1 text-[10px]";
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {frameworks.map((framework) => (
+        <span
+          key={framework}
+          className={`rounded-full border font-bold uppercase tracking-wide ${sizeClass} ${FRAMEWORK_TAG_STYLES[framework]}`}
+        >
+          {framework}
+        </span>
+      ))}
+    </div>
+  );
 }
 
 function getProductVersion(product) {
@@ -661,10 +773,10 @@ function HomePage() {
           </p>
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
             <Link to="/scripts" className="group inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-7 py-4 font-black text-black shadow-xl shadow-yellow-400/20 transition hover:scale-105">
-              View Scripts <Icon name="chevron" className="ml-2 transition group-hover:translate-x-1" size={20} />
+              Browse Scripts <Icon name="chevron" className="ml-2 transition group-hover:translate-x-1" size={20} />
             </Link>
             <a href={DISCORD_URL} className="inline-flex items-center justify-center rounded-2xl border border-zinc-700 bg-zinc-900/70 px-7 py-4 font-bold text-white transition hover:border-yellow-400/60">
-              <Icon name="message" className="mr-2" size={20} /> Join Community
+              <Icon name="message" className="mr-2" size={20} /> Join Discord
             </a>
           </div>
         </motion.div>
@@ -689,9 +801,9 @@ function HomePage() {
               </div>
               <div className="mt-6 rounded-2xl bg-yellow-400 p-5 text-black">
                 <p className="text-sm font-bold uppercase tracking-widest">Coming Soon</p>
-                <p className="mt-1 text-2xl font-black">BMTB TRAPHONE</p>
-                <p className="mt-2 text-sm font-semibold text-black/70">Trap phone script dropping soon on Tebex and Gumroad.</p>
-                <TrapPhoneCountdown />
+                <p className="mt-1 text-2xl font-black">BMTB Pill Press</p>
+                <p className="mt-2 text-sm font-semibold text-black/70">Pill press script releasing June 22, 2026 at 2:00 PM ET on Tebex and Gumroad.</p>
+                <ComingSoonCountdown />
               </div>
             </div>
           </div>
@@ -720,9 +832,13 @@ function HomePage() {
                   />
                 </div>
               )}
-              <div className="mb-5 flex items-center justify-between">
-                <span className="rounded-full bg-yellow-400/10 px-3 py-1 text-sm font-bold text-yellow-300">{product.tag}</span>
-                <Icon name="code" className="text-zinc-500 group-hover:text-yellow-400" />
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-yellow-400/10 px-3 py-1 text-sm font-bold text-yellow-300">{product.tag}</span>
+                  {isProductNew(product) && <NewBadge />}
+                  <FrameworkTags frameworks={product.frameworks} />
+                </div>
+                <Icon name="code" className="shrink-0 text-zinc-500 group-hover:text-yellow-400" />
               </div>
               <h3 className="text-2xl font-black">{product.name}</h3>
               <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-zinc-500">{getProductVersion(product)} • {product.updatedOn || "No date"}</p>
@@ -759,23 +875,44 @@ function HomePage() {
   );
 }
 
+const CATALOG_FILTERS = [
+  { id: "all", label: "All" },
+  { id: "FREE", label: "Free" },
+  { id: "PREMIUM", label: "Premium" },
+  { id: "ESX", label: "ESX" },
+  { id: "QBCore", label: "QBCore" },
+];
+
+const CATALOG_FILTER_ACTIVE_STYLES = {
+  all: "border-yellow-400 bg-yellow-400 text-black",
+  FREE: "border-yellow-400/60 bg-yellow-400/15 text-yellow-200",
+  PREMIUM: "border-yellow-400/60 bg-yellow-400/15 text-yellow-200",
+  ESX: "border-emerald-400/60 bg-emerald-400/15 text-emerald-200",
+  QBCore: "border-orange-400/60 bg-orange-400/15 text-orange-200",
+};
+
 function ScriptsCatalogPage() {
   const [query, setQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("all");
   const catalogProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     const filtered = products.filter((product) => {
-      if (!normalizedQuery) {
-        return true;
-      }
-      return (
+      const matchesQuery = !normalizedQuery || (
         product.name.toLowerCase().includes(normalizedQuery)
         || product.desc.toLowerCase().includes(normalizedQuery)
         || product.tag.toLowerCase().includes(normalizedQuery)
+        || product.frameworks?.some((framework) => framework.toLowerCase().includes(normalizedQuery))
       );
+
+      const matchesFilter = activeFilter === "all"
+        || product.tag === activeFilter
+        || product.frameworks?.includes(activeFilter);
+
+      return matchesQuery && matchesFilter;
     });
 
     return sortProductsByUpdatedOn(filtered);
-  }, [query]);
+  }, [query, activeFilter]);
 
   const catalogJsonLd = {
     "@context": "https://schema.org",
@@ -816,7 +953,32 @@ function ScriptsCatalogPage() {
           placeholder="Search scripts by name, tag, or description"
           className="w-full rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-3 text-sm text-white outline-none transition focus:border-yellow-400/60"
         />
+        <div className="mt-3 flex flex-wrap gap-2">
+          {CATALOG_FILTERS.map((filter) => {
+            const isActive = activeFilter === filter.id;
+            return (
+              <button
+                key={filter.id}
+                type="button"
+                onClick={() => setActiveFilter(filter.id)}
+                className={`rounded-full border px-4 py-2 text-xs font-black uppercase tracking-wide transition ${
+                  isActive
+                    ? CATALOG_FILTER_ACTIVE_STYLES[filter.id]
+                    : "border-zinc-700 bg-zinc-900/70 text-zinc-300 hover:border-yellow-400/40"
+                }`}
+              >
+                {filter.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
+      {catalogProducts.length === 0 ? (
+        <div className="rounded-[2rem] border border-zinc-800 bg-zinc-950/80 p-10 text-center">
+          <p className="text-xl font-black text-white">No scripts match your filters</p>
+          <p className="mt-2 text-sm text-zinc-400">Try clearing the search or choosing a different tag.</p>
+        </div>
+      ) : (
       <div className="grid gap-6 md:grid-cols-3">
         {catalogProducts.map((product) => (
           <div key={`${product.slug}-all`} className="group rounded-[2rem] border border-zinc-800 bg-zinc-950/80 p-6 transition hover:-translate-y-1 hover:border-yellow-400/40">
@@ -831,9 +993,13 @@ function ScriptsCatalogPage() {
                 />
               </div>
             )}
-            <div className="mb-5 flex items-center justify-between">
-              <span className="rounded-full bg-yellow-400/10 px-3 py-1 text-sm font-bold text-yellow-300">{product.tag}</span>
-              <Icon name="code" className="text-zinc-500 group-hover:text-yellow-400" />
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-yellow-400/10 px-3 py-1 text-sm font-bold text-yellow-300">{product.tag}</span>
+                {isProductNew(product) && <NewBadge />}
+                <FrameworkTags frameworks={product.frameworks} />
+              </div>
+              <Icon name="code" className="shrink-0 text-zinc-500 group-hover:text-yellow-400" />
             </div>
             <h3 className="text-2xl font-black">{product.name}</h3>
             <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-zinc-500">{getProductVersion(product)} • {product.updatedOn || "No date"}</p>
@@ -864,6 +1030,7 @@ function ScriptsCatalogPage() {
           </div>
         ))}
       </div>
+      )}
     </section>
   );
 }
@@ -873,20 +1040,6 @@ function ScriptInfoPage() {
   const product = productBySlug[slug];
   const tebexLink = product ? getTebexLink(product) : TEBEX_FREE_CATEGORY_URL;
   const gumroadLink = product ? getGumroadLink(product) : GUMROAD_STORE_URL;
-  const [assetIdCopied, setAssetIdCopied] = useState(false);
-
-  const handleCopyAssetId = async () => {
-    if (!product?.assetId) {
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(String(product.assetId));
-      setAssetIdCopied(true);
-      setTimeout(() => setAssetIdCopied(false), 1800);
-    } catch {
-      setAssetIdCopied(false);
-    }
-  };
 
   if (!product) {
     return (
@@ -942,6 +1095,8 @@ function ScriptInfoPage() {
           <div className="mt-6">
             <div className="flex flex-wrap items-center gap-3">
               <span className="rounded-full bg-yellow-400/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-yellow-300">{product.tag}</span>
+              {isProductNew(product) && <NewBadge size="md" />}
+              <FrameworkTags frameworks={product.frameworks} size="md" />
               <span className="text-sm font-bold text-zinc-400">{product.price}</span>
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -1053,15 +1208,6 @@ function ScriptInfoPage() {
               >
                 Join Discord for Support
               </a>
-              {product.assetId && (
-                <button
-                  type="button"
-                  onClick={handleCopyAssetId}
-                  className="inline-flex justify-center rounded-xl border border-zinc-700 bg-zinc-900/70 px-5 py-3 text-sm font-black text-white transition hover:border-yellow-400/60"
-                >
-                  {assetIdCopied ? `Asset ID Copied (${product.assetId})` : `Copy Asset ID (${product.assetId})`}
-                </button>
-              )}
             </div>
             <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-bold uppercase tracking-wide text-zinc-400">
               <span className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1">Instant Delivery</span>
@@ -1071,41 +1217,24 @@ function ScriptInfoPage() {
           </div>
 
           <div className="rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6">
-            <p className="text-sm font-black uppercase tracking-[0.25em] text-yellow-400">How to Receive Files</p>
+            <p className="text-sm font-black uppercase tracking-[0.25em] text-yellow-400">24/7 Support</p>
             <p className="mt-3 text-sm leading-6 text-zinc-400">
-              Download from either store below. Both deliver the script files instantly after checkout.
+              Join the BMTB Scripts Discord for around-the-clock help on every script — free and premium.
             </p>
             <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-6 text-zinc-300">
-              <li>Open <strong className="text-white">Tebex</strong> or <strong className="text-white">Gumroad</strong> using the buttons below.</li>
-              <li>Add the script to your basket on Tebex, or open the product on Gumroad and complete checkout (free scripts included).</li>
-              <li>Download the files from your Tebex account or Gumroad library right after checkout.</li>
-              <li>Extract the resource folder into your server&apos;s <code className="rounded bg-zinc-900 px-1.5 py-0.5 text-yellow-200">resources</code> directory and follow the setup steps on this page.</li>
-              <li>Join Discord if you need install help or support.</li>
+              <li>Join the <strong className="text-white">BMTB Scripts Discord</strong> using the button below.</li>
+              <li>Get install help, config setup, and troubleshooting from staff and the community.</li>
+              <li>Support covers <strong className="text-white">all BMTB scripts</strong> — not just this one.</li>
+              <li>Ask in Discord anytime you need help before, during, or after setup.</li>
             </ol>
             <div className="mt-4 flex flex-wrap gap-2">
-              <a
-                href={tebexLink}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex rounded-xl bg-yellow-400 px-4 py-2 text-sm font-black text-black transition hover:scale-[1.02]"
-              >
-                Download on Tebex
-              </a>
-              <a
-                href={gumroadLink}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm font-black text-white transition hover:border-yellow-400/60"
-              >
-                Download on Gumroad
-              </a>
               <a
                 href={DISCORD_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex rounded-xl border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm font-black text-white transition hover:border-yellow-400/60"
+                className="inline-flex rounded-xl bg-yellow-400 px-4 py-2 text-sm font-black text-black transition hover:scale-[1.02]"
               >
-                Discord Support
+                Join Discord for 24/7 Support
               </a>
             </div>
           </div>
