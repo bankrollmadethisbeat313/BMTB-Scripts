@@ -87,7 +87,7 @@ const products = [
     price: "FREE",
     tag: "FREE",
     frameworks: ["ESX", "QBCore"],
-    downloads: 339,
+    downloads: 380,
     assetId: "934971",
     version: "v2.0",
     updatedOn: "2026-03-25",
@@ -123,25 +123,54 @@ const products = [
   {
     slug: "bmtb-lean",
     name: "BMTB Lean",
-    desc: "Full lean workflow with custom props, animations, and BMTB UI for ESX servers.",
-    fullDesc: "Lean bottle pouring, Feyzo soda cup prep, mixed variants, sip FX, and in-world cup carry — built for polished roleplay servers with ox_inventory support and 14 locale options.",
+    desc: "Full lean workflow for ESX, QBCore, and Qbox — pour, mix, sip FX, and in-world cup carry with custom props and BMTB UI.",
+    fullDesc: "Pour lean into baby bottles, prep Feyzo soda cups, mix variants (purple / red / green), add ice and extras, drink with sip FX, and carry your cup in-world — all with custom props, animations, and a clean BMTB UI. Includes dedicated ESX Legacy and QBCore builds with multi-inventory support and 14 locale options.",
     price: "$10",
     tag: "PREMIUM",
-    frameworks: ["ESX"],
+    frameworks: ["ESX", "QBCore", "Qbox"],
     downloads: 1,
-    version: "v1.1.0",
-    updatedOn: "2026-05-28",
+    version: "v1.0.0",
+    updatedOn: "2026-05-17",
     imageUrl: "https://dunb17ur4ymx4.cloudfront.net/packages/images/89df115a0ecfdc8b20fcb81c3a69b58c9023bbc8.png",
     youtubeEmbed: "https://www.youtube.com/embed/NvCfSDMEXDA",
     buyUrl: "https://bmtbscripts.tebex.io/package/7452186",
     gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtblean",
-    requirements: ["ox_lib", "ESX Legacy (or compatible auto-detect)", "ox_inventory recommended"],
+    infoHeading: "BMTB Lean v1.0.0",
+    updateNotes: [
+      "Lean bottle → baby bottle with line-based pouring (16 lines → 8 per pour).",
+      "Double cup + Feyzo Cream Soda prep with mixed lean variants (purple / red / green).",
+      "Hold / drink mixed lean with on-screen cup HUD (G drink / K add / X put away).",
+      "Additives: ice, Rancherz, Perc, Xan Bar — with sip buffs on mixed cups.",
+      "Lean carry command — walk with cup in hand.",
+      "Sip effects: timecycle tint, overlay, and walk style (configurable).",
+      "Custom prop attachments, streamed animations, and BMTB NUI menus.",
+      "ESX Legacy build — ox_inventory, ESX default F2, ak47, qs, codem, and more.",
+      "QBCore build — qb-inventory, ox_inventory, qs, ak47, lj/ps, codem, core_inventory.",
+      "14 languages — set Config.LocaleLanguage in config.lua.",
+      "Buyer-friendly config.lua — gameplay, drink, HUD, and UI tuning without code edits.",
+      "Admin tools: /leanrebuildbaby (ESX), /leanqbcheck (QBCore), prop tuner, and metadata repair.",
+    ],
+    requirements: [
+      "ESX Legacy or QBCore build (separate downloads — Qbox uses QBCore edition)",
+      "ox_lib",
+      "oxmysql",
+      "ox_inventory, qb-inventory, or compatible inventory backend",
+      "es_extended (ESX) or qb-core (QBCore)",
+      "ox_target or qb-target (optional)",
+    ],
     installSteps: [
-      "Drop the resource in your [scripts] folder.",
-      "Add items from the install folder to your inventory.",
-      "Ensure order: ensure ox_lib, ensure ox_inventory, ensure bmtb_lean",
-      "Edit config.lua for language, sip FX, props, and notify duration.",
-      "Restart and test in-game.",
+      "Install the matching build: bmtb_lean ESX Legacy or QBCore edition.",
+      "Merge items from install/items.lua into your inventory (27 items on QB).",
+      "Copy install/images PNGs into your inventory image folder.",
+      "Ensure ox_lib, your framework, inventory, then bmtb_lean in server.cfg.",
+      "Edit config.lua for language, sip FX, props, drink thirst, and notify duration.",
+      "Restart inventory + bmtb_lean and run the included QA checklist.",
+    ],
+    notes: [
+      "ESX edition: es_extended + slot inventory (ox_inventory recommended).",
+      "QBCore edition: qb-core + qb-inventory or auto-detected multi-inventory.",
+      "Config.Inventory.mode = auto probes supported backends on start.",
+      "Optional ox_inventory drop patch included for ESX when UI closes on drop.",
     ],
   },
   {
@@ -221,6 +250,62 @@ const products = [
     ],
   },
   {
+    slug: "bmtb-strippers",
+    name: "BMTB Strippers",
+    desc: "Full strip club business system — dancer shifts, pole dance, VIP rooms, NPC customers, and owner management.",
+    fullDesc: "Run a complete Vanilla Unicorn-style club with dancer shifts, pole dancing, VIP rooms, NPC customers, player lap dances, owner revenue, staff management, reputation, and club popularity. Available in both ESX Legacy and QBCore versions.",
+    price: "$10",
+    tag: "PREMIUM",
+    frameworks: ["ESX", "QBCore"],
+    downloads: 0,
+    version: "v1.0.0",
+    updatedOn: "2026-06-21",
+    imageUrl: "/bmtb-strippers-thumb.png",
+    youtubeEmbed: "https://www.youtube.com/embed/w6uihCRH7fM",
+    buyUrl: "https://bmtbscripts.tebex.io/category/premium-scripts",
+    requirements: [
+      "ESX Legacy or QBCore version (separate builds included)",
+      "ox_inventory",
+      "ox_lib",
+      "oxmysql",
+      "ox_target",
+      "illenium-appearance (optional — locker / outfits)",
+      "esx_addonaccount (ESX club safe)",
+      "QBCore society/banking resource (QBCore club safe)",
+    ],
+    installSteps: [
+      "Add resource to your server and install the matching version: ESX or QBCore.",
+      "Ensure dependencies start before bmtb_strippers in server.cfg.",
+      "Import the included SQL for your framework.",
+      "Add or refresh the clubowner job.",
+      "Tune config.lua — coords, prices, payouts, VIP rooms, staff, and supplies.",
+      "Add staff ACE: add_ace group.admin bmtb.strippers.admin allow",
+      "Restart and test — full install guide included in README.",
+    ],
+    infoHeading: "BMTB Strippers v1.0.0",
+    updateNotes: [
+      "Stripper job system — apply at reception, clock in/out, dancer/manager/owner grades, live shift HUD, server-side settlement.",
+      "Built-in pole dancing — multiple routines, looping scenes, shift tracking, /newpole and /removepole placement tools.",
+      "Lap dances and VIP rooms — NPC and player private dances, VIP chairs, stripper spots, premium booth payouts.",
+      "NPC customers and tips — spawn flow, stage tips, crowd watch/cheer/clap, supply modifiers.",
+      "Club management — /clubmanage menu, hire/fire dancers and NPC staff, supplies, stage spot editor.",
+      "Owner economy — club safe, live dashboard, passive revenue, owner cuts, configurable withdraw limits.",
+      "Reputation and popularity — stripper XP, payout bonuses, club popularity score and decay.",
+      "Outfits and locker — preset stage/VIP outfits, saved locker slots, illenium-appearance support.",
+      "Production ready — server-side payout validation, cooldowns, anti-AFK, zone checks, ACE-gated admin tools.",
+    ],
+    notes: [
+      "Config.Job — dancer, manager, owner grades.",
+      "Config.Club — club center and radius.",
+      "Config.PoleDance / Config.PoleLocations — routines, targets, server-side pole validation.",
+      "Config.NpcLap / Config.PlayerLap — NPC and player private dance pricing.",
+      "Config.VipRooms — VIP chairs, rooms, and stripper spots.",
+      "Config.Management — owner menu, staff, and stage spots.",
+      "Config.OwnerRevenue / Config.ClubPassiveRevenue — society account and passive income.",
+      "Config.Reputation / Config.Supplies / Config.Security — XP, stock, and payout caps.",
+    ],
+  },
+  {
     slug: "bmtb-chains-as-items",
     name: "BMTB Chains As Items",
     desc: "Wearable chain items with inventory/shop integration for ESX/QBCore.",
@@ -271,7 +356,7 @@ const products = [
     price: "FREE",
     tag: "FREE",
     frameworks: ["ESX", "QBCore"],
-    downloads: 88,
+    downloads: 107,
     assetId: "934974",
     updatedOn: "2026-04-30",
     imageUrl: "/bmtb-cooking-thumb.png",
@@ -351,7 +436,7 @@ const products = [
     price: "FREE",
     tag: "FREE",
     frameworks: ["ESX", "QBCore"],
-    downloads: 84,
+    downloads: 120,
     assetId: "929525",
     updatedOn: "2026-03-19",
     imageUrl: "/bmtb-chopshop-thumb.png",
@@ -477,6 +562,24 @@ const products = [
   },
 ];
 
+// YouTube publish dates from @BMTBScripts/videos (newest uploads first).
+const YOUTUBE_PUBLISH_DATES = {
+  w6uihCRH7fM: "2026-06-21", // BMTB Strippers
+  PURhGct3rM4: "2026-06-15", // BMTB Trap Phone
+  tNFsXiSSogM: "2026-06-11", // BMTB GoFetch
+  HXxlSWHGpBg: "2026-05-28", // BMTB Recycle Job
+  NvCfSDMEXDA: "2026-05-17", // BMTB Lean
+  FwjHLkQs1O0: "2026-04-24", // BMTB Moneywash
+  _ynXdeLBico: "2026-04-11", // BMTB Tuning
+  "b-TVVsLpa9w": "2026-03-19", // BMTB Chopshop
+  "2mXbZH_iDxE": "2026-03-09", // BMTB Wigs
+  MvgPu0LbuGM: "2026-03-02", // BMTB Weapon Repair
+  "F44NM6_q-bM": "2026-02-18", // BMTB Cooking
+  "7WA86HFSyPY": "2026-02-13", // BMTB Loading Screen
+  H_YG2Vr96bE: "2026-01-31", // BMTB Chains
+  hW0s1sO1F9A: "2026-01-13", // BMTB PODS 2.0
+};
+
 const productBySlug = products.reduce((acc, product) => {
   acc[product.slug] = product;
   return acc;
@@ -522,6 +625,7 @@ function getProductStatuses(product) {
 const FRAMEWORK_TAG_STYLES = {
   ESX: "border-emerald-400/40 bg-emerald-400/10 text-emerald-200",
   QBCore: "border-orange-400/40 bg-orange-400/10 text-orange-200",
+  Qbox: "border-sky-400/40 bg-sky-400/10 text-sky-200",
 };
 
 function isProductNew(product) {
@@ -588,8 +692,38 @@ function getGumroadLink(product) {
   return product?.gumroadUrl || GUMROAD_STORE_URL;
 }
 
-function sortProductsByUpdatedOn(list) {
-  return [...list].sort((a, b) => new Date(b.updatedOn || 0).getTime() - new Date(a.updatedOn || 0).getTime());
+function getYoutubeVideoId(product) {
+  const embed = product?.youtubeEmbed || "";
+  const match = embed.match(/(?:embed\/|youtu\.be\/|v=)([A-Za-z0-9_-]{11})/);
+  return match?.[1] || null;
+}
+
+function getProductSortDate(product) {
+  const videoId = getYoutubeVideoId(product);
+  if (videoId && YOUTUBE_PUBLISH_DATES[videoId]) {
+    return YOUTUBE_PUBLISH_DATES[videoId];
+  }
+  return product?.updatedOn || "";
+}
+
+function sortProductsByDownloads(list) {
+  return [...list].sort((a, b) => {
+    const downloadDiff = (b.downloads ?? 0) - (a.downloads ?? 0);
+    if (downloadDiff !== 0) {
+      return downloadDiff;
+    }
+    return a.name.localeCompare(b.name);
+  });
+}
+
+function sortProductsByNewest(list) {
+  return [...list].sort((a, b) => {
+    const dateDiff = new Date(getProductSortDate(b)).getTime() - new Date(getProductSortDate(a)).getTime();
+    if (dateDiff !== 0) {
+      return dateDiff;
+    }
+    return a.name.localeCompare(b.name);
+  });
 }
 
 function SupportSection() {
@@ -734,11 +868,11 @@ function SiteHeader() {
 }
 
 function HomePage() {
-  const latestProducts = sortProductsByUpdatedOn(products).slice(0, 3);
+  const popularProducts = sortProductsByDownloads(products).slice(0, 3);
   const popularJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    itemListElement: latestProducts.map((product, index) => ({
+    itemListElement: popularProducts.map((product, index) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
@@ -772,8 +906,8 @@ function HomePage() {
             Professional FiveM scripts with clean UI, immersive gameplay, optimized code, and support for modern ESX/QBCore server stacks.
           </p>
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <Link to="/scripts" className="group inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-7 py-4 font-black text-black shadow-xl shadow-yellow-400/20 transition hover:scale-105">
-              Browse Scripts <Icon name="chevron" className="ml-2 transition group-hover:translate-x-1" size={20} />
+            <Link to="/#popular-scripts" className="group inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-7 py-4 font-black text-black shadow-xl shadow-yellow-400/20 transition hover:scale-105">
+              Popular Scripts <Icon name="chevron" className="ml-2 transition group-hover:translate-x-1" size={20} />
             </Link>
             <a href={DISCORD_URL} className="inline-flex items-center justify-center rounded-2xl border border-zinc-700 bg-zinc-900/70 px-7 py-4 font-bold text-white transition hover:border-yellow-400/60">
               <Icon name="message" className="mr-2" size={20} /> Join Discord
@@ -810,16 +944,21 @@ function HomePage() {
         </motion.div>
       </section>
 
-      <section id="popular" className="mx-auto max-w-7xl px-6 py-16">
+      <section id="popular-scripts" className="mx-auto max-w-7xl px-6 py-16">
         <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.3em] text-yellow-400">Store</p>
-            <h2 className="mt-3 text-4xl font-black">Latest Scripts</h2>
+            <h2 className="mt-3 text-4xl font-black">Most Downloaded</h2>
           </div>
-          <p className="max-w-lg text-zinc-400">Recently updated BMTB scripts, newest first.</p>
+          <div className="flex flex-col items-start gap-3 md:items-end">
+            <p className="max-w-lg text-zinc-400">Top BMTB scripts by Tebex and Gumroad downloads.</p>
+            <Link to="/scripts" className="inline-flex items-center gap-2 text-sm font-bold text-yellow-300 transition hover:text-yellow-200">
+              View all scripts <Icon name="chevron" size={16} />
+            </Link>
+          </div>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
-          {latestProducts.map((product) => (
+          {popularProducts.map((product) => (
             <div key={product.name} className="group rounded-[2rem] border border-zinc-800 bg-zinc-950/80 p-6 transition hover:-translate-y-1 hover:border-yellow-400/40">
               {product.imageUrl && (
                 <div className="mb-5 overflow-hidden rounded-2xl border border-zinc-800">
@@ -828,7 +967,7 @@ function HomePage() {
                     alt={`${product.name} card preview`}
                     loading="lazy"
                     decoding="async"
-                    className="h-32 w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                    className="h-44 w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
                   />
                 </div>
               )}
@@ -841,7 +980,7 @@ function HomePage() {
                 <Icon name="code" className="shrink-0 text-zinc-500 group-hover:text-yellow-400" />
               </div>
               <h3 className="text-2xl font-black">{product.name}</h3>
-              <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-zinc-500">{getProductVersion(product)} • {product.updatedOn || "No date"}</p>
+              <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-zinc-500">{getProductVersion(product)} • {getProductSortDate(product) || "No date"}</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {getProductStatuses(product).map((status) => (
                   <span key={`${product.slug}-${status}`} className="rounded-full border border-zinc-700 bg-zinc-900/70 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-zinc-300">
@@ -869,6 +1008,11 @@ function HomePage() {
             </div>
           ))}
         </div>
+        <div className="mt-10 flex justify-center">
+          <Link to="/scripts" className="inline-flex items-center justify-center rounded-2xl border border-yellow-400/40 bg-yellow-400/10 px-8 py-4 font-black text-yellow-200 transition hover:border-yellow-300 hover:bg-yellow-400/20">
+            Browse all scripts
+          </Link>
+        </div>
       </section>
 
     </>
@@ -881,6 +1025,7 @@ const CATALOG_FILTERS = [
   { id: "PREMIUM", label: "Premium" },
   { id: "ESX", label: "ESX" },
   { id: "QBCore", label: "QBCore" },
+  { id: "Qbox", label: "Qbox" },
 ];
 
 const CATALOG_FILTER_ACTIVE_STYLES = {
@@ -889,6 +1034,7 @@ const CATALOG_FILTER_ACTIVE_STYLES = {
   PREMIUM: "border-yellow-400/60 bg-yellow-400/15 text-yellow-200",
   ESX: "border-emerald-400/60 bg-emerald-400/15 text-emerald-200",
   QBCore: "border-orange-400/60 bg-orange-400/15 text-orange-200",
+  Qbox: "border-sky-400/60 bg-sky-400/15 text-sky-200",
 };
 
 function ScriptsCatalogPage() {
@@ -911,7 +1057,7 @@ function ScriptsCatalogPage() {
       return matchesQuery && matchesFilter;
     });
 
-    return sortProductsByUpdatedOn(filtered);
+    return sortProductsByNewest(filtered);
   }, [query, activeFilter]);
 
   const catalogJsonLd = {
@@ -989,7 +1135,7 @@ function ScriptsCatalogPage() {
                   alt={`${product.name} card preview`}
                   loading="lazy"
                   decoding="async"
-                  className="h-24 w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                  className="h-40 w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
                 />
               </div>
             )}
@@ -1002,7 +1148,7 @@ function ScriptsCatalogPage() {
               <Icon name="code" className="shrink-0 text-zinc-500 group-hover:text-yellow-400" />
             </div>
             <h3 className="text-2xl font-black">{product.name}</h3>
-            <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-zinc-500">{getProductVersion(product)} • {product.updatedOn || "No date"}</p>
+            <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-zinc-500">{getProductVersion(product)} • {getProductSortDate(product) || "No date"}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {getProductStatuses(product).map((status) => (
                 <span key={`${product.slug}-all-${status}`} className="rounded-full border border-zinc-700 bg-zinc-900/70 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-zinc-300">
@@ -1107,7 +1253,7 @@ function ScriptInfoPage() {
               ))}
             </div>
             <h1 className="mt-3 text-3xl font-black md:text-4xl">{product.name}</h1>
-            <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">{getProductVersion(product)} • Updated on {product.updatedOn || "No date"}</p>
+            <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-zinc-400">{getProductVersion(product)} • Released {getProductSortDate(product) || "No date"}</p>
             <p className="mt-4 leading-7 text-zinc-300">{product.fullDesc}</p>
           </div>
 
