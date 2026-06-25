@@ -7,7 +7,7 @@ const SUPPORT_EMAIL = "bankrollmadethisbeat@gmail.com";
 const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
-const PILL_PRESS_RELEASE_AT = new Date("2026-06-22T18:00:00Z");
+const SCAMMING_RELEASE_AT = new Date("2026-07-06T18:00:00Z");
 
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
@@ -33,16 +33,16 @@ function getCountdownParts(targetDate) {
   return { days, hours, minutes, seconds, isLive };
 }
 
-function ComingSoonCountdown() {
-  const [countdown, setCountdown] = useState(() => getCountdownParts(PILL_PRESS_RELEASE_AT));
+function ComingSoonCountdown({ targetDate, liveMessage }) {
+  const [countdown, setCountdown] = useState(() => getCountdownParts(targetDate));
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setCountdown(getCountdownParts(PILL_PRESS_RELEASE_AT));
+      setCountdown(getCountdownParts(targetDate));
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [targetDate]);
 
   const units = [
     { label: "Days", value: countdown.days },
@@ -61,9 +61,9 @@ function ComingSoonCountdown() {
           </div>
         ))}
       </div>
-      {countdown.isLive && (
+      {countdown.isLive && liveMessage && (
         <p className="mt-3 text-sm font-black uppercase tracking-wide text-black/80">
-          Release live — check the store for BMTB Pill Press.
+          {liveMessage}
         </p>
       )}
     </div>
@@ -79,6 +79,54 @@ function Icon({ name, size = 22, className = "" }) {
 }
 
 const products = [
+  {
+    slug: "bmtb-pillpress",
+    name: "BMTB Pill Press",
+    desc: "Placeable pill press crafting, pill bottles, use effects, durability, and rotating street demand with trap phone integration.",
+    fullDesc: "Full pill economy for ESX Legacy, QBCore, and Qbox — place a press in the world, craft 10 pill types, fill and withdraw pill bottles, use pills with animations and overdose logic, repair worn presses, roll hot/cold street demand each restart, and tune perks in /pilladmin. Built-in BMTB NUI (no ox_lib required). Optional bmtb_trapphone integration for demand-based street payouts.",
+    price: "FREE",
+    tag: "FREE",
+    frameworks: ["ESX", "QBCore", "Qbox"],
+    downloads: 0,
+    version: "v1.0.0",
+    updatedOn: "2026-06-24",
+    imageUrl: "/bmtb-pillpress-thumb.png",
+    youtubeEmbed: "https://www.youtube.com/embed/qHyIuxg061o",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-pillpress",
+    gumroadUrl: "https://bmtbscripts.tebex.io/category/premium-scripts",
+    infoHeading: "BMTB Pill Press v1.0.0",
+    updateNotes: [
+      "Placeable pill press — ghost placement, ground snap, one press per player until restart.",
+      "Crafting — 10 pill types, configurable batch size, ingredient refund on fail/cancel.",
+      "Pill bottles — fill, open, deposit, and withdraw via slot metadata (contents).",
+      "Pill use — take animation, stacking window, overdose blackout, random rolls on perc/bars.",
+      "Press durability — wear per craft, fail chance when low, repair kit flow.",
+      "Street demand — hot/cold rotation each restart; BMTB UI panel via /pilldemand.",
+      "Pill admin — /pilladmin NUI for per-pill perk/visual tuning (ACE + framework admin fallback).",
+      "Built-in BMTB UI — notify, progress, craft menu, list menu, dialogs (no ox_lib).",
+      "Multi-framework — ESX Legacy, QBCore, Qbox auto-detect (ESX → QBCore → Qbox).",
+      "Multi-inventory — ox, qb/ps/lj, qs, codem, core, ak47, ESX default via auto bridge.",
+      "Optional bmtb_trapphone — demand multipliers apply to trap phone pill street payouts.",
+    ],
+    requirements: [
+      "ESX Legacy, QBCore, or Qbox",
+      "ox_inventory recommended (qb/ps/lj/qs/codem/core/ak47 supported)",
+      "ox_target or qb-target",
+      "Optional: bmtb_trapphone for street sell payouts",
+    ],
+    installSteps: [
+      "Drop bmtb_pillpress into resources/[scripts]/ and merge install/ items for your inventory stack.",
+      "Copy html/img PNG icons into ox_inventory/web/images/ (filename = item id).",
+      "Ensure framework, inventory, and target start before bmtb_pillpress in server.cfg.",
+      "Add add_ace group.admin bmtb.pillpress.admin allow and ensure bmtb_pillpress.",
+      "Edit config.lua for recipes, bottles, pill effects, demand, and durability — restart and test.",
+    ],
+    notes: [
+      "Ships with 27 item icons in html/img/ — craft UI loads from the resource first.",
+      "Per-pill /pilladmin saves write to data/pill_admin_overrides.json automatically.",
+      "Trap phone only: pills usable with demand panel; both resources needed for sell payouts.",
+    ],
+  },
   {
     slug: "bmtb-pods-2",
     name: "BMTB PODS 2.0",
@@ -564,6 +612,7 @@ const products = [
 
 // YouTube publish dates from @BMTBScripts/videos (newest uploads first).
 const YOUTUBE_PUBLISH_DATES = {
+  qHyIuxg061o: "2026-06-24", // BMTB Pill Press
   w6uihCRH7fM: "2026-06-21", // BMTB Strippers
   PURhGct3rM4: "2026-06-15", // BMTB Trap Phone
   tNFsXiSSogM: "2026-06-11", // BMTB GoFetch
@@ -629,7 +678,7 @@ const FRAMEWORK_TAG_STYLES = {
 };
 
 function isProductNew(product) {
-  return product?.slug === "bmtb-trapphone";
+  return product?.slug === "bmtb-pillpress";
 }
 
 function NewBadge({ size = "sm" }) {
@@ -906,8 +955,8 @@ function HomePage() {
             Professional FiveM scripts with clean UI, immersive gameplay, optimized code, and support for modern ESX/QBCore server stacks.
           </p>
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <Link to="/#popular-scripts" className="group inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-7 py-4 font-black text-black shadow-xl shadow-yellow-400/20 transition hover:scale-105">
-              Popular Scripts <Icon name="chevron" className="ml-2 transition group-hover:translate-x-1" size={20} />
+            <Link to="/scripts" className="group inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-7 py-4 font-black text-black shadow-xl shadow-yellow-400/20 transition hover:scale-105">
+              Browse Scripts <Icon name="chevron" className="ml-2 transition group-hover:translate-x-1" size={20} />
             </Link>
             <a href={DISCORD_URL} className="inline-flex items-center justify-center rounded-2xl border border-zinc-700 bg-zinc-900/70 px-7 py-4 font-bold text-white transition hover:border-yellow-400/60">
               <Icon name="message" className="mr-2" size={20} /> Join Discord
@@ -935,9 +984,14 @@ function HomePage() {
               </div>
               <div className="mt-6 rounded-2xl bg-yellow-400 p-5 text-black">
                 <p className="text-sm font-bold uppercase tracking-widest">Coming Soon</p>
-                <p className="mt-1 text-2xl font-black">BMTB Pill Press</p>
-                <p className="mt-2 text-sm font-semibold text-black/70">Pill press script releasing June 22, 2026 at 2:00 PM ET on Tebex and Gumroad.</p>
-                <ComingSoonCountdown />
+                <p className="mt-1 text-2xl font-black">BMTB Scamming</p>
+                <p className="mt-2 text-sm font-semibold text-black/70">
+                  Scamming script releasing July 6, 2026 at 2:00 PM ET on Tebex and Gumroad.
+                </p>
+                <ComingSoonCountdown
+                  targetDate={SCAMMING_RELEASE_AT}
+                  liveMessage="Release live — check the store for BMTB Scamming."
+                />
               </div>
             </div>
           </div>
