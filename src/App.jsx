@@ -7,7 +7,7 @@ const SUPPORT_EMAIL = "bankrollmadethisbeat@gmail.com";
 const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
-const SCAMMING_RELEASE_AT = new Date("2026-07-13T20:00:00Z");
+const SCAMMING_RELEASE_AT = new Date("2026-07-20T20:00:00Z");
 
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
@@ -143,6 +143,7 @@ const products = [
     youtubeEmbed: "https://www.youtube.com/embed/hW0s1sO1F9A?si=pa2eww6S7jxc42-O",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtbpods",
     gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/grnuy",
+    githubUrl: "https://github.com/bankrollmadethisbeat/bmtb-pods-2",
     infoHeading: "UPDATED - NEW LOOK",
     updateNotes: [
       "Reworked to a full modernized Figma-based interface for cleaner visuals and better UX.",
@@ -741,6 +742,13 @@ function getGumroadLink(product) {
   return product?.gumroadUrl || GUMROAD_STORE_URL;
 }
 
+function getGithubLink(product) {
+  if (!product?.githubUrl || product.tag !== "FREE") {
+    return null;
+  }
+  return product.githubUrl;
+}
+
 function getYoutubeVideoId(product) {
   const embed = product?.youtubeEmbed || "";
   const match = embed.match(/(?:embed\/|youtu\.be\/|v=)([A-Za-z0-9_-]{11})/);
@@ -986,7 +994,7 @@ function HomePage() {
                 <p className="text-sm font-bold uppercase tracking-widest">Coming Soon</p>
                 <p className="mt-1 text-2xl font-black">BMTB Scamming</p>
                 <p className="mt-2 text-sm font-semibold text-black/70">
-                  Scamming script releasing July 13, 2026 at 4:00 PM ET on Tebex and Gumroad.
+                  Scamming script releasing July 20, 2026 at 4:00 PM ET on Tebex and Gumroad.
                 </p>
                 <ComingSoonCountdown
                   targetDate={SCAMMING_RELEASE_AT}
@@ -1240,6 +1248,7 @@ function ScriptInfoPage() {
   const product = productBySlug[slug];
   const tebexLink = product ? getTebexLink(product) : TEBEX_FREE_CATEGORY_URL;
   const gumroadLink = product ? getGumroadLink(product) : GUMROAD_STORE_URL;
+  const githubLink = product ? getGithubLink(product) : null;
 
   if (!product) {
     return (
@@ -1261,13 +1270,18 @@ function ScriptInfoPage() {
         <Icon name="chevron" size={16} className="rotate-180" /> Back to all scripts
       </Link>
 
-      <div className="sticky bottom-3 z-20 mt-4 grid grid-cols-3 gap-2 rounded-2xl border border-zinc-700 bg-black/80 p-2 backdrop-blur md:hidden">
+      <div className={`sticky bottom-3 z-20 mt-4 grid gap-2 rounded-2xl border border-zinc-700 bg-black/80 p-2 backdrop-blur md:hidden ${githubLink ? "grid-cols-4" : "grid-cols-3"}`}>
         <a href={tebexLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl bg-yellow-400 px-3 py-2 text-xs font-black text-black">
           Download
         </a>
         <a href={gumroadLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl border border-zinc-600 bg-zinc-900 px-3 py-2 text-xs font-black text-white">
           Gumroad
         </a>
+        {githubLink && (
+          <a href={githubLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl border border-zinc-600 bg-zinc-900 px-3 py-2 text-xs font-black text-white">
+            GitHub
+          </a>
+        )}
         <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center rounded-xl border border-zinc-600 bg-zinc-900 px-3 py-2 text-xs font-black text-white">
           Discord
         </a>
@@ -1400,6 +1414,16 @@ function ScriptInfoPage() {
               >
                 Gumroad
               </a>
+              {githubLink && (
+                <a
+                  href={githubLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex justify-center rounded-xl border border-zinc-600 bg-zinc-900/70 px-5 py-3 text-sm font-black text-white transition hover:border-yellow-400/60"
+                >
+                  GitHub
+                </a>
+              )}
               <a
                 href={DISCORD_URL}
                 target="_blank"
@@ -1413,6 +1437,7 @@ function ScriptInfoPage() {
               <span className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1">Instant Delivery</span>
               <span className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1">Discord Support</span>
               <span className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1">{product.gumroadUrl ? "Gumroad" : "Gumroad Store"}</span>
+              {githubLink && <span className="rounded-full border border-zinc-700 bg-zinc-900/70 px-3 py-1">Open Source</span>}
             </div>
           </div>
 

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMTB Scripts — GitHub Upload Preview</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .banner {
+      background: #1f6feb;
+      color: #fff;
+      text-align: center;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .picker {
+      border-bottom: 1px solid #30363d;
+      padding: 16px 24px;
+      background: #010409;
+    }
+    .picker h2 {
+      font-size: 14px;
+      color: #8b949e;
+      margin-bottom: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .picker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+      max-width: 1280px;
+    }
+    .picker-card {
+      border: 2px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      background: #161b22;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .picker-card:hover { border-color: #58a6ff; transform: translateY(-1px); }
+    .picker-card.active { border-color: #f78166; box-shadow: 0 0 0 1px #f78166; }
+    .picker-card img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      background: #21262d;
+    }
+    .picker-card span {
+      display: block;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .picker-card .fw {
+      padding: 0 8px 6px;
+      font-size: 10px;
+      color: #8b949e;
+      font-weight: 500;
+    }
+    header {
+      border-bottom: 1px solid #30363d;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .gh-logo { font-size: 28px; color: #e6edf3; }
+    .repo-path { color: #e6edf3; font-size: 20px; }
+    .repo-path a { color: #58a6ff; text-decoration: none; }
+    main { max-width: 1280px; margin: 0 auto; padding: 24px; }
+    .repo-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    h1 { font-size: 20px; font-weight: 600; }
+    .badge {
+      display: inline-block;
+      padding: 0 7px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid #30363d;
+      border-radius: 2em;
+      color: #8b949e;
+    }
+    .badge.green { border-color: #238636; color: #3fb950; }
+    .badge.blue { border-color: #1f6feb; color: #58a6ff; }
+    .badge.gold { border-color: #9e6a03; color: #d29922; }
+    .desc { color: #8b949e; margin-bottom: 16px; }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid #30363d;
+      margin-bottom: 16px;
+    }
+    .tab {
+      padding: 8px 12px;
+      color: #8b949e;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+    .tab.active {
+      color: #e6edf3;
+      border-bottom-color: #f78166;
+      font-weight: 600;
+    }
+    .layout { display: grid; grid-template-columns: 1fr 296px; gap: 16px; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+    .readme {
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .readme-title {
+      padding: 8px 16px;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      font-weight: 600;
+    }
+    .readme-body { padding: 24px 32px; background: #0d1117; }
+    .readme-body h1 { font-size: 2em; border-bottom: 1px solid #21262d; padding-bottom: 8px; margin-bottom: 16px; }
+    .readme-body h2 { font-size: 1.25em; border-bottom: 1px solid #21262d; padding-bottom: 6px; margin: 24px 0 12px; }
+    .readme-body p, .readme-body li { margin-bottom: 8px; color: #e6edf3; }
+    .readme-body ul, .readme-body ol { padding-left: 24px; margin-bottom: 16px; }
+    .readme-body code { background: #161b22; padding: 2px 6px; border-radius: 4px; font-size: 85%; }
+    .readme-body a { color: #58a6ff; }
+    .promo-img {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .files {
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .file-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-top: 1px solid #21262d;
+    }
+    .file-row:first-child { border-top: none; background: #161b22; }
+    .file-row:hover { background: #161b22; }
+    .file-icon { color: #8b949e; width: 16px; text-align: center; }
+    .file-name { color: #58a6ff; }
+    .file-name.folder { color: #e6edf3; }
+    .sidebar section {
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .sidebar h3 { font-size: 14px; margin-bottom: 8px; }
+    .sidebar p { color: #8b949e; font-size: 12px; }
+    .sidebar-thumb {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      margin-bottom: 10px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 5px 16px;
+      margin-top: 8px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #e6edf3;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .btn.primary { background: #238636; border-color: #238636; }
+  </style>
+</head>
+<body>
+  <div class="banner">PREVIEW ONLY — FREE repos include source · PREMIUM repos are buy links only (Tebex / Gumroad)</div>
+
+  <section class="picker">
+    <h2>Pick a script from uploadedscripts</h2>
+    <div class="picker-grid" id="picker"></div>
+  </section>
+
+  <header>
+    <div class="gh-logo">&#9679;</div>
+    <div class="repo-path">
+      <a href="https://github.com/bankrollmadethisbeat" target="_blank" rel="noreferrer">bankrollmadethisbeat</a>
+      / <strong id="repo-name">bmtb-pillpress</strong>
+    </div>
+  </header>
+
+  <main>
+    <div class="repo-header">
+      <h1 id="repo-title">bmtb-pillpress</h1>
+      <span class="badge">Public</span>
+      <span class="badge blue" id="badge-fw">ESX</span>
+      <span class="badge green" id="badge-price">FREE</span>
+    </div>
+    <p class="desc" id="repo-desc"></p>
+
+    <div class="tabs">
+      <div class="tab active">Code</div>
+      <div class="tab">Issues</div>
+      <div class="tab">Pull requests</div>
+    </div>
+
+    <div class="layout">
+      <div>
+        <div class="files" id="file-tree"></div>
+
+        <div class="readme" style="margin-top: 16px;">
+          <div class="readme-title">README.md</div>
+          <div class="readme-body" id="readme-body"></div>
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <section>
+          <h3>About</h3>
+          <img class="sidebar-thumb" id="sidebar-img" src="/bmtb-pillpress-thumb.png" alt="" />
+          <p id="sidebar-about"></p>
+          <a class="btn primary" href="#">&#11015; Code</a>
+        </section>
+        <section>
+          <h3>Releases</h3>
+          <p>No releases published</p>
+          <a class="btn" href="#">Create a new release</a>
+        </section>
+        <section>
+          <h3>Website</h3>
+          <p>Store page after upload:</p>
+          <a class="btn" id="store-link" href="https://bmtbscripts.online/scripts/bmtb-pillpress">bmtbscripts.online</a>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const USER = "bankrollmadethisbeat";
+
+    const SCRIPTS = [
+      {
+        id: "bmtb-pillpress",
+        folder: "bmtb_pillpress",
+        name: "BMTB Pill Press",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-pillpress-thumb.png",
+        desc: "Placeable pill press crafting for FiveM — ESX build from uploadedscripts",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "CHANGELOG.md", "client/", "server/", "shared/", "html/", "install/", "data/"],
+        readme: {
+          title: "BMTB Pill Press",
+          blurb: "Placeable pill press crafting, pill bottles, pill use effects, press durability, and rotating street demand (trap phone integration).",
+          version: "1.0.0",
+          requirements: ["ESX Legacy, QBCore, or Qbox (auto-detect)", "ox_inventory recommended", "ox_target or qb-target"],
+          install: [
+            "Drop into <code>resources/[scripts]/bmtb_pillpress/</code>",
+            "Merge items from <code>install/</code> for your inventory",
+            "Copy icons to <code>ox_inventory/web/images/</code>",
+            "<code>ensure bmtb_pillpress</code> in server.cfg",
+          ],
+        },
+      },
+      {
+        id: "bmtb-gofetch",
+        folder: "bmtb_gofetch",
+        name: "BMTB GoFetch",
+        fw: "QBCore",
+        price: "PREMIUM",
+        tebex: "https://bmtbscripts.tebex.io/package/bmtb-gofetch",
+        gumroad: "https://bankrollmadethisbeat.gumroad.com/l/bvejnk",
+        image: "/bmtb-gofetch-thumb.png",
+        desc: "PREMIUM — GitHub repo has buy links only, no source files",
+        files: ["README.md", "LICENSE"],
+        readme: {
+          title: "BMTB GoFetch",
+          blurb: "Browse live shop catalogs, place orders, pay cash or bank, and receive items through an NPC burrito van courier.",
+          version: "1.0.0",
+          requirements: ["ox_lib", "oxmysql", "QBCore / Qbox", "ox_inventory or qb-inventory"],
+          install: [
+            "Drop into <code>resources/[bmtb]/bmtb_gofetch/</code>",
+            "Merge items from <code>install-me/</code>",
+            "<code>ensure bmtb_gofetch</code> in server.cfg",
+          ],
+        },
+      },
+      {
+        id: "bmtb-trapphone",
+        folder: "bmtb_trapphone",
+        name: "BMTB Trap Phone",
+        fw: "ESX",
+        price: "PREMIUM",
+        tebex: "https://bmtbscripts.tebex.io/package/bmtb-trapphone",
+        gumroad: "https://bankrollmadethisbeat.gumroad.com/l/acmig",
+        image: "/bmtb-trapphone-thumb.png",
+        desc: "PREMIUM — GitHub repo has buy links only, no source files",
+        files: ["README.md", "LICENSE"],
+        readme: {
+          title: "BMTB Trap Phone",
+          blurb: "Trap phone NUI with calls, messages, deliveries, Trapperz.net demand index, reputation tiers, and police heat.",
+          version: "1.0.0",
+          requirements: ["ESX Legacy", "ox_lib", "oxmysql", "ox_inventory"],
+          install: [
+            "Drop into <code>resources/[scripts]/bmtb_trapphone/</code>",
+            "Import <code>bmtb_trapphone.sql</code> if needed",
+            "<code>ensure bmtb_trapphone</code> in server.cfg",
+          ],
+        },
+      },
+      {
+        id: "bmtb-strippers",
+        folder: "bmtb_strippers",
+        name: "BMTB Strippers",
+        fw: "ESX",
+        price: "PREMIUM",
+        tebex: "https://bmtbscripts.tebex.io/category/premium-scripts",
+        gumroad: "https://bankrollmadethisbeat.gumroad.com/l/acmig",
+        image: "/bmtb-strippers-thumb.png",
+        desc: "PREMIUM — GitHub repo has buy links only, no source files",
+        files: ["README.md", "LICENSE"],
+        readme: {
+          title: "BMTB Strippers",
+          blurb: "Vanilla Unicorn-style club with dancer shifts, pole dancing, VIP rooms, NPC customers, and owner revenue.",
+          version: "1.0.0",
+          requirements: ["ESX Legacy or QBCore", "ox_inventory", "ox_lib", "oxmysql", "ox_target"],
+          install: [
+            "Add resource and install matching ESX or QBCore version",
+            "Import included SQL for your framework",
+            "<code>ensure bmtb_strippers</code> in server.cfg",
+          ],
+        },
+      },
+      {
+        id: "bmtb-recycle-job",
+        folder: "bmtb_recyclingjob",
+        name: "BMTB Recycle Job",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-recycle-job-thumb.png",
+        desc: "Beginner-friendly recycling side hustle with foreman NPC, sorting, and cash payouts",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/"],
+        readme: {
+          title: "BMTB Recycle Job",
+          blurb: "Clock in at the yard, grab boxes, sort recyclable material, and sell for cash.",
+          version: "1.0.0",
+          requirements: ["ox_lib", "ESX Legacy / QBCore / Qbox", "ox_inventory recommended"],
+          install: [
+            "Drop resource into your server",
+            "Add <code>recycle_material</code> to inventory items",
+            "<code>ensure bmtb_recyclingjob</code> in server.cfg",
+          ],
+        },
+      },
+      {
+        id: "bmtb-pods-2",
+        folder: "bmtb_pods",
+        name: "BMTB Pods 2.0",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-pods-2-thumb.png",
+        desc: "Advanced FiveM props/pods system with modern Figma-based interface",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/", "html/"],
+        readme: {
+          title: "BMTB Pods 2.0",
+          blurb: "Configurable prop and pod placements with dynamic theme colors and live volume controls.",
+          version: "2.0",
+          requirements: ["ox_lib", "xsound"],
+          install: [
+            "Drop into <code>resources/[scripts]/bmtb_pods/</code>",
+            "Ensure <code>ox_lib</code> and <code>xsound</code> first",
+            "Add <code>airpods</code> item to your inventory",
+          ],
+        },
+      },
+      {
+        id: "bmtb-chopshop",
+        folder: "bmtb_chopshop",
+        name: "BMTB Chopshop",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-chopshop-thumb.png",
+        desc: "Vehicle chopshop gameplay with immersive roleplay mechanics",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/"],
+        readme: {
+          title: "BMTB Chopshop",
+          blurb: "Vehicle dismantling and chopshop progression flow built for immersive roleplay.",
+          version: "1.0",
+          requirements: ["ESX or QBCore", "ox_lib"],
+          install: [
+            "Drop <code>bmtb_chopshop</code> into resources",
+            "<code>ensure bmtb_chopshop</code> in server.cfg",
+          ],
+        },
+      },
+      {
+        id: "bmtb-cooking",
+        folder: "bmtb_cooking",
+        name: "BMTB Cooking",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-cooking-thumb.png",
+        desc: "Interactive cooking/crafting gameplay system for roleplay servers",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/"],
+        readme: {
+          title: "BMTB Cooking",
+          blurb: "Roleplay-focused cooking and crafting system with configurable recipes.",
+          version: "1.0",
+          requirements: ["ESX or QBCore"],
+          install: ["Drop into resources", "<code>ensure bmtb_cooking</code> in server.cfg"],
+        },
+      },
+      {
+        id: "bmtb-moneywash",
+        folder: "bmtb_moneywash",
+        name: "BMTB Moneywash",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-moneywash-thumb.png",
+        desc: "Dirty money washing system with ESX, QBCore, and Qbox support",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/", "install/"],
+        readme: {
+          title: "BMTB Moneywash",
+          blurb: "Money wash script with progress UX and multi-framework support.",
+          version: "1.0",
+          requirements: ["ESX / QBCore / Qbox"],
+          install: ["Drop into resources", "<code>ensure bmtb_moneywash</code> in server.cfg"],
+        },
+      },
+      {
+        id: "bmtb-car-wipe",
+        folder: "bmtb_carwipe",
+        name: "BMTB Car Wipe",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-car-wipe-thumb.png",
+        desc: "Vehicle wipe/cleanup utility script for FiveM administrators",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/"],
+        readme: {
+          title: "BMTB Car Wipe",
+          blurb: "Admin utility to clean up unused vehicles and keep performance stable.",
+          version: "1.0",
+          requirements: ["ESX or QBCore"],
+          install: ["Drop into resources", "<code>ensure bmtb_carwipe</code> in server.cfg"],
+        },
+      },
+      {
+        id: "bmtb-givecar",
+        folder: "bmtb_givecar",
+        name: "BMTB Givecar",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-givecar-thumb.png",
+        desc: "Vehicle giveaway and ownership transfer utility script",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/"],
+        readme: {
+          title: "BMTB Givecar",
+          blurb: "Simple vehicle ownership assignment utility for staff workflows and giveaways.",
+          version: "1.0",
+          requirements: ["ESX"],
+          install: ["Drop into resources", "<code>ensure bmtb_givecar</code> in server.cfg"],
+        },
+      },
+      {
+        id: "bmtb-itemslist",
+        folder: "bmtb_itemslist",
+        name: "BMTB ITEMSLIST",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-itemslist-thumb.png",
+        desc: "Clean item list viewer for ESX/QBCore inventory systems",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/"],
+        readme: {
+          title: "BMTB ITEMSLIST",
+          blurb: "Item browser and quick lookup for inventory systems.",
+          version: "1.0",
+          requirements: ["ESX or QBCore"],
+          install: ["Drop into resources", "<code>ensure bmtb_itemslist</code> in server.cfg"],
+        },
+      },
+      {
+        id: "bmtb-nocrosshair",
+        folder: "bmtb_nocrosshair",
+        name: "BMTB NoCrosshair",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-nocrosshair-thumb.png",
+        desc: "Lightweight no-crosshair immersion script for realistic combat",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "client/"],
+        readme: {
+          title: "BMTB NoCrosshair",
+          blurb: "Removes crosshair UI for improved realism and roleplay-focused combat.",
+          version: "1.0",
+          requirements: ["Any framework"],
+          install: ["Drop into resources", "<code>ensure bmtb_nocrosshair</code> in server.cfg"],
+        },
+      },
+      {
+        id: "bmtb-weapon-repair",
+        folder: "bmtb_weaponrepair",
+        name: "BMTB Weapon Repair",
+        fw: "ESX",
+        price: "PREMIUM",
+        image: "/bmtb-weapon-repair-thumb.png",
+        desc: "Weapon repair bench system with immersive crafting and repair flow",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/", "sql/"],
+        readme: {
+          title: "BMTB Weapon Repair",
+          blurb: "Bench-based repair mechanics with configurable costs and immersive interactions.",
+          version: "1.2",
+          requirements: ["ox_lib", "oxmysql", "ESX or QBCore", "ox_inventory"],
+          install: [
+            "Place <code>bmtb_weaponrepair</code> in resources",
+            "Import included SQL files",
+            "<code>ensure bmtb_weaponrepair</code> in server.cfg",
+          ],
+        },
+      },
+      {
+        id: "bmtb-wigs",
+        folder: "bmtb_wigs",
+        name: "BMTB Wigs",
+        fw: "QBCore",
+        price: "PREMIUM",
+        image: "https://dunb17ur4ymx4.cloudfront.net/packages/images/581b5174063646063e13bb2d9d6bdf1416188bda.png",
+        desc: "Wig/hair inventory system with clothing integration and UI support",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/", "install-me/"],
+        readme: {
+          title: "BMTB Wigs",
+          blurb: "Inventory-backed wig system with appearance handling and framework integration.",
+          version: "1.0",
+          requirements: ["QBCore or ESX", "ox_inventory or compatible inventory"],
+          install: [
+            "Drop into resources",
+            "Merge items from <code>install-me/</code>",
+            "<code>ensure bmtb_wigs</code> in server.cfg",
+          ],
+        },
+      },
+      {
+        id: "bmtb-lean",
+        folder: "bmtb_lean",
+        name: "BMTB Lean",
+        fw: "QBCore",
+        price: "PREMIUM",
+        image: "https://dunb17ur4ymx4.cloudfront.net/packages/images/89df115a0ecfdc8b20fcb81c3a69b58c9023bbc8.png",
+        desc: "Full lean workflow — pour, mix, sip FX, and in-world cup carry",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/", "install/"],
+        readme: {
+          title: "BMTB Lean",
+          blurb: "Pour lean into baby bottles, mix variants, drink with sip FX, and carry your cup in-world.",
+          version: "1.0.0",
+          requirements: ["QBCore or ESX", "ox_lib", "oxmysql", "ox_inventory"],
+          install: [
+            "Install matching ESX or QBCore build",
+            "Merge items from <code>install/</code>",
+            "<code>ensure bmtb_lean</code> in server.cfg",
+          ],
+        },
+      },
+      {
+        id: "bmtb-tuning",
+        folder: "bmtb_tuning",
+        name: "BMTB Tuning",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-tuning-thumb.png",
+        desc: "Audio/tuning customization system for immersive vehicle upgrades",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/"],
+        readme: {
+          title: "BMTB Tuning",
+          blurb: "Customization-focused tuning setup for vehicle identity and car culture.",
+          version: "1.0",
+          requirements: ["ESX or QBCore"],
+          install: ["Drop into resources", "<code>ensure bmtb_tuning</code> in server.cfg"],
+        },
+      },
+      {
+        id: "bmtb-loading-screen",
+        folder: "bmtb_loading_screen",
+        name: "BMTB Loading Screen",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-loading-screen-thumb.png",
+        desc: "Premium animated loading screen with customizable branding support",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "html/", "assets/"],
+        readme: {
+          title: "BMTB Loading Screen",
+          blurb: "Animated loading experience with clean transitions and customizable branding.",
+          version: "1.0",
+          requirements: ["Any framework"],
+          install: ["Drop into resources", "Set as loadscreen in server.cfg"],
+        },
+      },
+      {
+        id: "watermark-server-logo-script",
+        folder: "bmtb_watermark",
+        name: "Watermark Server Logo",
+        fw: "ESX",
+        price: "FREE",
+        image: "/bmtb-watermark-thumb.png",
+        desc: "Simple server logo watermark display script for FiveM servers",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "client/", "html/"],
+        readme: {
+          title: "Watermark Server Logo Script",
+          blurb: "Lightweight overlay that displays your server logo while players are in-game.",
+          version: "1.0",
+          requirements: ["Any framework"],
+          install: ["Drop into resources", "<code>ensure</code> in server.cfg"],
+        },
+      },
+      {
+        id: "bmtb-chains-as-items",
+        folder: "bmtb_chains",
+        name: "BMTB Chains As Items",
+        fw: "ESX",
+        price: "PREMIUM",
+        image: "/bmtb-chains-thumb.png",
+        desc: "Wearable chain items with inventory/shop integration for ESX/QBCore",
+        files: ["README.md", "LICENSE", "fxmanifest.lua", "config.lua", "client/", "server/"],
+        readme: {
+          title: "BMTB Chains As Items",
+          blurb: "Wearable chain system with inventory and shop flow.",
+          version: "1.0",
+          requirements: ["ESX or QBCore"],
+          install: ["Drop into resources", "<code>ensure</code> in server.cfg"],
+        },
+      },
+    ];
+
+    const picker = document.getElementById("picker");
+    let activeId = new URLSearchParams(location.search).get("script") || "bmtb-pillpress";
+
+    function renderPicker() {
+      picker.innerHTML = SCRIPTS.map((s) => `
+        <div class="picker-card${s.id === activeId ? " active" : ""}" data-id="${s.id}" title="${s.name}">
+          <img src="${s.image}" alt="${s.name}" loading="lazy" />
+          <span>${s.name}</span>
+          <div class="fw">${s.fw} · ${s.price}</div>
+        </div>
+      `).join("");
+
+      picker.querySelectorAll(".picker-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          activeId = card.dataset.id;
+          history.replaceState(null, "", `?script=${activeId}`);
+          renderPicker();
+          renderRepo(SCRIPTS.find((s) => s.id === activeId));
+        });
+      });
+    }
+
+    function renderRepo(script) {
+      if (!script) return;
+
+      document.title = `${USER}/${script.id} · GitHub (Preview)`;
+      document.getElementById("repo-name").textContent = script.id;
+      document.getElementById("repo-title").textContent = script.id;
+      document.getElementById("repo-desc").textContent = script.desc;
+      document.getElementById("badge-fw").textContent = script.fw;
+      document.getElementById("badge-price").textContent = script.price;
+      document.getElementById("badge-price").className = `badge ${script.price === "FREE" ? "green" : "gold"}`;
+
+      document.getElementById("sidebar-img").src = script.image;
+      document.getElementById("sidebar-img").alt = script.name;
+      document.getElementById("sidebar-about").textContent =
+        script.price === "PREMIUM"
+          ? "PREMIUM script — this GitHub repo only has purchase links. Source is delivered via Tebex/Gumroad after buy."
+          : `${script.price} FiveM script by BMTB Scripts. Full source from uploadedscripts.`;
+      document.getElementById("store-link").href = `https://bmtbscripts.online/scripts/${script.id}`;
+
+      const isPremium = script.price === "PREMIUM";
+      const displayFiles = isPremium ? ["README.md", "LICENSE"] : script.files;
+
+      const fileTree = document.getElementById("file-tree");
+      fileTree.innerHTML = `
+        ${isPremium ? "" : `<div class="file-row">
+          <span class="file-icon">&#128193;</span>
+          <span class="file-name folder">${script.folder}</span>
+        </div>`}
+        ${displayFiles.map((f) => {
+          const isFolder = f.endsWith("/");
+          return `<div class="file-row">
+            <span class="file-icon">${isFolder ? "&#128193;" : "&#128196;"}</span>
+            <span class="file-name${isFolder ? " folder" : ""}">${f}</span>
+          </div>`;
+        }).join("")}
+      `;
+
+      const r = script.readme;
+      const tebex = script.tebex || `https://bmtbscripts.online/scripts/${script.id}`;
+      const gumroad = script.gumroad || "https://bankrollmadethisbeat.gumroad.com/";
+
+      document.getElementById("readme-body").innerHTML = isPremium ? `
+        <img class="promo-img" src="${script.image}" alt="${script.name} promo" />
+        <h1>${r.title}</h1>
+        <p><strong>PREMIUM</strong> FiveM script by <strong>BMTB Scripts</strong> (${script.fw}).</p>
+        <blockquote style="border-left: 3px solid #d29922; padding-left: 12px; color: #8b949e; margin: 16px 0;">
+          Source files are <strong>not</strong> included in this repository.<br />
+          Purchase to download the full resource.
+        </blockquote>
+        <h2>Purchase</h2>
+        <table style="width:100%; border-collapse: collapse; margin-bottom: 16px;">
+          <tr><td style="padding:8px; border:1px solid #30363d;"><strong>Tebex</strong></td><td style="padding:8px; border:1px solid #30363d;"><a href="${tebex}">${tebex}</a></td></tr>
+          <tr><td style="padding:8px; border:1px solid #30363d;"><strong>Gumroad</strong></td><td style="padding:8px; border:1px solid #30363d;"><a href="${gumroad}">${gumroad}</a></td></tr>
+        </table>
+        <p><a href="https://bmtbscripts.online/scripts/${script.id}">bmtbscripts.online</a> · <a href="https://discord.gg/5rRMZ2R9EP">Discord</a></p>
+      ` : `
+        <img class="promo-img" src="${script.image}" alt="${script.name} promo" />
+        <h1>${r.title}</h1>
+        <p>${r.blurb}</p>
+        <p><strong>Version:</strong> ${r.version} &nbsp;·&nbsp; <strong>Author:</strong> BMTB</p>
+        <h2>Requirements</h2>
+        <ul>${r.requirements.map((req) => `<li>${req}</li>`).join("")}</ul>
+        <h2>Installation</h2>
+        <ol>${r.install.map((step) => `<li>${step}</li>`).join("")}</ol>
+        <h2>License</h2>
+        <p>Free for server use. No resale, redistribution, or leaking.</p>
+        <p><a href="https://bmtbscripts.online/scripts/${script.id}">bmtbscripts.online</a> · <a href="https://discord.gg/5rRMZ2R9EP">Discord</a></p>
+      `;
+    }
+
+    renderPicker();
+    renderRepo(SCRIPTS.find((s) => s.id === activeId) || SCRIPTS[0]);
+  </script>
+</body>
+</html>
