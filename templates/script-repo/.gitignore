@@ -1,0 +1,9 @@
+.env
+.env.*
+*.local
+config.private.lua
+secrets.lua
+server.cfg.local
+.DS_Store
+Thumbs.db
+desktop.ini

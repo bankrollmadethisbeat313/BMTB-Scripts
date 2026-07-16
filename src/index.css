@@ -2,8 +2,225 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bmtb-bg: #080808;
+  --bmtb-card: #0f0f0f;
+  --bmtb-elevated: #141414;
+  --bmtb-line: rgba(255, 255, 255, 0.08);
+  --bmtb-text: #ffffff;
+  --bmtb-muted: #a0a0a0;
+  --bmtb-accent: #facc15;
+  --bmtb-spot-x: 50%;
+  --bmtb-spot-y: 35%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  background: #080808;
-  font-family: Inter, sans-serif;
+  min-height: 100vh;
+  color: var(--bmtb-text);
+  background-color: var(--bmtb-bg);
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+
+/* Ambient animated background + mouse spotlight */
+.bmtb-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bmtb-ambient__base {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -15%, rgba(250, 204, 21, 0.2), transparent 58%),
+    radial-gradient(ellipse 50% 40% at 100% 10%, rgba(255, 255, 255, 0.05), transparent 50%),
+    #080808;
+}
+
+.bmtb-ambient__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  will-change: transform;
+}
+
+.bmtb-ambient__orb--a {
+  width: min(58vw, 620px);
+  height: min(58vw, 620px);
+  top: -10%;
+  left: 14%;
+  background: rgba(250, 204, 21, 0.28);
+  opacity: 0.75;
+  animation: bmtb-orb-drift-a 22s ease-in-out infinite alternate;
+}
+
+.bmtb-ambient__orb--b {
+  width: min(46vw, 480px);
+  height: min(46vw, 480px);
+  right: -8%;
+  top: 24%;
+  background: rgba(250, 204, 21, 0.18);
+  opacity: 0.65;
+  animation: bmtb-orb-drift-b 28s ease-in-out infinite alternate;
+}
+
+.bmtb-ambient__orb--c {
+  width: min(52vw, 540px);
+  height: min(52vw, 540px);
+  left: -12%;
+  bottom: -14%;
+  background: rgba(250, 204, 21, 0.12);
+  opacity: 0.55;
+  animation: bmtb-orb-drift-c 26s ease-in-out infinite alternate;
+}
+
+.bmtb-ambient__spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    640px circle at var(--bmtb-spot-x) var(--bmtb-spot-y),
+    rgba(250, 204, 21, 0.22),
+    rgba(250, 204, 21, 0.08) 30%,
+    transparent 62%
+  );
+}
+
+.bmtb-ambient__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(250, 204, 21, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250, 204, 21, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 75% at 50% 42%, #000 15%, transparent 78%);
+  animation: bmtb-grid-shift 40s linear infinite;
+}
+
+.bmtb-ambient__noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.bmtb-ambient__vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 88% 78% at 50% 45%, transparent 42%, rgba(0, 0, 0, 0.42) 100%),
+    linear-gradient(180deg, rgba(8, 8, 8, 0.1) 0%, transparent 28%, transparent 72%, rgba(8, 8, 8, 0.5) 100%);
+}
+
+.bmtb-ambient__scan {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(250, 204, 21, 0.12) 2px,
+    rgba(250, 204, 21, 0.12) 3px
+  );
+  mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
+  animation: bmtb-scan-drift 12s linear infinite;
+}
+
+@keyframes bmtb-orb-drift-a {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(8%, 12%, 0) scale(1.08); }
+}
+
+@keyframes bmtb-orb-drift-b {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-10%, 8%, 0) scale(1.12); }
+}
+
+@keyframes bmtb-orb-drift-c {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(12%, -6%, 0) scale(1.05); }
+}
+
+@keyframes bmtb-grid-shift {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 64px 64px, 64px 64px; }
+}
+
+@keyframes bmtb-scan-drift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(24px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bmtb-ambient__orb,
+  .bmtb-ambient__grid,
+  .bmtb-ambient__scan {
+    animation: none !important;
+  }
+
+  .bmtb-ambient__spotlight {
+    opacity: 0.55;
+  }
+}
+
+@media (pointer: coarse) {
+  .bmtb-ambient__spotlight {
+    background: radial-gradient(
+      420px circle at 50% 30%,
+      rgba(250, 204, 21, 0.1),
+      transparent 55%
+    );
+  }
+}
+
+::selection {
+  background: rgba(250, 204, 21, 0.35);
+  color: #000;
+}
+
+@layer components {
+  .bmtb-glass {
+    @apply border border-bmtb-line bg-bmtb-card/70 backdrop-blur-xl;
+  }
+
+  .bmtb-panel {
+    @apply rounded-2xl border border-bmtb-line bg-bmtb-card/75 shadow-soft backdrop-blur-md;
+  }
+
+  .bmtb-btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl border border-bmtb-accent bg-bmtb-accent px-6 py-3 text-sm font-semibold text-black transition-all duration-300 ease-luxury hover:scale-[1.02] hover:bg-yellow-300 hover:shadow-accent active:scale-[0.98];
+  }
+
+  .bmtb-btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border border-bmtb-line bg-white/[0.03] px-6 py-3 text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 ease-luxury hover:scale-[1.02] hover:border-bmtb-accent/50 hover:bg-white/[0.06] active:scale-[0.98];
+  }
+
+  .bmtb-input {
+    @apply w-full rounded-xl border border-bmtb-line bg-bmtb-elevated/80 px-4 py-3 text-sm text-white outline-none transition duration-300 ease-luxury placeholder:text-bmtb-muted/70 focus:border-bmtb-accent/50 focus:shadow-accent;
+  }
+
+  .bmtb-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.28em] text-bmtb-accent;
+  }
+
+  .bmtb-divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent;
+  }
 }
