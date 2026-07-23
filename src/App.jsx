@@ -8,7 +8,7 @@ const SUPPORT_EMAIL = "bankrollmadethisbeat@gmail.com";
 const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
-const SCAMMING_RELEASE_AT = new Date("2026-07-20T18:00:00Z"); // July 20, 2026 2:00 PM ET
+const SCAMMING_RELEASE_AT = new Date("2026-07-24T16:00:00Z"); // July 24, 2026 12:00 PM ET
 
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
@@ -1456,7 +1456,7 @@ function HomePage() {
               <p className="bmtb-eyebrow">Coming Soon</p>
               <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Scamming</h2>
               <p className="mt-2 max-w-xl text-sm text-bmtb-muted md:text-base">
-                Scamming script releasing July 20, 2026 at 2:00 PM ET on Tebex and Gumroad.
+                Scamming script dropping July 24, 2026 at 12:00 PM ET on Tebex and Gumroad.
               </p>
             </div>
             <div className="w-full max-w-md">
