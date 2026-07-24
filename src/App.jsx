@@ -114,15 +114,15 @@ const products = [
     slug: "bmtb-scamming",
     name: "BMTB Scamming",
     desc: "Carding and ATM scamming RP — buy dumps, cash out, heat/burn risk, police dispatch, ranks, and a full bmtb os laptop workflow.",
-    fullDesc: "BMTB Scamming v1.0 brings a complete criminal finance loop to ESX and QBCore — buy dumps from vendors, encode cards, hit ATMs with burn-risk mechanics, manage heat, climb ranks, and run operations from a custom bmtb os laptop NUI. Includes police dispatch triggers, decline/burn feedback, and configurable payout/risk tuning for immersive scam RP.",
+    fullDesc: "BMTB Scamming v1.0 brings a complete criminal finance loop to ESX Legacy — buy dumps from vendors, encode cards, hit ATMs with burn-risk mechanics, manage heat, climb ranks, and run operations from a custom bmtb os laptop NUI. Includes police dispatch triggers, decline/burn feedback, and configurable payout/risk tuning for immersive scam RP. QBCore support is not available yet.",
     price: "FREE",
     tag: "FREE",
-    frameworks: ["ESX", "QBCore"],
+    frameworks: ["ESX"],
     downloads: 0,
     version: "v1.0",
     updatedOn: "2026-07-24",
     imageUrl: "/bmtb-scamming-thumb.png",
-    youtubeEmbed: "",
+    youtubeEmbed: "https://www.youtube.com/embed/7zQVfRVvzWY",
     buyUrl: "https://bmtbscripts.tebex.io/package/7577885",
     tebexUrl: "https://bmtbscripts.tebex.io/package/7577885",
     infoHeading: "BMTB Scamming v1.0",
@@ -132,24 +132,25 @@ const products = [
       "ATM cash-out with decline, burn risk, and police dispatch events.",
       "Heat + rank progression tied to scam activity.",
       "bmtb os laptop NUI for dump catalog, status, and operations.",
-      "Multi-framework bridges for ESX Legacy and QBCore.",
+      "ESX Legacy build — QBCore version coming later.",
       "Tebex-only release — no Gumroad listing for this script.",
     ],
     requirements: [
-      "ESX Legacy or QBCore",
+      "ESX Legacy (es_extended)",
       "ox_lib recommended",
       "ox_inventory or compatible inventory",
       "oxmysql recommended",
     ],
     installSteps: [
-      "Drop bmtb_scamming into resources/[scripts]/ or [bmtb]/.",
+      "Install the ESX Legacy build of bmtb_scamming into resources/[scripts]/ or [bmtb]/.",
       "Merge install items/images into your inventory if provided.",
-      "Ensure framework → ox_lib → inventory → bmtb_scamming.",
+      "Ensure es_extended → ox_lib → inventory → bmtb_scamming.",
       "ensure bmtb_scamming — edit config.lua for payouts, heat, dispatch, and ranks.",
       "Restart and test dump buy, encode, and ATM cash-out flow.",
     ],
     notes: [
       "Tebex-only — download from the Tebex package page.",
+      "ESX Legacy only on v1.0 — QBCore is not supported yet.",
       "Tune burn risk / police dispatch in config before going live.",
     ],
   },
@@ -975,6 +976,7 @@ const products = [
 
 // YouTube publish dates from @BMTBScripts/videos (newest uploads first).
 const YOUTUBE_PUBLISH_DATES = {
+  "7zQVfRVvzWY": "2026-07-24", // BMTB Scamming
   qHyIuxg061o: "2026-06-24", // BMTB Pill Press
   w6uihCRH7fM: "2026-06-21", // BMTB Strippers
   PURhGct3rM4: "2026-06-15", // BMTB Trap Phone
