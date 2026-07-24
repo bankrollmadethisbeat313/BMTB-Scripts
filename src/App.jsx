@@ -7,6 +7,7 @@ const DISCORD_URL = "https://discord.gg/5rRMZ2R9EP";
 const SUPPORT_EMAIL = "bankrollmadethisbeat@gmail.com";
 const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
+const TEBEX_CUSTOM_SCRIPT_PACKAGE_URL = "https://bmtbscripts.tebex.io/category/CustomScriptPackage";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
 const REAL_MONEY_RELEASE_AT = new Date("2026-08-01T18:00:00Z"); // August 1, 2026 2:00 PM ET
 
@@ -1343,7 +1344,10 @@ function SiteHeader() {
           >
             <Icon name="search" size={14} /> Search
           </Link>
-          <a href={DISCORD_URL} className="bmtb-btn-primary px-4 py-2 text-xs sm:text-sm">
+          <a href={TEBEX_STORE_URL} target="_blank" rel="noreferrer" className="hidden items-center gap-2 rounded-xl border border-bmtb-line bg-white/[0.03] px-3 py-2 text-xs text-bmtb-muted transition duration-300 hover:border-white/20 hover:text-white sm:inline-flex">
+            Tebex
+          </a>
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="bmtb-btn-primary px-4 py-2 text-xs sm:text-sm">
             Discord
           </a>
           <button
@@ -1376,6 +1380,14 @@ function SiteHeader() {
               </li>
             ))}
           </ul>
+          <div className="mt-4 grid grid-cols-2 gap-2 border-t border-bmtb-line pt-4">
+            <a href={TEBEX_STORE_URL} target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-3 py-2.5 text-center text-xs">
+              Tebex
+            </a>
+            <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="bmtb-btn-primary px-3 py-2.5 text-center text-xs">
+              Discord
+            </a>
+          </div>
         </nav>
       )}
     </header>
@@ -1476,10 +1488,13 @@ function HomePage() {
                 </span>
               ))}
             </div>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link to="/scripts" className="bmtb-btn-primary px-8 py-4 text-base">
                 Browse Scripts <Icon name="chevron" className="ml-2" size={18} />
               </Link>
+              <a href={TEBEX_CUSTOM_SCRIPT_PACKAGE_URL} target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-8 py-4 text-base">
+                Custom Script Package
+              </a>
               <a href={DISCORD_URL} className="bmtb-btn-secondary px-8 py-4 text-base">
                 Join Discord
               </a>
@@ -1489,6 +1504,52 @@ function HomePage() {
       </section>
 
       <div className="bmtb-divider mx-auto max-w-7xl" />
+
+      <section className="mx-auto max-w-7xl px-6 pt-14">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="bmtb-glass overflow-hidden rounded-2xl border border-bmtb-accent/20"
+        >
+          <div className="grid md:grid-cols-[1.05fr_0.95fr]">
+            <div className="p-6 md:p-8">
+              <p className="bmtb-eyebrow">Custom Development</p>
+              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">Custom Script Package</h2>
+              <p className="mt-3 text-sm leading-7 text-bmtb-muted md:text-base">
+                Open a ticket and let&apos;s bring your idea to life. Custom script packages built for ESX Legacy, QBCore, or Standalone — ~3 business day turnaround on most projects.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a
+                  href={TEBEX_CUSTOM_SCRIPT_PACKAGE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bmtb-btn-primary px-6 py-3"
+                >
+                  Tebex <Icon name="chevron" className="ml-2" size={18} />
+                </a>
+                <a
+                  href={DISCORD_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bmtb-btn-secondary px-6 py-3"
+                >
+                  Discord
+                </a>
+              </div>
+            </div>
+            <div className="border-t border-bmtb-line md:border-l md:border-t-0">
+              <img
+                src="/bmtb-custom-script-package.png"
+                alt="Custom Script Ticket — what to include in your order"
+                className="h-full min-h-[260px] w-full object-cover object-center"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </motion.div>
+      </section>
 
       <section className="mx-auto max-w-7xl px-6 py-14">
         <motion.div
@@ -2163,7 +2224,8 @@ function SiteFooter() {
             <Link to="/" className="block text-bmtb-muted transition hover:text-white">Home</Link>
             <Link to="/scripts" className="block text-bmtb-muted transition hover:text-white">Scripts</Link>
             <Link to="/docs" className="block text-bmtb-muted transition hover:text-white">Documentation</Link>
-            <a href={DISCORD_URL} className="block text-bmtb-muted transition hover:text-white">Discord</a>
+            <a href={TEBEX_STORE_URL} target="_blank" rel="noreferrer" className="block text-bmtb-muted transition hover:text-white">Tebex</a>
+            <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="block text-bmtb-muted transition hover:text-white">Discord</a>
           </div>
           <div className="space-y-3">
             <p className="text-xs font-semibold uppercase tracking-wider text-white/70">Legal</p>
