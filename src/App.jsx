@@ -8,7 +8,7 @@ const SUPPORT_EMAIL = "bankrollmadethisbeat@gmail.com";
 const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
-const SCAMMING_RELEASE_AT = new Date("2026-07-24T16:00:00Z"); // July 24, 2026 12:00 PM ET
+const REAL_MONEY_RELEASE_AT = new Date("2026-08-01T18:00:00Z"); // August 1, 2026 2:00 PM ET
 
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
@@ -74,9 +74,7 @@ function ComingSoonCountdown({ targetDate, liveMessage }) {
         ))}
       </div>
       {countdown.isLive && liveMessage && (
-        <p className="mt-3 text-sm font-semibold text-bmtb-accent">
-          {liveMessage}
-        </p>
+        <p className="mt-3 text-sm font-semibold text-bmtb-accent">{liveMessage}</p>
       )}
     </div>
   );
@@ -112,6 +110,49 @@ function AnimatedCount({ value, duration = 1400 }) {
 }
 
 const products = [
+  {
+    slug: "bmtb-scamming",
+    name: "BMTB Scamming",
+    desc: "Carding and ATM scamming RP — buy dumps, cash out, heat/burn risk, police dispatch, ranks, and a full bmtb os laptop workflow.",
+    fullDesc: "BMTB Scamming v1.0 brings a complete criminal finance loop to ESX and QBCore — buy dumps from vendors, encode cards, hit ATMs with burn-risk mechanics, manage heat, climb ranks, and run operations from a custom bmtb os laptop NUI. Includes police dispatch triggers, decline/burn feedback, and configurable payout/risk tuning for immersive scam RP.",
+    price: "FREE",
+    tag: "FREE",
+    frameworks: ["ESX", "QBCore"],
+    downloads: 0,
+    version: "v1.0",
+    updatedOn: "2026-07-24",
+    imageUrl: "/bmtb-scamming-thumb.png",
+    youtubeEmbed: "",
+    buyUrl: "https://bmtbscripts.tebex.io/package/7577885",
+    tebexUrl: "https://bmtbscripts.tebex.io/package/7577885",
+    infoHeading: "BMTB Scamming v1.0",
+    updateNotes: [
+      "Buy dumps — vendor flow for card data (Visa, MasterCard, etc.).",
+      "Card encoder / programmer bench setup with streamed props.",
+      "ATM cash-out with decline, burn risk, and police dispatch events.",
+      "Heat + rank progression tied to scam activity.",
+      "bmtb os laptop NUI for dump catalog, status, and operations.",
+      "Multi-framework bridges for ESX Legacy and QBCore.",
+      "Tebex-only release — no Gumroad listing for this script.",
+    ],
+    requirements: [
+      "ESX Legacy or QBCore",
+      "ox_lib recommended",
+      "ox_inventory or compatible inventory",
+      "oxmysql recommended",
+    ],
+    installSteps: [
+      "Drop bmtb_scamming into resources/[scripts]/ or [bmtb]/.",
+      "Merge install items/images into your inventory if provided.",
+      "Ensure framework → ox_lib → inventory → bmtb_scamming.",
+      "ensure bmtb_scamming — edit config.lua for payouts, heat, dispatch, and ranks.",
+      "Restart and test dump buy, encode, and ATM cash-out flow.",
+    ],
+    notes: [
+      "Tebex-only — download from the Tebex package page.",
+      "Tune burn risk / police dispatch in config before going live.",
+    ],
+  },
   {
     slug: "bmtb-pillpress",
     name: "BMTB Pill Press",
@@ -984,7 +1025,11 @@ const FRAMEWORK_TAG_STYLES = {
 };
 
 function isProductNew(product) {
-  return product?.slug === "bmtb-pillpress";
+  return product?.slug === "bmtb-scamming" || product?.slug === "bmtb-pillpress";
+}
+
+function hasGumroadLink(product) {
+  return Boolean(product?.gumroadUrl);
 }
 
 function NewBadge({ size = "sm" }) {
@@ -1044,7 +1089,7 @@ function getTebexLink(product) {
 }
 
 function getGumroadLink(product) {
-  return product?.gumroadUrl || GUMROAD_STORE_URL;
+  return product?.gumroadUrl || null;
 }
 
 function getGithubLink(product) {
@@ -1454,15 +1499,51 @@ function HomePage() {
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="bmtb-eyebrow">Coming Soon</p>
-              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Scamming</h2>
+              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Real Money</h2>
               <p className="mt-2 max-w-xl text-sm text-bmtb-muted md:text-base">
-                Scamming script dropping July 24, 2026 at 12:00 PM ET on Tebex and Gumroad.
+                Releasing August 1, 2026 at 2:00 PM ET on Tebex.
               </p>
             </div>
             <div className="w-full max-w-md">
               <ComingSoonCountdown
-                targetDate={SCAMMING_RELEASE_AT}
-                liveMessage="Release live — check the store for BMTB Scamming."
+                targetDate={REAL_MONEY_RELEASE_AT}
+                liveMessage="Release live — check the store for BMTB Real Money."
+              />
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="bmtb-glass overflow-hidden rounded-2xl"
+        >
+          <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+            <div className="p-6 md:p-8">
+              <p className="bmtb-eyebrow">New Release</p>
+              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Scamming v1.0</h2>
+              <p className="mt-3 max-w-xl text-sm leading-7 text-bmtb-muted md:text-base">
+                Buy dumps. Cash out. Get ranks. Full carding / ATM scam RP with heat, burn risk, police dispatch, and bmtb os — free on Tebex.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/scripts/bmtb-scamming" className="bmtb-btn-primary px-6 py-3">
+                  View Product
+                </Link>
+                <a href="https://bmtbscripts.tebex.io/package/7577885" target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-6 py-3">
+                  Download on Tebex
+                </a>
+              </div>
+            </div>
+            <div className="border-t border-bmtb-line md:border-l md:border-t-0">
+              <img
+                src="/bmtb-scamming-thumb.png"
+                alt="BMTB Scamming preview"
+                className="h-full min-h-[220px] w-full object-cover"
+                loading="lazy"
               />
             </div>
           </div>
@@ -1618,7 +1699,9 @@ function ScriptInfoPage() {
   const product = productBySlug[slug];
   const tebexLink = product ? getTebexLink(product) : TEBEX_FREE_CATEGORY_URL;
   const gumroadLink = product ? getGumroadLink(product) : GUMROAD_STORE_URL;
+  const showGumroad = product ? hasGumroadLink(product) : true;
   const githubLink = product ? getGithubLink(product) : null;
+  const mobileActionCols = 2 + (showGumroad ? 1 : 0) + (githubLink ? 1 : 0);
 
   if (!product) {
     return (
@@ -1637,7 +1720,7 @@ function ScriptInfoPage() {
   const faqItems = [
     ["What frameworks are supported?", product.frameworks?.length ? product.frameworks.join(", ") : "See product details."],
     ["Where do I get support?", "Join the BMTB Discord or email support from the Support page."],
-    ["How do I download?", "Use Tebex or Gumroad links in the Purchase section below."],
+    ["How do I download?", showGumroad ? "Use Tebex or Gumroad links in the Purchase section below." : "Use the Tebex download link in the Purchase section below."],
   ];
 
   return (
@@ -1646,13 +1729,15 @@ function ScriptInfoPage() {
         <Icon name="chevron" size={16} className="rotate-180" /> Back to all scripts
       </Link>
 
-      <div className={`sticky bottom-3 z-20 mt-4 grid gap-2 rounded-2xl border border-bmtb-line bg-bmtb-bg/90 p-2 backdrop-blur-xl md:hidden ${githubLink ? "grid-cols-4" : "grid-cols-3"}`}>
+      <div className="sticky bottom-3 z-20 mt-4 grid gap-2 rounded-2xl border border-bmtb-line bg-bmtb-bg/90 p-2 backdrop-blur-xl md:hidden" style={{ gridTemplateColumns: `repeat(${mobileActionCols}, minmax(0, 1fr))` }}>
         <a href={tebexLink} target="_blank" rel="noreferrer" className="bmtb-btn-primary px-3 py-2 text-xs">
           Download
         </a>
-        <a href={gumroadLink} target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-3 py-2 text-xs">
-          Gumroad
-        </a>
+        {showGumroad && gumroadLink && (
+          <a href={gumroadLink} target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-3 py-2 text-xs">
+            Gumroad
+          </a>
+        )}
         {githubLink && (
           <a href={githubLink} target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-3 py-2 text-xs">
             GitHub
@@ -1785,9 +1870,11 @@ function ScriptInfoPage() {
               <a href={tebexLink} target="_blank" rel="noreferrer" className="bmtb-btn-primary">
                 Download on Tebex
               </a>
-              <a href={gumroadLink} target="_blank" rel="noreferrer" className="bmtb-btn-secondary">
-                Gumroad
-              </a>
+              {showGumroad && gumroadLink && (
+                <a href={gumroadLink} target="_blank" rel="noreferrer" className="bmtb-btn-secondary">
+                  Gumroad
+                </a>
+              )}
               {githubLink && (
                 <a href={githubLink} target="_blank" rel="noreferrer" className="bmtb-btn-secondary">
                   GitHub
