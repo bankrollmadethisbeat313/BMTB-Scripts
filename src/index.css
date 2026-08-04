@@ -18,6 +18,16 @@ html {
   scroll-behavior: smooth;
 }
 
+.bmtb-scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior: contain;
+}
+
+.bmtb-scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   margin: 0;
   min-height: 100vh;

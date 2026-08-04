@@ -9,8 +9,7 @@ const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
 const TEBEX_CUSTOM_SCRIPT_PACKAGE_URL = "https://bmtbscripts.tebex.io/category/CustomScriptPackage";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
-const REAL_MONEY_RELEASE_AT = new Date("2026-08-01T18:00:00Z"); // August 1, 2026 2:00 PM ET
-
+const BAG_DRUGS_RELEASE_AT = new Date("2026-08-14T18:00:00Z"); // August 14, 2026 2:00 PM ET
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
   zap: "M13 2 4 14h7l-1 8 9-12h-7l1-8Z",
@@ -112,6 +111,63 @@ function AnimatedCount({ value, duration = 1400 }) {
 
 const products = [
   {
+    slug: "bmtb-real-money",
+    name: "BMTB Real Money",
+    desc: "Physical cash system with real bill denominations, store registers, change-making, player handoffs, and dirty money — built for serious RP servers.",
+    fullDesc: "BMTB Real Money replaces fake UI money with a full physical cash economy — real bill denominations from $1 to $100, clean and dirty money, automatic change-making, player-to-player cash handoffs with animations, and configurable store registers with smart payment selection, persistent floats, and heist-ready register theft. OneSync optimized, secure, and server-side for ESX Legacy, QBCore, and Qbox.",
+    price: "$5",
+    tag: "PREMIUM",
+    frameworks: ["ESX", "QBCore", "Qbox"],
+    downloads: 0,
+    version: "v1.0",
+    updatedOn: "2026-08-04",
+    imageUrl: "/bmtb-real-money-thumb.png",
+    youtubeEmbed: "https://www.youtube.com/embed/QKEgxFD4f7Q",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-real-money",
+    tebexUrl: "https://bmtbscripts.tebex.io/package/bmtb-real-money",
+    infoHeading: "BMTB Real Money v1.0",
+    updateNotes: [
+      "Real bill denominations — $1 through $100 with physical cash items.",
+      "Clean & dirty money — separate flows with black-market dirty cash support.",
+      "Automatic change-making — registers and handoffs calculate correct change.",
+      "Player-to-player cash handoff — animations and bill exchange between players.",
+      "Configurable store zones — place register points anywhere on your map.",
+      "Steal registers & heists — server-side register theft for criminal RP.",
+      "Multi-framework — ESX Legacy, QBCore, and Qbox auto-detect.",
+    ],
+    requirements: [
+      "ESX Legacy, QBCore, or Qbox",
+      "ox_inventory or compatible inventory",
+      "ox_lib recommended",
+      "oxmysql recommended",
+    ],
+    installSteps: [
+      "Install bmtb_realmoney into resources/[scripts]/ or [bmtb]/.",
+      "Merge bill items from install/*_items.lua into your inventory and copy icons.",
+      "Ensure framework → ox_lib → inventory → bmtb_realmoney.",
+      "Configure store register zones, floats, and dirty money in config.lua (or setup.html).",
+      "ensure bmtb_realmoney — restart and test bill handoff, registers, and change-making.",
+    ],
+    notes: [
+      "Real cash. Real RP. No fake money.",
+      "Optional bmtb_moneywash integration for dirty → clean flows.",
+      "Tune register zones and dirty-money payouts before going live.",
+    ],
+    acePermissions: [],
+    adminGuide: [
+      "Merge all bill denomination items before opening to players.",
+      "Configure store zones and register starting floats in config.lua.",
+      "If using /givecash, optionally add ACE: add_ace group.admin command.givecash allow (or your configured ACE).",
+      "Test one register payment and one player-to-player handoff before go-live.",
+    ],
+    playerCommands: [
+      { command: "/givecash", usage: "Optional ACE", description: "Hand physical cash bills to a nearby player with automatic change-making and animations." },
+      { command: "Store registers", usage: "Target / E-key", description: "Pay at configured shop registers with real bill selection; registers make change and persist floats." },
+      { command: "Inventory items", usage: "Use bill items", description: "Physical $1–$100 bills, clean and dirty money — no fake UI cash when framework mirror is enabled." },
+    ],
+    adminCommands: []
+  },
+  {
     slug: "bmtb-scamming",
     name: "BMTB Scamming",
     desc: "Carding and ATM scamming RP — buy dumps, cash out, heat/burn risk, police dispatch, ranks, and a full bmtb os laptop workflow.",
@@ -133,27 +189,42 @@ const products = [
       "ATM cash-out with decline, burn risk, and police dispatch events.",
       "Heat + rank progression tied to scam activity.",
       "bmtb os laptop NUI for dump catalog, status, and operations.",
-      "ESX Legacy build — QBCore version coming later.",
-      "Tebex-only release — no Gumroad listing for this script.",
     ],
     requirements: [
       "ESX Legacy (es_extended)",
-      "ox_lib recommended",
-      "ox_inventory or compatible inventory",
-      "oxmysql recommended",
+      "ox_lib",
+      "ox_inventory",
+      "ox_target",
+      "oxmysql",
+      "Optional: bmtb_realmoney for physical cash payouts",
     ],
     installSteps: [
-      "Install the ESX Legacy build of bmtb_scamming into resources/[scripts]/ or [bmtb]/.",
-      "Merge install items/images into your inventory if provided.",
-      "Ensure es_extended → ox_lib → inventory → bmtb_scamming.",
-      "ensure bmtb_scamming — edit config.lua for payouts, heat, dispatch, and ranks.",
-      "Restart and test dump buy, encode, and ATM cash-out flow.",
+      "Install bmtb_scamming into resources/[scripts]/ or [bmtb]/.",
+      "Run sql/full_install.sql or allow auto-migration on first start.",
+      "Merge ox_inventory items from install files and copy images.",
+      "Ensure es_extended → ox_lib → ox_inventory → ox_target → bmtb_scamming.",
+      "Edit config.lua for payouts, heat, dispatch, ranks, and burn risk.",
+      "ensure bmtb_scamming — test dump buy, encode, ATM cash-out, and sell run.",
     ],
     notes: [
-      "Tebex-only — download from the Tebex package page.",
       "ESX Legacy only on v1.0 — QBCore is not supported yet.",
+      "Tebex-only — no Gumroad listing for this script.",
       "Tune burn risk / police dispatch in config before going live.",
     ],
+    acePermissions: [],
+    adminGuide: [
+      "Import SQL and merge inventory items before first player join.",
+      "Tune burn risk, police dispatch, and payout values in config.lua.",
+      "Set Config.Debug to false on production servers.",
+      "Test full loop: buy dump → encode card → ATM cash-out → sell run.",
+    ],
+    playerCommands: [
+      { command: "/sellcards", description: "Start a street card-selling run — buyers spawn and purchase encoded cards for cash." },
+      { command: "/stopsellcards", description: "Stop the active card sell run." },
+      { command: "bmtb os laptop", usage: "Item / workstation", description: "Open scam laptop NUI — browse dumps, encode cards, check heat and rank." },
+      { command: "ATM cash-out", usage: "Target ATM", description: "Use encoded cards at ATMs — decline, burn risk, and police dispatch may trigger." },
+    ],
+    adminCommands: []
   },
   {
     slug: "bmtb-pillpress",
@@ -174,15 +245,9 @@ const products = [
     updateNotes: [
       "Placeable pill press — ghost placement, ground snap, one press per player until restart.",
       "Crafting — 10 pill types, configurable batch size, ingredient refund on fail/cancel.",
-      "Pill bottles — fill, open, deposit, and withdraw via slot metadata (contents).",
-      "Pill use — take animation, stacking window, overdose blackout, random rolls on perc/bars.",
-      "Press durability — wear per craft, fail chance when low, repair kit flow.",
+      "Pill bottles — fill, open, deposit, and withdraw via slot metadata.",
       "Street demand — hot/cold rotation each restart; BMTB UI panel via /pilldemand.",
-      "Pill admin — /pilladmin NUI for per-pill perk/visual tuning (ACE + framework admin fallback).",
-      "Built-in BMTB UI — notify, progress, craft menu, list menu, dialogs (no ox_lib).",
-      "Multi-framework — ESX Legacy, QBCore, Qbox auto-detect (ESX → QBCore → Qbox).",
-      "Multi-inventory — ox, qb/ps/lj, qs, codem, core, ak47, ESX default via auto bridge.",
-      "Optional bmtb_trapphone — demand multipliers apply to trap phone pill street payouts.",
+      "Pill admin — /pilladmin NUI for per-pill perk/visual tuning.",
     ],
     requirements: [
       "ESX Legacy, QBCore, or Qbox",
@@ -206,6 +271,21 @@ const products = [
     acePermissions: [
       "add_ace group.admin bmtb.pillpress.admin allow",
     ],
+    adminGuide: [
+      "Add ACE bmtb.pillpress.admin (or configure FrameworkAdminGroups in config.lua).",
+      "Merge install items and icons before first restart.",
+      "Open /pilladmin after install — Tebex ships all pills Off; enable perks/visuals per pill.",
+      "Test press placement, craft one batch, and fill a pill bottle before go-live.",
+    ],
+    playerCommands: [
+      { command: "pill_press item", usage: "Inventory", description: "Place a pill press in the world — ghost placement, ground snap, craft batches." },
+      { command: "/pilldemand", description: "Open street demand panel showing hot/cold pill types for this restart." },
+      { command: "/unstuckpills", description: "Clear stuck pill use animations or sprint effects." },
+      { command: "Pill / bottle items", usage: "Inventory", description: "Use pills for effects; fill, open, and withdraw pill bottles via metadata." },
+    ],
+    adminCommands: [
+      { command: "/pilladmin", description: "Open staff pill admin panel — tune perks, visuals, and modes per pill type.", ace: "bmtb.pillpress.admin" },
+    ]
   },
   {
     slug: "bmtb-pods-2",
@@ -229,8 +309,6 @@ const products = [
       "AirPods-style personal music NUI with wearable streamed props.",
       "Dynamic theme colors with presets + custom hex picker.",
       "UI opens only when using pods; ESC/close + WASD while open.",
-      "Live volume updates, click-to-set / drag knob, Shift fine control.",
-      "Multi-framework / multi-inventory auto-detect (ESX + QBCore).",
       "Requires xsound for audio playback.",
     ],
     requirements: [
@@ -241,9 +319,9 @@ const products = [
     installSteps: [
       "Drop as bmtb_pods into resources/[scripts]/ or [bmtb]/.",
       "Ensure order: ensure xsound then ensure bmtb_pods.",
-      "Add the pods/airpods item to inventory; keep stream/ props intact.",
+      "Add the bmtb_pods item to inventory; keep stream/ props intact.",
       "Framework/inventory bridges auto-register on most stacks.",
-      "Restart xsound + bmtb_pods and test the item (fallback may be /airpods).",
+      "Restart xsound + bmtb_pods and test the item (fallback: /bmtbpods).",
     ],
     acePermissions: [],
     notes: [
@@ -251,6 +329,19 @@ const products = [
       "Live resource name is bmtb_pods (not bmtb_airpods).",
       "Always start xsound before bmtb_pods.",
     ],
+    adminGuide: [
+      "Always start xsound before bmtb_pods.",
+      "Merge ox_inventory item with correct export fields.",
+      "Verify stream/ assets load — missing props break the wearable UI.",
+    ],
+    playerCommands: [
+      { command: "bmtb_pods item", usage: "Inventory", description: "Wear AirPods-style props and open the music NUI — volume, theme, playlist controls." },
+      { command: "/bmtbpods", description: "Fallback command to open pods UI if item use fails." },
+      { command: "/bmtbpodsoff", description: "Stop audio and close the pods session." },
+    ],
+    adminCommands: [
+      { command: "/podsprop", description: "Prop debug tuner — adjust wearable prop offsets (dev/debug use)." },
+    ]
   },
   {
     slug: "bmtb-lean",
@@ -269,34 +360,24 @@ const products = [
     gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtblean",
     infoHeading: "BMTB Lean v1.0.0",
     updateNotes: [
-      "Lean bottle → baby bottle with line-based pouring (16 lines → 8 per pour).",
-      "Double cup + Feyzo Cream Soda prep with mixed lean variants (purple / red / green).",
-      "Hold / drink mixed lean with on-screen cup HUD (G drink / K add / X put away).",
-      "Additives: ice, Rancherz, Perc, Xan Bar — with sip buffs on mixed cups.",
-      "Lean carry command — walk with cup in hand.",
-      "Sip effects: timecycle tint, overlay, and walk style (configurable).",
+      "Lean bottle → baby bottle with line-based pouring.",
+      "Double cup + Feyzo prep with mixed lean variants (purple / red / green).",
+      "Hold / drink mixed lean with on-screen cup HUD.",
       "Custom prop attachments, streamed animations, and BMTB NUI menus.",
-      "ESX Legacy build — ox_inventory, ESX default F2, ak47, qs, codem, and more.",
-      "QBCore build — qb-inventory, ox_inventory, qs, ak47, lj/ps, codem, core_inventory.",
-      "14 languages — set Config.LocaleLanguage in config.lua.",
-      "Buyer-friendly config.lua — gameplay, drink, HUD, and UI tuning without code edits.",
-      "Admin tools: /leanrebuildbaby (ESX), /leanqbcheck (QBCore), prop tuner, and metadata repair.",
     ],
     requirements: [
-      "ESX Legacy or QBCore build (Qbox uses QBCore edition)",
+      "ESX Legacy (primary build)",
       "ox_lib",
       "oxmysql recommended",
-      "ox_inventory, qb-inventory, or compatible inventory",
-      "es_extended (ESX) or qb-core (QBCore)",
+      "ox_inventory or compatible inventory",
       "ox_target or qb-target (optional)",
-      "Optional: bmtb-hud for thirst sync on QB",
     ],
     installSteps: [
-      "Install matching ESX or QBCore build of bmtb_lean into [scripts]/ or [bmtb]/.",
+      "Install bmtb_lean ESX build into [scripts]/ or [bmtb]/.",
       "Keep stream/ intact. Merge install items into inventory and copy images.",
-      "Ensure order: ox_lib → framework → inventory → (optional hud/target) → bmtb_lean.",
+      "Ensure order: ox_lib → es_extended → inventory → bmtb_lean.",
       "Edit config.lua for language, sip FX, props, thirst, notify duration.",
-      "restart inventory + bmtb_lean. QB: /leanqbcheck. ESX: /leanrebuildbaby if needed.",
+      "ensure bmtb_lean — ESX: /leanrebuildbaby if baby bottle metadata needs repair.",
     ],
     notes: [
       "Debug ACE bmtb_lean.debug is optional (debug tools only).",
@@ -306,6 +387,20 @@ const products = [
     acePermissions: [
       "add_ace group.admin bmtb_lean.debug allow",
     ],
+    adminGuide: [
+      "Merge all lean items and images before go-live.",
+      "Set Config.Debug.clientCommands and serverCommands to false on production.",
+      "Optional debug ACE bmtb_lean.debug for prop tuner and metadata repair tools only.",
+      "Run /leanrebuildbaby once if migrating from an older lean build.",
+    ],
+    playerCommands: [
+      { command: "/leancarry", description: "Toggle carrying your mixed lean cup in-hand with HUD (G drink / K add / X put away)." },
+      { command: "Lean items", usage: "Inventory", description: "Pour baby bottles, mix purple/red/green variants, sip with FX, add ice and extras." },
+    ],
+    adminCommands: [
+      { command: "/leanrebuildbaby", description: "ESX server — rebuild baby bottle metadata for all players (migration/repair).", ace: "bmtb_lean.debug" },
+      { command: "/leantune", usage: "Debug only", description: "Prop tuner for cup/bottle attachments (requires Config.Debug.clientCommands = true).", ace: "bmtb_lean.debug" },
+    ]
   },
   {
     slug: "bmtb-gofetch",
@@ -335,15 +430,13 @@ const products = [
       "Ensure order: ox_lib → oxmysql → framework → inventory → (qb-shops if QB) → bmtb_gofetch.",
       "Add ACE: add_ace group.admin bmtb.gofetch.admin allow",
       "ensure bmtb_gofetch — restart inventory + GoFetch.",
-      "Test with /giveitem [id] gofetch_tablet 1 (or your install-me item name).",
+      "Test with gofetch_tablet item — place order and receive NPC delivery.",
     ],
     infoHeading: "BMTB GoFetch v1.0.0",
     updateNotes: [
-      "Live shop catalog from ox_inventory, qb-shops, and other popular inventory backends.",
-      "Server-authoritative checkout with validated prices and anti-exploit collect gates.",
-      "NPC fleet delivery with burrito van courier and optional GoFetch Express upgrade.",
-      "Supports ESX, QBCore, and Qbox with auto-detected inventory and payment bridges.",
-      "Up to 2 active orders per player with order history and Discord logging.",
+      "Delivery tablet with live shop catalogs from ox_inventory and qb-shops.",
+      "NPC burrito van courier fleet with optional GoFetch Express upgrades.",
+      "Multi-framework ESX / QBCore / Qbox auto-detect.",
     ],
     acePermissions: [
       "add_ace group.admin bmtb.gofetch.admin allow",
@@ -352,6 +445,22 @@ const products = [
       "Admin ACE: bmtb.gofetch.admin",
       "Start shops/inventory before GoFetch so catalogs populate.",
     ],
+    adminGuide: [
+      "Add ACE bmtb.gofetch.admin before staff testing.",
+      "Start shops/inventory before GoFetch so live catalogs populate.",
+      "Use /gofetchreloadshops after adding new shop inventory items.",
+    ],
+    playerCommands: [
+      { command: "gofetch_tablet", usage: "Inventory item", description: "Open delivery tablet — browse live shop catalogs, pay cash/bank, place orders." },
+      { command: "gofetch_package", usage: "Inventory / NPC", description: "Receive delivery package from burrito van courier when order arrives." },
+    ],
+    adminCommands: [
+      { command: "/gofetchdebug", description: "Toggle admin debug logging for order/delivery pipeline.", ace: "bmtb.gofetch.admin" },
+      { command: "/gofetchinstant", description: "Force instant delivery on next order (testing).", ace: "bmtb.gofetch.admin" },
+      { command: "/gofetchorders", description: "List all active GoFetch orders in server console/chat.", ace: "bmtb.gofetch.admin" },
+      { command: "/gofetchcancel [id]", description: "Cancel a player's active order by server ID.", ace: "bmtb.gofetch.admin" },
+      { command: "/gofetchreloadshops", description: "Reload shop provider catalogs without full restart.", ace: "bmtb.gofetch.admin" },
+    ]
   },
   {
     slug: "bmtb-trapphone",
@@ -377,19 +486,17 @@ const products = [
     ],
     installSteps: [
       "Drop bmtb_trapphone into resources/[scripts]/ and import SQL if provided.",
-      "CRITICAL order: oxmysql → es_extended → ox_lib → bmtb_trapphone → ox_inventory (trapphone BEFORE ox_inventory).",
-      "Add trap phone + drug items to ox_inventory/data/items.lua per README.",
+      "CRITICAL order: oxmysql → es_extended → ox_lib → bmtb_trapphone → ox_inventory.",
+      "Add trap phone + drug items to ox_inventory/data/items.lua per ox_items.lua.",
       "Add ACE: add_ace group.admin bmtb.trapphone.admin allow",
-      "ensure bmtb_trapphone — restart and test /giveitem [id] bmtb_trapphone 1.",
+      "ensure bmtb_trapphone — restart and test trap phone item + /trapphone.",
     ],
     infoHeading: "BMTB Trap Phone v1.0.0",
     updateNotes: [
-      "Trap phone NUI with calls, messages, status, settings, Trapperz.net, wallpapers, and ringtones.",
-      "Street trap runs with buyer spawns, handoffs, robbery/chase, and optional ox_target sell.",
-      "Delivery missions with incoming calls, GPS drops, and incapacitation cancel.",
-      "Plug system with rotating plugs, chat, trust/mood, front orders, meetups, and debt tabs.",
-      "8 reputation tiers, career stats, Trapperz demand index, and police heat on bad rep.",
-      "Drug loops: bagging, blow brick pack/unpack, weed pound unpack, and sellable item list.",
+      "Street trap selling with auto/manual buyer modes and robbery risk.",
+      "Delivery jobs via phone calls.",
+      "Plug contacts, meetups, tab debt, and street rep ranks.",
+      "Optional bmtb_pillpress demand integration for pill street payouts.",
     ],
     acePermissions: [
       "add_ace group.admin bmtb.trapphone.admin allow",
@@ -399,6 +506,32 @@ const products = [
       "Must start BEFORE ox_inventory so item exports register.",
       "ESX Legacy only on current builds.",
     ],
+    adminGuide: [
+      "Trap phone MUST start before ox_inventory or item exports will not register.",
+      "Merge ox_items.lua entries — item names must match config.lua.",
+      "Set Config.Debug and Config.DebugSales to false on live servers.",
+      "Grant ACE bmtb.trapphone.admin to staff before opening economy.",
+      "Test one street trap run and one delivery call before go-live.",
+    ],
+    playerCommands: [
+      { command: "/trapphone", usage: "F6 keybind", description: "Open trap phone NUI when carrying a trap phone item." },
+      { command: "trap phone item", usage: "Inventory", description: "Primary way to open phone — street trap, deliveries, plug contacts, rep." },
+      { command: "Street trap", usage: "Phone UI", description: "Start auto or manual buyer runs — sell drugs, risk robbery, build street rep." },
+      { command: "Delivery jobs", usage: "Phone UI", description: "Accept phone calls, deliver product to drop-off for payout." },
+    ],
+    adminCommands: [
+      { command: "/trapadmin", description: "Print admin command help list.", ace: "bmtb.trapphone.admin" },
+      { command: "/trapstatus [id]", description: "Show trap phone status for a player — rep, active run, debt, plugs.", ace: "bmtb.trapphone.admin" },
+      { command: "/trapstop [id]", description: "Force-stop active trap run for a player.", ace: "bmtb.trapphone.admin" },
+      { command: "/trapdeliverycancel [id]", description: "Cancel active delivery mission for a player.", ace: "bmtb.trapphone.admin" },
+      { command: "/trapmeetupfail [id]", description: "Fail active plug meetup for a player.", ace: "bmtb.trapphone.admin" },
+      { command: "/traprep [id] [units]", description: "Set street rep units sold for a player.", ace: "bmtb.trapphone.admin" },
+      { command: "/trapbadrep [id] [amount|clear]", description: "Set or clear bad rep for a player.", ace: "bmtb.trapphone.admin" },
+      { command: "/trapdebt [id] [plugId] [amount]", description: "Set plug tab debt for a player.", ace: "bmtb.trapphone.admin" },
+      { command: "/trapcleardebt [id] [plugId]", description: "Clear plug tab debt (omit plugId for all plugs).", ace: "bmtb.trapphone.admin" },
+      { command: "/trapgivephone [id] [item]", description: "Give a trap phone item to a player.", ace: "bmtb.trapphone.admin" },
+      { command: "/trapreset [id]", description: "Wipe stats, rep, plugs, and messages — fresh start.", ace: "bmtb.trapphone.admin" },
+    ]
   },
   {
     slug: "bmtb-strippers",
@@ -415,36 +548,28 @@ const products = [
     youtubeEmbed: "https://www.youtube.com/embed/w6uihCRH7fM",
     buyUrl: "https://bmtbscripts.tebex.io/category/premium-scripts",
     requirements: [
-      "ESX Legacy or QBCore version (separate builds)",
+      "ESX Legacy (primary build)",
       "ox_lib",
       "oxmysql",
       "ox_inventory recommended",
       "ox_target or qb-target",
-      "illenium-appearance (optional)",
-      "esx_addonaccount (ESX) or QB society/banking",
+      "esx_addonaccount",
       "Optional: bmtb_elevators (start AFTER strippers)",
     ],
     installSteps: [
-      "Install matching ESX or QBCore build of bmtb_strippers.",
-      "Import SQL (jobs + reputation) for your framework.",
-      "Add/refresh clubowner job and society account.",
-      "Ensure oxmysql → ox_lib → framework → inventory/target → bmtb_strippers.",
+      "Install bmtb_strippers ESX build into [scripts]/ or [bmtb]/.",
+      "Import SQL (jobs + reputation) from sql/esx/.",
+      "Add/refresh clubowner job and society account — run /refreshjobs.",
+      "Ensure oxmysql → ox_lib → es_extended → inventory/target → bmtb_strippers.",
       "Add ACE: add_ace group.admin bmtb.strippers.admin allow",
-      "Tune config.lua. Elevator floors live in Config.Elevators.",
       "If using elevators: ensure bmtb_strippers then bmtb_elevators + ACE bmtb_elevators.admin.",
       "Restart and test shifts, poles, VIP, /clubmanage.",
     ],
     infoHeading: "BMTB Strippers v1.0.0",
     updateNotes: [
-      "Stripper job system — apply at reception, clock in/out, dancer/manager/owner grades, live shift HUD, server-side settlement.",
-      "Built-in pole dancing — multiple routines, looping scenes, shift tracking, /newpole and /removepole placement tools.",
-      "Lap dances and VIP rooms — NPC and player private dances, VIP chairs, stripper spots, premium booth payouts.",
-      "NPC customers and tips — spawn flow, stage tips, crowd watch/cheer/clap, supply modifiers.",
-      "Club management — /clubmanage menu, hire/fire dancers and NPC staff, supplies, stage spot editor.",
-      "Owner economy — club safe, live dashboard, passive revenue, owner cuts, configurable withdraw limits.",
-      "Reputation and popularity — stripper XP, payout bonuses, club popularity score and decay.",
-      "Outfits and locker — preset stage/VIP outfits, saved locker slots, illenium-appearance support.",
-      "Production ready — server-side payout validation, cooldowns, anti-AFK, zone checks, ACE-gated admin tools.",
+      "Full strip club RP — shifts, poles, lap dances, VIP rooms, tips.",
+      "Club owner management panel and popularity system.",
+      "ESX society accounts and job integration.",
     ],
     notes: [
       "Admin ACE: bmtb.strippers.admin",
@@ -455,6 +580,27 @@ const products = [
       "add_ace group.admin bmtb.strippers.admin allow",
       "add_ace group.admin bmtb_elevators.admin allow",
     ],
+    adminGuide: [
+      "Import all SQL files (install.sql, jobs.sql, reputation.sql) before first start.",
+      "Grant bmtb.strippers.admin ACE to club managers and head staff.",
+      "Configure club locations, poles, and VIP rooms in config.lua.",
+      "Always start bmtb_strippers before bmtb_elevators if using elevator integration.",
+      "Use /clubmanage to verify owner/staff workflows before opening club to public.",
+    ],
+    playerCommands: [
+      { command: "/throwtip", description: "Throw cash tips at dancers during pole routines." },
+      { command: "Club interactions", usage: "ox_target / E-key", description: "Clock in/out, pole dance, lap dances, VIP rooms, bar, and register interactions." },
+    ],
+    adminCommands: [
+      { command: "/clubmanage", description: "Open club owner/manager panel — staff, finances, popularity.", ace: "bmtb.strippers.admin" },
+      { command: "/setclubjob [id] [job]", description: "Assign club job to a player.", ace: "bmtb.strippers.admin" },
+      { command: "/hirestripper [id]", description: "Hire a player as a stripper for the club.", ace: "bmtb.strippers.admin" },
+      { command: "/firestripper [id]", description: "Fire a stripper from the club roster.", ace: "bmtb.strippers.admin" },
+      { command: "/newpole", description: "Place a new pole at your current position.", ace: "bmtb.strippers.admin" },
+      { command: "/removepole", description: "Remove nearest pole placement.", ace: "bmtb.strippers.admin" },
+      { command: "/previewseat", description: "Preview lap dance seat placement.", ace: "bmtb.strippers.admin" },
+      { command: "/previewstripper", description: "Preview stripper stage placement.", ace: "bmtb.strippers.admin" },
+    ]
   },
   {
     slug: "bmtb-chains-as-items",
@@ -473,25 +619,37 @@ const products = [
     acePermissions: [],
     requirements: [
       "ox_lib",
-      "ox_inventory (recommended)",
+      "ox_inventory (required)",
       "Optional clothing stream pack (ensure before bmtb_chains if provided)",
     ],
     installSteps: [
       "Drop bmtb_chains into resources/[scripts]/.",
       "Merge ox_inventory items + images from install files.",
-      "Optional: ensure clothing stream first, then ox_lib → ox_inventory → bmtb_chains.",
+      "Ensure ox_lib → ox_inventory → bmtb_chains.",
+      "Configure jewelry shop zones in config.lua.",
       "ensure bmtb_chains — restart inventory + chains and test equip/shop.",
     ],
     updateNotes: [
       "Wearable jewelry chains using clothing component 7.",
       "E-key shop interaction and equip animations.",
-      "Stash-only transfer rules to reduce dump/dupe abuse.",
       "ox_lib + ox_inventory focused install.",
     ],
     notes: [
       "No dedicated ACE — item/shop driven.",
-      "Live resource folder is typically bmtb_chains.",
-    ]
+      "Live resource folder is bmtb_chains.",
+      "Stash-only transfer rules reduce dump/dupe abuse.",
+    ],
+    adminGuide: [
+      "Merge chain items with correct drawable/component metadata.",
+      "Configure shop zones and prices in config.lua or setup.html.",
+      "Test equip animation and stash-only transfer rules before go-live.",
+    ],
+    playerCommands: [
+      { command: "chain items", usage: "Inventory", description: "Use chain items to equip jewelry on clothing component 7 with animations." },
+      { command: "Jewelry shop", usage: "E-key zones", description: "Buy chains at configured shop locations." },
+      { command: "/chainid", usage: "Debug", description: "Print current drawable/component ID for chain tuning." },
+    ],
+    adminCommands: []
   },
   {
     slug: "watermark-server-logo-script",
@@ -521,8 +679,15 @@ const products = [
       "Standalone — no framework dependency.",
     ],
     notes: [
-      "No ACE required. Author branding: BMTB watermark_logo on many servers.",
+      "No ACE required. Lightweight NUI watermark / server logo overlay.",
     ],
+    adminGuide: [
+      "Swap logo PNG with your server branding.",
+      "Tune position/opacity in resource config if available.",
+      "No local ESX resource copy — verify overlay after Tebex download.",
+    ],
+    playerCommands: [],
+    adminCommands: []
   },
   {
     slug: "bmtb-loading-screen",
@@ -555,7 +720,16 @@ const products = [
     notes: [
       "No ACE required.",
       "Live resource name: bmtb_loadingscreen.",
+      "Standalone — no framework dependency.",
     ],
+    adminGuide: [
+      "Replace asset files with your server branding before go-live.",
+      "Ensure loadscreen starts early in server.cfg.",
+      "Configure Discord/Tebex link blocks in CONFIG.",
+      "No local ESX resource copy — verify assets after each Tebex update.",
+    ],
+    playerCommands: [],
+    adminCommands: []
   },
   {
     slug: "bmtb-cooking",
@@ -575,25 +749,36 @@ const products = [
     acePermissions: [],
     requirements: [
       "ox_lib",
-      "ESX Legacy or QBCore / Qbox",
-      "Inventory (ox_inventory / qb-inventory)",
-      "ox_target or qb-target",
+      "ESX Legacy",
+      "ox_inventory",
+      "ox_target",
     ],
     installSteps: [
       "Drop bmtb_cooking into [scripts]/ or [bmtb]/.",
-      "Merge install items (install me/items_ox_inventory.lua or QB install files).",
-      "Ensure order: ox_lib → framework → inventory → target → bmtb_cooking.",
+      "Merge install items (install me/items_ox_inventory.lua).",
+      "Ensure order: ox_lib → es_extended → ox_inventory → ox_target → bmtb_cooking.",
       "ensure bmtb_cooking — place stove / use world grills and test skill-check cook.",
     ],
     updateNotes: [
       "Placeable stove and world grill cooking.",
       "Skill-check cooking loops.",
       "Coke brick + crack style outputs (config driven).",
-      "Multi-framework auto bridges.",
     ],
     notes: [
       "No dedicated ACE on current builds.",
+      "ESX Legacy only.",
     ],
+    adminGuide: [
+      "Merge portable stove item and cooking ingredients before go-live.",
+      "Configure world grill locations and recipes in config.",
+      "Test one portable stove placement and one world grill cook.",
+    ],
+    playerCommands: [
+      { command: "portable_stove", usage: "Inventory item", description: "Place a portable stove and cook recipes with skill-check minigames." },
+      { command: "World grills", usage: "ox_target / E-key", description: "Interact with configured world grill zones to cook." },
+      { command: "/bmtb_potoffset", usage: "Debug", description: "Tune pot prop offset during development." },
+    ],
+    adminCommands: []
   },
   {
     slug: "bmtb-weapon-repair",
@@ -614,14 +799,9 @@ const products = [
     tebexUrl: "https://bmtbscripts.tebex.io/package/bmtbweaponrepair",
     infoHeading: "BMTB Weapon Repair - Release Build",
     updateNotes: [
-      "Fully tested and confirmed stable in-game.",
-      "Weapon bench placement fixed for interiors/MLOs and ground-level preview behavior.",
-      "Duplicate bench spawn issue resolved (no double bench on place).",
-      "Inventory compatibility flow improved for addon weapon components.",
-      "Config supports auto-detect first for weapons, ammo, and attachments.",
-      "Vanilla defaults are present, with clean custom addon example slots for quick setup.",
-      "Runtime Lua files are obfuscated for release distribution.",
-      "No linter or syntax issues in updated release files.",
+      "Bench-based weapon repair with configurable costs.",
+      "Attachment crafting system.",
+      "Multi-framework ESX / QBCore auto-detect.",
     ],
     requirements: [
       "ox_lib",
@@ -636,11 +816,23 @@ const products = [
       "ensure bmtb_weaponrepair — restart and test bench, crafting, repair.",
     ],
     notes: [
-      "No dedicated ACE found — usually job/framework gated.",
+      "Gunsmith bench commands are job-gated, not ACE-gated.",
       "Auto-detect weapons/ammo/attachments enabled by default.",
-      "Use Config.CustomItemSources for non-standard inventory exports.",
     ],
     acePermissions: [],
+    adminGuide: [
+      "Import SQL and gunsmith job data if using job-gated benches.",
+      "Configure repair costs, farming zones, and bench locations in config.",
+      "Test weapon repair and attachment crafting before go-live.",
+    ],
+    playerCommands: [
+      { command: "/craft", usage: "At bench", description: "Open attachment crafting menu at a weapon bench." },
+      { command: "Weapon bench", usage: "Target / item", description: "Repair weapons with configurable costs and animations." },
+    ],
+    adminCommands: [
+      { command: "/placewbench", description: "Gunsmith job — place a weapon bench in the world.", ace: "Job: gunsmith" },
+      { command: "/delwbench", description: "Gunsmith job — delete nearest placed weapon bench.", ace: "Job: gunsmith" },
+    ]
   },
   {
     slug: "bmtb-wigs",
@@ -661,15 +853,14 @@ const products = [
     acePermissions: [],
     requirements: [
       "ox_lib",
-      "ESX Legacy or QBCore",
+      "ESX Legacy",
       "Inventory backend (ox / qb / auto)",
-      "Optional target",
     ],
     installSteps: [
       "Drop bmtb_wigs into [scripts]/ or [bmtb]/.",
       "Merge install-me items/images into inventory.",
-      "Ensure ox_lib → framework → inventory → bmtb_wigs.",
-      "Set craft spots in config.lua (/wigcoords) then restart and test /wigsale.",
+      "Ensure ox_lib → es_extended → inventory → bmtb_wigs.",
+      "Set craft spots in config.lua then restart and test /wigsale.",
     ],
     updateNotes: [
       "Wig craft stations with configurable spots.",
@@ -678,7 +869,20 @@ const products = [
     ],
     notes: [
       "No dedicated ACE on current builds.",
+      "ESX Legacy only.",
     ],
+    adminGuide: [
+      "Configure craft station coords in config.lua before go-live.",
+      "Merge all wig items and craft ingredients.",
+      "Test craft flow and one street sale run.",
+    ],
+    playerCommands: [
+      { command: "/wigsale", description: "Start street wig selling — spawned customers approach to buy." },
+      { command: "/wigstop", description: "Stop the active wig sale run." },
+      { command: "Craft stations", usage: "Target / zones", description: "Craft wigs at configured station locations." },
+      { command: "/wigzones", usage: "Debug", description: "Show configured sale/craft zone debug markers." },
+    ],
+    adminCommands: []
   },
   {
     slug: "bmtb-chopshop",
@@ -707,18 +911,29 @@ const products = [
       "Install the [bmtbchopshop] pack: bmtb-tasknotify, bmtb-taskbar, bmtb_chopshop.",
       "Ensure order: framework → bmtb-tasknotify → bmtb-taskbar → bmtb_chopshop.",
       "Set marker/NPC/payout in bmtb_chopshop/config.lua.",
-      "ensure [bmtbchopshop] or ensure each resource in order, then test a chop run.",
+      "ensure each resource in order, then test a full chop run.",
     ],
     updateNotes: [
       "Per-part welding chopshop gameplay.",
       "FX/sound sync with payout.",
       "Optional delete from player_vehicles / owned vehicles.",
-      "Uses BMTB taskbar + tasknotify helpers.",
     ],
     notes: [
-      "No dedicated ACE — debug cmds usually config-gated.",
       "Always start tasknotify + taskbar before bmtb_chopshop.",
+      "Uses BMTB taskbar + tasknotify helpers from [bmtbchopshop] pack.",
     ],
+    adminGuide: [
+      "Always start bmtb-tasknotify and bmtb-taskbar before bmtb_chopshop.",
+      "Configure chop locations, NPC, and payout in config.lua or setup.html.",
+      "Enable PartChopDebugCommand in config only for development.",
+      "Test one full part-chop payout before go-live.",
+    ],
+    playerCommands: [
+      { command: "Chopshop location", usage: "NPC / marker", description: "Drive eligible vehicles to the chopshop — weld parts off for payout with taskbar UI." },
+    ],
+    adminCommands: [
+      { command: "/bmtb_chop_debug", usage: "Config-gated", description: "Toggle part-chop debug logging (enable PartChopDebugCommand in config)." },
+    ]
   },
   {
     slug: "bmtb-tuning",
@@ -744,13 +959,13 @@ const products = [
       "ESX or QBCore",
       "ox_inventory or compatible inventory",
       "OneSync recommended",
-      "Engine audio packs as needed",
     ],
     installSteps: [
       "Drop bmtb_tuning into [scripts]/.",
-      "Ensure oxmysql → ox_lib → ox_inventory → framework → bmtb_tuning.",
+      "CRITICAL: ensure bmtb_tuning BEFORE ox_inventory.",
+      "Ensure oxmysql → ox_lib → bmtb_tuning → framework → inventory.",
       "Add ACE: add_ace group.admin bmtb_tuning.admin allow",
-      "ensure bmtb_tuning — give tablet item and test engine-sound NUI + persistence.",
+      "Merge tuning_tablet item — test engine-sound NUI + persistence.",
     ],
     updateNotes: [
       "Engine-sound tablet NUI with per-vehicle persistence.",
@@ -759,7 +974,23 @@ const products = [
     ],
     notes: [
       "Admin ACE: bmtb_tuning.admin",
+      "Must start before ox_inventory.",
     ],
+    adminGuide: [
+      "Start bmtb_tuning before ox_inventory so item exports register.",
+      "Add sv_enableNetworkedScriptEntityStates true in server.cfg.",
+      "Grant bmtb_tuning.admin ACE for diagnostic commands.",
+      "Test tablet item and verify engine sound persists after restart.",
+    ],
+    playerCommands: [
+      { command: "tuning_tablet", usage: "Inventory item", description: "Open engine-sound tuning NUI — apply and save per-vehicle audio." },
+      { command: "/tuningplate", usage: "Debug", description: "Print/debug current vehicle plate for persistence testing." },
+    ],
+    adminCommands: [
+      { command: "/tuningrefreshcache", description: "Refresh server-side tuning cache from database.", ace: "bmtb_tuning.admin" },
+      { command: "/tuningcheck", description: "Run diagnostics on tuning persistence for nearby/current vehicle.", ace: "bmtb_tuning.admin" },
+      { command: "/tuningowned", description: "List owned vehicles with saved tuning data.", ace: "bmtb_tuning.admin" },
+    ]
   },
   {
     slug: "bmtb-car-wipe",
@@ -775,28 +1006,42 @@ const products = [
     youtubeEmbed: "",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-carwipe",
     gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/bmtbcarwipe",
-    acePermissions: [],
+    acePermissions: [
+      "add_ace group.admin bmtb_carwipe.admin allow",
+    ],
     requirements: [
       "ox_lib",
-      "oxmysql (fx dependency on many builds)",
-      "Optional framework for notifies / QB admin groups",
+      "oxmysql",
+      "Optional framework for notifies / ESX admin groups",
     ],
     installSteps: [
       "Drop bmtb_carwipe into [scripts]/ or [bmtb]/.",
-      "Set Config.Admins identifiers and/or QBAdminGroups / ESX admin groups in config.lua.",
-      "Tune wipe interval, zones, and whitelist in config.lua.",
-      "ensure bmtb_carwipe after ox_lib/oxmysql — test auto wipe + admin command.",
+      "Add ACE: add_ace group.admin bmtb_carwipe.admin allow (or set Config.Admins identifiers).",
+      "Tune wipe interval, zones, and whitelist in config.lua or setup.html.",
+      "ensure bmtb_carwipe after ox_lib/oxmysql — test auto wipe + /carwipe.",
     ],
     updateNotes: [
       "Auto + command vehicle wipe with NUI countdown.",
       "Whitelisted zones support.",
-      "Optional framework notifies.",
-      "Admin via ACE command principal and/or Config.Admins / QB admin groups.",
+      "Admin via ACE, identifiers, or ESX admin groups.",
     ],
     notes: [
-      "No dedicated bmtb.* ACE — often uses IsPlayerAceAllowed(..., \"command\") or Config.Admins.",
-      "On many servers add_ace group.admin command allow covers wipe admins.",
+      "ACE: bmtb_carwipe.admin (Config.UseAcePermission = true by default).",
+      "Also supports Config.Admins identifiers and ESX admin groups.",
     ],
+    adminGuide: [
+      "Configure at least one admin method: ACE, Config.Admins identifiers, or ESX admin groups.",
+      "Set whitelisted zones for garages, dealerships, and player-owned areas.",
+      "Test manual /carwipe with countdown before enabling aggressive auto-wipe intervals.",
+    ],
+    playerCommands: [],
+    adminCommands: [
+      { command: "/carwipe", description: "Start a manual vehicle wipe countdown.", ace: "bmtb_carwipe.admin" },
+      { command: "/carwipe [seconds]", description: "Start wipe with custom countdown duration.", ace: "bmtb_carwipe.admin" },
+      { command: "/carwipe cancel", description: "Cancel an in-progress wipe countdown.", ace: "bmtb_carwipe.admin" },
+      { command: "/carwipe status", description: "Show current wipe timer and zone status.", ace: "bmtb_carwipe.admin" },
+      { command: "carwipe", usage: "Server console", description: "Same as /carwipe but from server console (source 0).", ace: "bmtb_carwipe.admin" },
+    ]
   },
   {
     slug: "bmtb-recycle-job",
@@ -812,13 +1057,38 @@ const products = [
     youtubeEmbed: "https://www.youtube.com/embed/HXxlSWHGpBg",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-recyclejob",
     gumroadUrl: "https://bankrollmadethisbeat.gumroad.com/l/faxqs",
-    requirements: ["ox_lib", "ESX Legacy / QBCore / Qbox", "ox_inventory recommended"],
-    installSteps: [
-      "Drop the resource into your server resources folder.",
-      "Add recycle_material to your inventory items.",
-      "Add ensure bmtb_recyclingjob to server.cfg.",
-      "Edit config.lua for locations, payout, and blip settings.",
+    requirements: [
+      "ox_lib",
+      "ESX Legacy / QBCore / Qbox",
+      "ox_inventory recommended",
     ],
+    installSteps: [
+      "Drop bmtb_recyclingjob (or bmtb-recycle-job folder) into resources/[scripts]/.",
+      "Add recycle_material and related items to your inventory.",
+      "Ensure ox_lib → framework → inventory → recycling job resource.",
+      "Add ensure bmtb_recyclingjob to server.cfg.",
+      "Edit config.lua for yard location, payout, and blip settings.",
+    ],
+    acePermissions: [],
+    adminGuide: [
+      "Configure yard foreman NPC, sorting zones, and payout rates in config.lua.",
+      "Add recycle items to inventory before go-live.",
+      "No local ESX resource copy — verify install steps match your Tebex download folder name.",
+      "Test clock-in → grab box → sort → sell loop once before opening job.",
+    ],
+    playerCommands: [
+      { command: "Recycle yard", usage: "NPC / zones", description: "Clock in at foreman NPC, grab boxes, sort material, sell for cash payout." },
+    ],
+    adminCommands: [],
+    notes: [
+      "Resource folder may be bmtb_recyclingjob on server — match your Tebex download.",
+      "No dedicated ACE — config-driven job locations and payouts.",
+    ],
+    updateNotes: [
+      "Beginner-friendly recycling side hustle with foreman NPC.",
+      "Sorting minigame and cash payouts.",
+      "ESX / QBCore / Qbox support with ox_lib menus.",
+    ]
   },
   {
     slug: "bmtb-givecar",
@@ -853,12 +1123,32 @@ const products = [
     updateNotes: [
       "Give / transfer / delete owned vehicles.",
       "Supports car, plane, boat, heli helpers.",
-      "ACE + AuthorizedRanks (god/admin/superadmin) gates.",
+      "ACE + AuthorizedRanks gates.",
     ],
     notes: [
       "Admin ACE: bmtb_givecar.command",
       "Also checks AuthorizedRanks in config.",
     ],
+    adminGuide: [
+      "Grant bmtb_givecar.command ACE to authorized staff.",
+      "Configure AuthorizedRanks in config.lua as fallback.",
+      "Run optional unique-plate SQL if your garage requires it.",
+      "Test spawn, transfer, and delete flows before giving staff access.",
+    ],
+    playerCommands: [
+      { command: "/givecar [id]", description: "Transfer ownership of the vehicle you are seated in to another player." },
+    ],
+    adminCommands: [
+      { command: "/givecar me", description: "Spawn a vehicle for yourself (admin).", ace: "bmtb_givecar.command" },
+      { command: "/givecar [id] [model]", description: "Spawn a vehicle model for a player.", ace: "bmtb_givecar.command" },
+      { command: "/givecar offline [identifier] [model]", description: "Give a vehicle to an offline player by identifier.", ace: "bmtb_givecar.command" },
+      { command: "/giveplane [id] [model]", description: "Spawn a plane for a player.", ace: "bmtb_givecar.command" },
+      { command: "/giveboat [id] [model]", description: "Spawn a boat for a player.", ace: "bmtb_givecar.command" },
+      { command: "/giveheli [id] [model]", description: "Spawn a helicopter for a player.", ace: "bmtb_givecar.command" },
+      { command: "/delcarplate [plate]", description: "Delete a vehicle from the database by plate.", ace: "bmtb_givecar.command" },
+      { command: "/listcars [id]", description: "List owned vehicles for a player.", ace: "bmtb_givecar.command" },
+      { command: "/givecarmenu", description: "Open admin vehicle giveaway menu.", ace: "bmtb_givecar.command" },
+    ]
   },
   {
     slug: "bmtb-nocrosshair",
@@ -889,7 +1179,16 @@ const products = [
     ],
     notes: [
       "No ACE required.",
+      "Client-only standalone resource.",
     ],
+    adminGuide: [
+      "No configuration required for stock install.",
+      "Players can toggle crosshair visibility with /crosshair if enabled in config.",
+    ],
+    playerCommands: [
+      { command: "/crosshair", description: "Toggle personal crosshair/reticle visibility on or off." },
+    ],
+    adminCommands: []
   },
   {
     slug: "bmtb-itemslist",
@@ -917,9 +1216,9 @@ const products = [
     installSteps: [
       "Drop bmtb_itemslist into [scripts]/ or [bmtb]/.",
       "Ensure ox_lib → framework → inventory → bmtb_itemslist.",
-      "Add ACE: add_ace group.admin bmtb_itemslist.admin allow (if Config.UseAcePermission is enabled).",
-      "Also configure QBPermissions / AdminGroups in config.lua as needed.",
-      "ensure bmtb_itemslist — open with /itemslist or configured key (often Page Down).",
+      "Add ACE: add_ace group.admin bmtb_itemslist.admin allow",
+      "Enable Config.UseAcePermission if using ACE gating.",
+      "ensure bmtb_itemslist — open with /itemslist or configured keybind.",
     ],
     updateNotes: [
       "Admin item catalog NUI with spawn to self/others.",
@@ -927,9 +1226,18 @@ const products = [
       "Audit log support on many builds.",
     ],
     notes: [
-      "ACE: bmtb_itemslist.admin (UseAcePermission may default false — enable in config).",
+      "ACE: bmtb_itemslist.admin (enable Config.UseAcePermission in config).",
       "QBPermissions / AdminGroups often used as fallback.",
     ],
+    adminGuide: [
+      "Grant bmtb_itemslist.admin ACE (or configure QBPermissions / AdminGroups).",
+      "Enable audit logging in config if you want spawn tracking.",
+      "Test spawn-to-self before giving full staff access.",
+    ],
+    playerCommands: [],
+    adminCommands: [
+      { command: "/itemslist", usage: "Page Down keybind", description: "Open admin item catalog NUI — search, spawn to self or others.", ace: "bmtb_itemslist.admin" },
+    ]
   },
   {
     slug: "bmtb-moneywash",
@@ -960,23 +1268,42 @@ const products = [
       "Import bmtb_moneywash.sql (or allow auto CREATE on start).",
       "Ensure ox_lib → oxmysql → framework → inventory/target → bmtb_moneywash.",
       "Add ACE: add_ace group.admin bmtb_moneywash.admin allow",
-      "ensure bmtb_moneywash — place washers with /moneywashplace (or admin cmds) and test wash flow.",
+      "ensure bmtb_moneywash — place washers with /moneywashplace and test wash flow.",
     ],
     updateNotes: [
       "Dirty → clean money wash with NUI progress.",
       "MySQL-backed washer locations + ghost placement.",
-      "Admin cmds: /moneywashadd, /moneywashplace, /moneywashrefresh, etc.",
       "Multi-framework bridges.",
     ],
     notes: [
       "Admin ACE: bmtb_moneywash.admin",
       "FrameworkAdminGroups fallback supported on many builds.",
+      "Optional bmtb_realmoney integration for physical dirty cash.",
     ],
+    adminGuide: [
+      "Import SQL or allow auto-migration on first start.",
+      "Grant bmtb_moneywash.admin ACE to staff who manage washer locations.",
+      "Place at least one washer with /moneywashplace before opening to players.",
+      "Configure wash fee and dirty-money item names in config.lua.",
+    ],
+    playerCommands: [
+      { command: "Money wash prop", usage: "ox_target / E-key", description: "Interact with placed washer props — deposit dirty money, NUI progress, receive clean payout." },
+    ],
+    adminCommands: [
+      { command: "/moneywashadd [model]", description: "Add a washer prop model to the placement list.", ace: "bmtb_moneywash.admin" },
+      { command: "/moneywashremove [id]", description: "Remove a washer by database ID.", ace: "bmtb_moneywash.admin" },
+      { command: "/moneywashprop", description: "Preview/adjust washer prop at your position.", ace: "bmtb_moneywash.admin" },
+      { command: "/moneywashplace", description: "Ghost-place a new washer at your location (saved to MySQL).", ace: "bmtb_moneywash.admin" },
+      { command: "/moneywashrefresh", description: "Reload all washer props from database.", ace: "bmtb_moneywash.admin" },
+      { command: "/moneywashlist", description: "List all placed washers with IDs and fees.", ace: "bmtb_moneywash.admin" },
+      { command: "/moneywashfee [id] [fee]", description: "Set wash fee percentage for a washer.", ace: "bmtb_moneywash.admin" },
+    ]
   },
 ];
 
 // YouTube publish dates from @BMTBScripts/videos (newest uploads first).
 const YOUTUBE_PUBLISH_DATES = {
+  QKEgxFD4f7Q: "2026-08-04", // BMTB Real Money
   "7zQVfRVvzWY": "2026-07-24", // BMTB Scamming
   qHyIuxg061o: "2026-06-24", // BMTB Pill Press
   w6uihCRH7fM: "2026-06-21", // BMTB Strippers
@@ -1028,7 +1355,7 @@ const FRAMEWORK_TAG_STYLES = {
 };
 
 function isProductNew(product) {
-  return product?.slug === "bmtb-scamming" || product?.slug === "bmtb-pillpress";
+  return product?.slug === "bmtb-real-money" || product?.slug === "bmtb-scamming" || product?.slug === "bmtb-pillpress";
 }
 
 function hasGumroadLink(product) {
@@ -1425,6 +1752,33 @@ function AceCopyRow({ ace }) {
   );
 }
 
+function CommandRow({ entry, variant = "player" }) {
+  const label = variant === "admin" ? "Admin" : "Player";
+  return (
+    <li className="rounded-xl border border-bmtb-line bg-bmtb-elevated/60 p-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <code className="rounded bg-white/5 px-2 py-1 text-sm font-semibold text-bmtb-accent">
+              {entry.command}
+            </code>
+            {entry.usage && (
+              <span className="text-xs text-bmtb-muted">{entry.usage}</span>
+            )}
+          </div>
+          <p className="mt-2 text-sm leading-6 text-bmtb-muted">{entry.description}</p>
+        </div>
+        {entry.ace && (
+          <span className="shrink-0 rounded-full border border-bmtb-accent/30 bg-bmtb-accent-soft px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-bmtb-accent">
+            ACE: {entry.ace}
+          </span>
+        )}
+      </div>
+      <span className="sr-only">{label} command</span>
+    </li>
+  );
+}
+
 function HomePage() {
   const popularProducts = sortProductsByDownloads(products).slice(0, 3);
   const popularJsonLd = {
@@ -1557,20 +1911,31 @@ function HomePage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="bmtb-glass rounded-2xl p-6 md:p-8"
+          className="bmtb-glass overflow-hidden rounded-2xl"
         >
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="bmtb-eyebrow">Coming Soon</p>
+          <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+            <div className="p-6 md:p-8">
+              <p className="bmtb-eyebrow">New Release</p>
               <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Real Money</h2>
-              <p className="mt-2 max-w-xl text-sm text-bmtb-muted md:text-base">
-                Releasing August 1, 2026 at 2:00 PM ET on Tebex.
+              <p className="mt-3 max-w-xl text-sm leading-7 text-bmtb-muted md:text-base">
+                Real cash. Real RP. No fake money — physical bills, store registers, change-making, player handoffs, and dirty money for ESX, QBCore, and Qbox.
               </p>
+              <p className="mt-3 font-display text-xl font-bold text-bmtb-accent">$5</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/scripts/bmtb-real-money" className="bmtb-btn-primary px-6 py-3">
+                  View Product
+                </Link>
+                <a href="https://bmtbscripts.tebex.io/package/bmtb-real-money" target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-6 py-3">
+                  Buy on Tebex
+                </a>
+              </div>
             </div>
-            <div className="w-full max-w-md">
-              <ComingSoonCountdown
-                targetDate={REAL_MONEY_RELEASE_AT}
-                liveMessage="Release live — check the store for BMTB Real Money."
+            <div className="border-t border-bmtb-line md:border-l md:border-t-0">
+              <img
+                src="/bmtb-real-money-thumb.png"
+                alt="BMTB Real Money preview"
+                className="h-full min-h-[220px] w-full object-cover object-center"
+                loading="lazy"
               />
             </div>
           </div>
@@ -1587,7 +1952,7 @@ function HomePage() {
         >
           <div className="grid md:grid-cols-[1.1fr_0.9fr]">
             <div className="p-6 md:p-8">
-              <p className="bmtb-eyebrow">New Release</p>
+              <p className="bmtb-eyebrow">Also New</p>
               <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Scamming v1.0</h2>
               <p className="mt-3 max-w-xl text-sm leading-7 text-bmtb-muted md:text-base">
                 Buy dumps. Cash out. Get ranks. Full carding / ATM scam RP with heat, burn risk, police dispatch, and bmtb os — free on Tebex.
@@ -1607,6 +1972,32 @@ function HomePage() {
                 alt="BMTB Scamming preview"
                 className="h-full min-h-[220px] w-full object-cover"
                 loading="lazy"
+              />
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="bmtb-glass rounded-2xl p-6 md:p-8"
+        >
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="bmtb-eyebrow">Coming Soon</p>
+              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB BagDrugs</h2>
+              <p className="mt-2 max-w-xl text-sm text-bmtb-muted md:text-base">
+                Releasing August 14, 2026 at 2:00 PM ET on Tebex.
+              </p>
+            </div>
+            <div className="w-full max-w-md">
+              <ComingSoonCountdown
+                targetDate={BAG_DRUGS_RELEASE_AT}
+                liveMessage="Release live — check the store for BMTB BagDrugs."
               />
             </div>
           </div>
@@ -1986,6 +2377,9 @@ function DocsScriptPage() {
         item.desc,
         ...(item.frameworks || []),
         ...(item.acePermissions || []),
+        ...(item.playerCommands || []).flatMap((cmd) => [cmd.command, cmd.description, cmd.usage]),
+        ...(item.adminCommands || []).flatMap((cmd) => [cmd.command, cmd.description, cmd.ace]),
+        ...(item.adminGuide || []),
       ]
         .join(" ")
         .toLowerCase();
@@ -2019,10 +2413,9 @@ function DocsScriptPage() {
   const next = currentIndex < docsList.length - 1 ? docsList[currentIndex + 1] : null;
 
   return (
-    <section className="flex min-h-[calc(100vh-4.5rem)] flex-col">
-      <div className="mx-auto flex w-full max-w-none flex-1 md:grid md:grid-cols-[280px_1fr]">
-        <aside className="border-b border-bmtb-line bg-bmtb-bg/75 backdrop-blur-xl md:sticky md:top-[4.5rem] md:h-[calc(100vh-4.5rem)] md:border-b-0 md:border-r md:border-bmtb-line">
-          <div className="border-b border-bmtb-line px-5 py-4">
+    <section className="relative min-h-[calc(100vh-4.5rem)]">
+      <aside className="flex min-h-[calc(100vh-4.5rem)] w-full flex-col border-b border-bmtb-line bg-bmtb-bg md:fixed md:bottom-0 md:left-0 md:top-[4.5rem] md:z-20 md:w-[280px] md:min-h-0 md:border-b-0 md:border-r md:border-bmtb-line">
+        <div className="shrink-0 border-b border-bmtb-line px-5 py-4">
             <p className="bmtb-eyebrow">Documentation</p>
             <p className="mt-2 font-display text-lg font-bold tracking-tight">BMTB Docs</p>
             <p className="mt-1 text-xs text-bmtb-muted">Install guides for every script</p>
@@ -2046,7 +2439,7 @@ function DocsScriptPage() {
               </div>
             </label>
           </div>
-          <nav className="max-h-[40vh] overflow-y-auto p-3 md:max-h-[calc(100vh-10rem)]">
+          <nav className="bmtb-scrollbar-hidden min-h-0 flex-1 overflow-y-auto p-3">
             <p className="px-2 pb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-bmtb-muted">
               Scripts{docsQuery.trim() ? ` (${filteredDocs.length})` : ""}
             </p>
@@ -2074,9 +2467,9 @@ function DocsScriptPage() {
               </ul>
             )}
           </nav>
-        </aside>
+      </aside>
 
-        <article className="min-w-0 flex-1 px-5 py-8 md:px-12 md:py-12">
+      <article className="min-w-0 px-5 py-8 md:ml-[280px] md:px-12 md:py-12">
           <div className="mb-8 flex flex-wrap items-center gap-3">
             <span className="rounded-full border border-bmtb-line px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-bmtb-muted">
               {active.tag}
@@ -2139,6 +2532,44 @@ function DocsScriptPage() {
             )}
           </DocsSection>
 
+          <DocsSection title="Player commands">
+            {active.playerCommands?.length > 0 ? (
+              <ul className="space-y-3">
+                {active.playerCommands.map((entry) => (
+                  <CommandRow key={entry.command} entry={entry} variant="player" />
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm leading-6 text-bmtb-muted">
+                No chat commands — use inventory items, target interactions, or keybinds documented in the Features section.
+              </p>
+            )}
+          </DocsSection>
+
+          {active.adminGuide?.length > 0 && (
+            <DocsSection title="Admin guide">
+              <ol className="list-decimal space-y-3 pl-5 text-sm leading-7 text-bmtb-muted">
+                {active.adminGuide.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
+            </DocsSection>
+          )}
+
+          <DocsSection title="Admin commands">
+            {active.adminCommands?.length > 0 ? (
+              <ul className="space-y-3">
+                {active.adminCommands.map((entry) => (
+                  <CommandRow key={entry.command} entry={entry} variant="admin" />
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm leading-6 text-bmtb-muted">
+                No dedicated admin commands — access is job-gated, ACE-gated via target interactions, or configured through framework admin groups only.
+              </p>
+            )}
+          </DocsSection>
+
           <DocsSection title="Features">
             {active.updateNotes?.length > 0 ? (
               <ul className="space-y-2">
@@ -2196,7 +2627,6 @@ function DocsScriptPage() {
             ) : null}
           </div>
         </article>
-      </div>
     </section>
   );
 }
@@ -2264,18 +2694,6 @@ export default function BMTBScriptsWebsite() {
 
         {!isDocsPage && (
           <>
-            <section className="mx-auto max-w-5xl px-6 py-16">
-              <h2 className="text-center font-display text-3xl font-bold tracking-tight md:text-4xl">Latest Changelog</h2>
-              <div className="bmtb-panel mt-8 p-6">
-                <ul className="space-y-2 text-sm leading-6 text-bmtb-muted">
-                  <li>- Luxury Developer UI restyle: matte black, frosted glass, Electric Violet accent.</li>
-                  <li>- Added per-script info pages with image, video, and action buttons.</li>
-                  <li>- Introduced buy/Discord/CFX action flow and purchase ticket template helper.</li>
-                  <li>- Updated script cards to show thumbnail strips and status badges.</li>
-                </ul>
-              </div>
-            </section>
-
             <section className="mx-auto max-w-5xl px-6 py-16">
               <h2 className="text-center font-display text-3xl font-bold tracking-tight md:text-4xl">FAQ</h2>
               <div className="mt-8 space-y-3">
