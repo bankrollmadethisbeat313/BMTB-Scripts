@@ -1,16 +1,31 @@
-# React + Vite
+# BMTB Scripts
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Official website for **BMTB Scripts** FiveM resources.
 
-Currently, two official plugins are available:
+**Live site:** [https://www.bmtbscripts.online](https://www.bmtbscripts.online)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Latest
 
-## React Compiler
+- **[BMTB Physical Therapy](https://www.bmtbscripts.online/scripts/bmtb-physical-therapy)** — FREE on Tebex · ESX Legacy, QBCore, Qbox · yoga mat rehab, `/ptadmin`, optional Wasabi crutch bridge
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Repo
 
-## Expanding the ESLint configuration
+This repository powers the BMTB Scripts store website (React + Vite), deployed to Vercel.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Script downloads are on [Tebex](https://bmtbscripts.tebex.io) — not hosted in this repo.
+
+## Update the live site
+
+From your Desktop, run **`Update-BMTB-Website.bat`** (push to GitHub + Vercel deploy).
+
+## Local dev
+
+```bash
+npm install
+npm run dev
+```
+
+## Support
+
+- [Discord](https://discord.gg/5rRMZ2R9EP)
+- [Store](https://bmtbscripts.online)

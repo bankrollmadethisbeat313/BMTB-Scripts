@@ -125,6 +125,7 @@ const products = [
     youtubeEmbed: "https://www.youtube.com/embed/Y692o3yh944",
     buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-physicaltherapy",
     tebexUrl: "https://bmtbscripts.tebex.io/package/bmtb-physicaltherapy",
+    githubUrl: "https://github.com/bankrollmadethisbeat313/BMTB-Scripts",
     infoHeading: "BMTB Physical Therapy v1.1.1",
     updateNotes: [
       "Yoga mat placement — place mat in therapy areas and run exercise chains.",
