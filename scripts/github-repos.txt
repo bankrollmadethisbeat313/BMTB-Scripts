@@ -1,0 +1,4 @@
+﻿# BMTB script registry
+# format: slug|repo-name|tag
+# (legacy lines framework|slug|repo-name|tag still work for lookup)
+bmtb-physical-therapy|bmtb-physical-therapy|FREE

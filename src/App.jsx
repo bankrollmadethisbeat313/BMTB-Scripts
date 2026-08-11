@@ -111,6 +111,71 @@ function AnimatedCount({ value, duration = 1400 }) {
 
 const products = [
   {
+    slug: "bmtb-physical-therapy",
+    name: "BMTB Physical Therapy",
+    desc: "Rehab sessions with yoga mat placement, skill-check exercises, therapy areas, optional Wasabi crutch bridge, and a full /ptadmin setup panel.",
+    fullDesc: "BMTB Physical Therapy v1.1.1 brings immersive rehab RP to ESX Legacy, QBCore, and Qbox — players visit a PT ped, follow GPS to a therapy area, place a yoga mat, and complete skill-check exercise chains. Includes standalone core (no framework required), built-in streamed crutch (GPLv3), optional Wasabi integration, ACE-gated /ptadmin for locations and exercises, and setup.html for easy config.",
+    price: "FREE",
+    tag: "FREE",
+    frameworks: ["ESX", "QBCore", "Qbox"],
+    downloads: 0,
+    version: "v1.1.1",
+    updatedOn: "2026-08-11",
+    imageUrl: "/bmtb-physical-therapy-thumb.png",
+    youtubeEmbed: "https://www.youtube.com/embed/Y692o3yh944",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-physicaltherapy",
+    tebexUrl: "https://bmtbscripts.tebex.io/package/bmtb-physicaltherapy",
+    infoHeading: "BMTB Physical Therapy v1.1.1",
+    updateNotes: [
+      "Yoga mat placement — place mat in therapy areas and run exercise chains.",
+      "Skill-check exercises — easy difficulty, configurable laps, hold poses between checks.",
+      "/ptadmin panel — locations, therapy areas, exercise chains, anim catalog, logs.",
+      "Wasabi crutch bridge — optional PT-on-crutch flow with clear-on-complete.",
+      "Built-in standalone crutch — streamed prop when Wasabi is off (GPLv3 credited).",
+      "Multi-framework — ESX Legacy, QBCore, Qbox auto-detect; standalone core.",
+      "setup.html — load/edit/download config.lua without hand-editing.",
+    ],
+    requirements: [
+      "FiveM (Cerulean)",
+      "Optional: wasabi_crutch + wasabi bridge/ambulance",
+      "Optional: ox_target or qb-target",
+      "Optional: ox_inventory (yoga mat item)",
+      "Optional: ox_lib (Wasabi time query)",
+    ],
+    installSteps: [
+      "Drop bmtb_physicaltherapy into resources/[scripts]/ or [bmtb]/.",
+      "Open setup.html → Load config.lua → edit → Download → replace config.lua.",
+      "Ensure Wasabi resources before bmtb_physicaltherapy if using Wasabi.",
+      "Add ACE: add_ace group.admin bmtb.ptadmin allow",
+      "Optional: merge install/ox_inventory_items.lua and copy yoga_mat.png to ox_inventory.",
+      "ensure bmtb_physicaltherapy — /ptadmin to add PT location + therapy area (radius 4–6+).",
+    ],
+    notes: [
+      "Admin ACE: bmtb.ptadmin",
+      "Fresh installs ship data/locations.json as [] — place locations via /ptadmin.",
+      "Set Config.Debug = false on production servers.",
+    ],
+    acePermissions: [
+      "add_ace group.admin bmtb.ptadmin allow",
+    ],
+    adminGuide: [
+      "Grant bmtb.ptadmin ACE before opening /ptadmin to staff.",
+      "Create at least one PT location (ped) and therapy area with radius ≥ 4 (prefer 6).",
+      "If using Wasabi, ensure wasabi_crutch starts before this resource.",
+      "Smoke-test: notes → travel → place mat → exercises → complete + crutch clear.",
+    ],
+    playerCommands: [
+      { command: "PT ped interaction", usage: "Target / E-key", description: "Talk to the physiotherapist, accept notes, and start a rehab session." },
+      { command: "Therapy area", usage: "Map blip / GPS", description: "Travel to the configured area, place yoga mat, and complete exercise skill checks." },
+      { command: "/ptuifix", description: "Clear stuck NUI cursor or focus if the UI locks up." },
+    ],
+    adminCommands: [
+      { command: "/ptadmin", description: "Open admin panel — locations, areas, exercises, chains, settings, logs.", ace: "bmtb.ptadmin" },
+      { command: "/ptcrutch [minutes] [id]", description: "Test crutch assignment (Wasabi or standalone).", ace: "bmtb.ptadmin" },
+      { command: "/ptneed [injury]", description: "Assign therapy requirement to yourself (debug/admin).", ace: "bmtb.ptadmin" },
+    ]
+  },
+  {
     slug: "bmtb-real-money",
     name: "BMTB Real Money",
     desc: "Physical cash system with real bill denominations, store registers, change-making, player handoffs, and dirty money — built for serious RP servers.",
@@ -1303,6 +1368,7 @@ const products = [
 
 // YouTube publish dates from @BMTBScripts/videos (newest uploads first).
 const YOUTUBE_PUBLISH_DATES = {
+  Y692o3yh944: "2026-08-11", // BMTB Physical Therapy
   QKEgxFD4f7Q: "2026-08-04", // BMTB Real Money
   "7zQVfRVvzWY": "2026-07-24", // BMTB Scamming
   qHyIuxg061o: "2026-06-24", // BMTB Pill Press
@@ -1355,7 +1421,7 @@ const FRAMEWORK_TAG_STYLES = {
 };
 
 function isProductNew(product) {
-  return product?.slug === "bmtb-real-money" || product?.slug === "bmtb-scamming" || product?.slug === "bmtb-pillpress";
+  return product?.slug === "bmtb-physical-therapy" || product?.slug === "bmtb-real-money" || product?.slug === "bmtb-scamming" || product?.slug === "bmtb-pillpress";
 }
 
 function hasGumroadLink(product) {
@@ -1916,24 +1982,24 @@ function HomePage() {
           <div className="grid md:grid-cols-[1.1fr_0.9fr]">
             <div className="p-6 md:p-8">
               <p className="bmtb-eyebrow">New Release</p>
-              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Real Money</h2>
+              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Physical Therapy v1.1.1</h2>
               <p className="mt-3 max-w-xl text-sm leading-7 text-bmtb-muted md:text-base">
-                Real cash. Real RP. No fake money — physical bills, store registers, change-making, player handoffs, and dirty money for ESX, QBCore, and Qbox.
+                Rehab RP with yoga mat sessions, skill-check exercises, therapy areas, optional Wasabi crutch bridge, and a full /ptadmin setup panel for ESX, QBCore, and Qbox.
               </p>
-              <p className="mt-3 font-display text-xl font-bold text-bmtb-accent">$5</p>
+              <p className="mt-3 font-display text-xl font-bold text-bmtb-accent">FREE</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link to="/scripts/bmtb-real-money" className="bmtb-btn-primary px-6 py-3">
+                <Link to="/scripts/bmtb-physical-therapy" className="bmtb-btn-primary px-6 py-3">
                   View Product
                 </Link>
-                <a href="https://bmtbscripts.tebex.io/package/bmtb-real-money" target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-6 py-3">
-                  Buy on Tebex
+                <a href="https://bmtbscripts.tebex.io/package/bmtb-physicaltherapy" target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-6 py-3">
+                  Download on Tebex
                 </a>
               </div>
             </div>
             <div className="border-t border-bmtb-line md:border-l md:border-t-0">
               <img
-                src="/bmtb-real-money-thumb.png"
-                alt="BMTB Real Money preview"
+                src="/bmtb-physical-therapy-thumb.png"
+                alt="BMTB Physical Therapy preview"
                 className="h-full min-h-[220px] w-full object-cover object-center"
                 loading="lazy"
               />
@@ -1953,24 +2019,25 @@ function HomePage() {
           <div className="grid md:grid-cols-[1.1fr_0.9fr]">
             <div className="p-6 md:p-8">
               <p className="bmtb-eyebrow">Also New</p>
-              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Scamming v1.0</h2>
+              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Real Money</h2>
               <p className="mt-3 max-w-xl text-sm leading-7 text-bmtb-muted md:text-base">
-                Buy dumps. Cash out. Get ranks. Full carding / ATM scam RP with heat, burn risk, police dispatch, and bmtb os — free on Tebex.
+                Real cash. Real RP. No fake money — physical bills, store registers, change-making, player handoffs, and dirty money for ESX, QBCore, and Qbox.
               </p>
+              <p className="mt-3 font-display text-xl font-bold text-bmtb-accent">$5</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link to="/scripts/bmtb-scamming" className="bmtb-btn-primary px-6 py-3">
+                <Link to="/scripts/bmtb-real-money" className="bmtb-btn-primary px-6 py-3">
                   View Product
                 </Link>
-                <a href="https://bmtbscripts.tebex.io/package/7577885" target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-6 py-3">
-                  Download on Tebex
+                <a href="https://bmtbscripts.tebex.io/package/bmtb-real-money" target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-6 py-3">
+                  Buy on Tebex
                 </a>
               </div>
             </div>
             <div className="border-t border-bmtb-line md:border-l md:border-t-0">
               <img
-                src="/bmtb-scamming-thumb.png"
-                alt="BMTB Scamming preview"
-                className="h-full min-h-[220px] w-full object-cover"
+                src="/bmtb-real-money-thumb.png"
+                alt="BMTB Real Money preview"
+                className="h-full min-h-[220px] w-full object-cover object-center"
                 loading="lazy"
               />
             </div>

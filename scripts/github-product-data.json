@@ -237,5 +237,32 @@
     "fullDesc": "Money wash script with progress UX and framework support across ESX, QBCore, and Qbox, designed for realistic economy loops.",
     "frameworks": ["ESX", "QBCore"],
     "features": ["Dirty money washing", "Progress UX", "Multi-framework support", "Configurable wash rates"]
+  },
+  "bmtb-physical-therapy": {
+    "name": "BMTB Physical Therapy",
+    "tag": "FREE",
+    "thumb": "/bmtb-physical-therapy-thumb.png",
+    "tebex": "https://bmtbscripts.tebex.io/package/bmtb-physicaltherapy",
+    "gumroad": "https://bmtbscripts.tebex.io/category/scripts",
+    "desc": "Rehab sessions with yoga mat placement, skill-check exercises, therapy areas, optional Wasabi crutch bridge, and a full /ptadmin setup panel.",
+    "fullDesc": "BMTB Physical Therapy v1.1.1 brings immersive rehab RP to ESX Legacy, QBCore, and Qbox — players visit a PT ped, follow GPS to a therapy area, place a yoga mat, and complete skill-check exercise chains. Includes standalone core (no framework required), built-in streamed crutch (GPLv3), optional Wasabi integration, ACE-gated /ptadmin for locations and exercises, and setup.html for easy config.",
+    "frameworks": ["ESX", "QBCore", "Qbox"],
+    "version": "v1.1.1",
+    "requirements": [
+      "FiveM (Cerulean)",
+      "Optional: wasabi_crutch + wasabi bridge/ambulance",
+      "Optional: ox_target or qb-target",
+      "Optional: ox_inventory (yoga mat item)",
+      "Optional: ox_lib (Wasabi time query)"
+    ],
+    "features": [
+      "Yoga mat placement in therapy areas with exercise chains",
+      "Skill-check exercises with configurable laps and hold poses",
+      "/ptadmin panel for locations, areas, exercises, and logs",
+      "Optional Wasabi crutch bridge with clear-on-complete",
+      "Built-in standalone crutch when Wasabi is off (GPLv3 credited)",
+      "Multi-framework ESX Legacy, QBCore, and Qbox auto-detect",
+      "setup.html config wizard for config.lua"
+    ]
   }
 }

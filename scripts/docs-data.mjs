@@ -2,6 +2,54 @@
 
 /** @type {Record<string, Record<string, unknown>>} */
 export const docs = {
+  "bmtb-physical-therapy": {
+    acePermissions: ["add_ace group.admin bmtb.ptadmin allow"],
+    requirements: [
+      "FiveM (Cerulean)",
+      "Optional: wasabi_crutch + wasabi bridge/ambulance",
+      "Optional: ox_target or qb-target",
+      "Optional: ox_inventory (yoga mat item)",
+      "Optional: ox_lib (Wasabi time query)",
+    ],
+    installSteps: [
+      "Drop bmtb_physicaltherapy into resources/[scripts]/ or [bmtb]/.",
+      "Open setup.html → Load config.lua → edit → Download → replace config.lua.",
+      "Ensure Wasabi resources before bmtb_physicaltherapy if using Wasabi.",
+      "Add ACE: add_ace group.admin bmtb.ptadmin allow",
+      "Optional: merge install/ox_inventory_items.lua and copy yoga_mat.png to ox_inventory.",
+      "ensure bmtb_physicaltherapy — /ptadmin to add PT location + therapy area (radius 4–6+).",
+    ],
+    adminGuide: [
+      "Grant bmtb.ptadmin ACE before opening /ptadmin to staff.",
+      "Create at least one PT location (ped) and therapy area with radius ≥ 4 (prefer 6).",
+      "If using Wasabi, ensure wasabi_crutch starts before this resource.",
+      "Smoke-test: notes → travel → place mat → exercises → complete + crutch clear.",
+    ],
+    playerCommands: [
+      { command: "PT ped interaction", usage: "Target / E-key", description: "Talk to the physiotherapist, accept notes, and start a rehab session." },
+      { command: "Therapy area", usage: "Map blip / GPS", description: "Travel to the configured area, place yoga mat, and complete exercise skill checks." },
+      { command: "/ptuifix", description: "Clear stuck NUI cursor or focus if the UI locks up." },
+    ],
+    adminCommands: [
+      { command: "/ptadmin", description: "Open admin panel — locations, areas, exercises, chains, settings, logs.", ace: "bmtb.ptadmin" },
+      { command: "/ptcrutch [minutes] [id]", description: "Test crutch assignment (Wasabi or standalone).", ace: "bmtb.ptadmin" },
+      { command: "/ptneed [injury]", description: "Assign therapy requirement to yourself (debug/admin).", ace: "bmtb.ptadmin" },
+    ],
+    notes: [
+      "Admin ACE: bmtb.ptadmin",
+      "Fresh installs ship data/locations.json as [] — place locations via /ptadmin.",
+      "Set Config.Debug = false on production servers.",
+    ],
+    updateNotes: [
+      "Yoga mat placement — place mat in therapy areas and run exercise chains.",
+      "Skill-check exercises — easy difficulty, configurable laps, hold poses between checks.",
+      "/ptadmin panel — locations, therapy areas, exercise chains, anim catalog, logs.",
+      "Wasabi crutch bridge — optional PT-on-crutch flow with clear-on-complete.",
+      "Built-in standalone crutch — streamed prop when Wasabi is off (GPLv3 credited).",
+      "Multi-framework — ESX Legacy, QBCore, Qbox auto-detect; standalone core.",
+      "setup.html — load/edit/download config.lua without hand-editing.",
+    ],
+  },
   "bmtb-real-money": {
     acePermissions: [],
     requirements: [

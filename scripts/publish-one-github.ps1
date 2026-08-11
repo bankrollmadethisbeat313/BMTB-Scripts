@@ -1,8 +1,9 @@
 param(
   [Parameter(Mandatory = $true)][string]$RepoName,
   [Parameter(Mandatory = $true)][string]$Slug,
-  [Parameter(Mandatory = $true)][string]$FwLabel,
-  [Parameter(Mandatory = $true)][string]$Tag
+  [Parameter(Mandatory = $false)][string]$FwLabel,
+  [Parameter(Mandatory = $true)][string]$Tag,
+  [Parameter(Mandatory = $false)][string]$GitUser = "bankrollmadethisbeat"
 )
 
 $ErrorActionPreference = "Continue"
@@ -10,7 +11,6 @@ $PublicDir = "C:\Users\bankr\OneDrive\Desktop\BMTB-Scripts\public"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProductData = Get-Content (Join-Path $ScriptDir "github-product-data.json") -Raw | ConvertFrom-Json
 $TemplateDir = "C:\Users\bankr\OneDrive\Desktop\BMTB-Scripts\templates\script-repo"
-$GitUser = "bankrollmadethisbeat"
 $License = Get-Content "$TemplateDir\LICENSE" -Raw
 
 function Get-ThumbPath($thumb) {
@@ -24,22 +24,32 @@ function Get-ThumbPath($thumb) {
   return $null
 }
 
-function Write-StoreReadme($path, $product, $fwLabel, $repoName, $slug) {
+function Get-FrameworkLabels($Product) {
+  $frameworks = @($Product.frameworks)
+  if ($frameworks.Count -eq 0) { return "ESX Legacy, QBCore" }
+  if ($frameworks -contains "Any") { return "Any framework" }
+  $labels = foreach ($fw in $frameworks) {
+    if ($fw -eq "ESX") { "ESX Legacy" } else { $fw }
+  }
+  return ($labels -join ", ")
+}
+
+function Write-StoreReadme($path, $product, $repoName, $slug) {
   $premium = $product.tag -eq "PREMIUM"
   $tagLine = if ($premium) { "**PREMIUM**" } else { "**FREE**" }
   $gumroad = if ($product.gumroad) { $product.gumroad } else { "https://bankrollmadethisbeat.gumroad.com/" }
   $version = if ($product.version) { "**Version:** $($product.version)  |  " } else { "" }
-  $fwList = if ($product.frameworks) { ($product.frameworks -join ", ") } else { $fwLabel }
+  $fwList = Get-FrameworkLabels $product
   $downloadHeading = if ($premium) { "Purchase" } else { "Download" }
   $footer = if ($premium) {
-    "After purchase, download from Tebex or Gumroad. Pick the **$fwLabel** build in your package."
+    "After purchase, download from Tebex or Gumroad. Pick the build for your framework ($fwList) in your package."
   } else {
-    "Get the **$fwLabel** build from Tebex or Gumroad. Install guide is included with your download."
+    "Download from Tebex or Gumroad below. ESX Legacy, QBCore, and Qbox builds are included where supported."
   }
   $notice = if ($premium) {
-    "`n> Source files are **not** included in this repository.  `n> Purchase to download the full **$fwLabel** build.`n"
+    "`n> Source files are **not** included in this repository.  `n> Purchase to download the full resource for your framework.`n"
   } else {
-    "`n> Download the full **$fwLabel** resource from Tebex or Gumroad below.`n"
+    "`n> Download the full resource from Tebex or Gumroad below.`n"
   }
   $img = "<p align=`"center`">`n  <img src=`"https://raw.githubusercontent.com/$GitUser/$repoName/main/promo.png`" alt=`"$($product.name)`" width=`"640`" />`n</p>`n`n"
   $features = ""
@@ -51,12 +61,11 @@ function Write-StoreReadme($path, $product, $fwLabel, $repoName, $slug) {
     $requirements = "`n## Requirements`n`n$(($product.requirements | ForEach-Object { '- ' + $_ }) -join "`n")`n"
   }
   $body = @"
-# $($product.name) ($fwLabel)
+# $($product.name)
 
 $img$tagLine FiveM script by **BMTB Scripts**.
 $notice
-$version**Framework build:** $fwLabel  
-**Supported frameworks:** $fwList
+$version**Supported frameworks:** $fwList
 
 ## About
 
@@ -100,6 +109,6 @@ New-Item -ItemType Directory -Path $dir -Force | Out-Null
 Set-Content "$dir\LICENSE" $License -Encoding UTF8
 $thumbPath = Get-ThumbPath $product.thumb
 if ($thumbPath) { Copy-Item $thumbPath "$dir\promo.png" -Force }
-Write-StoreReadme "$dir\README.md" $product $FwLabel $RepoName $Slug
+Write-StoreReadme "$dir\README.md" $product $RepoName $Slug
 
 Write-Output $dir
