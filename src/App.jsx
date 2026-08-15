@@ -9,7 +9,7 @@ const TEBEX_STORE_URL = "https://bmtbscripts.tebex.io";
 const TEBEX_FREE_CATEGORY_URL = "https://bmtbscripts.tebex.io/category/scripts";
 const TEBEX_CUSTOM_SCRIPT_PACKAGE_URL = "https://bmtbscripts.tebex.io/category/CustomScriptPackage";
 const GUMROAD_STORE_URL = "https://bankrollmadethisbeat.gumroad.com/?section=Hn1qT-Kqt-tN59rEoI51ZQ%3D%3D";
-const BAG_DRUGS_RELEASE_AT = new Date("2026-08-14T18:00:00Z"); // August 14, 2026 2:00 PM ET
+const BAG_DRUGS_RELEASE_AT = new Date("2026-08-15T16:00:00Z"); // August 15, 2026 12:00 PM ET
 const icons = {
   shield: "M12 2 5 5v6c0 5 3.4 9.4 7 11 3.6-1.6 7-6 7-11V5l-7-3Zm0 4.1 3.5 1.5v3.6c0 2.9-1.6 5.6-3.5 7-1.9-1.4-3.5-4.1-3.5-7V7.6L12 6.1Zm-1 8.4 5-5-1.4-1.4L11 11.7l-1.6-1.6L8 11.5l3 3Z",
   zap: "M13 2 4 14h7l-1 8 9-12h-7l1-8Z",
@@ -110,6 +110,58 @@ function AnimatedCount({ value, duration = 1400 }) {
 }
 
 const products = [
+  {
+    slug: "bmtb-bag-drugs",
+    name: "BMTB Bag Drugs",
+    desc: "Advanced drug packaging — branded mylar bags, glass jars, and pill bottles with a quantity NUI for raw-to-packaged conversion.",
+    fullDesc: "BMTB Bag Drugs v1.0 is an advanced packaging system for ESX Legacy, QBCore, and Qbox. Convert raw product into street-ready branded packages — zip bags, mason jars, and prescription bottles — with a clean BMTB quantity NUI (add, take all, reset, confirm). Built for immersive trap RP and designed to sit next to BMTB Pill Press and Trap Phone.",
+    price: "$10",
+    originalPrice: "$20",
+    tag: "PREMIUM",
+    frameworks: ["ESX", "QBCore", "Qbox"],
+    downloads: 0,
+    version: "v1.0",
+    updatedOn: "2026-08-15",
+    imageUrl: "/bmtb-bagdrugs-thumb.png",
+    youtubeEmbed: "https://www.youtube.com/embed/b6YiNpMBEdk",
+    buyUrl: "https://bmtbscripts.tebex.io/package/bmtb-bagdrugs",
+    tebexUrl: "https://bmtbscripts.tebex.io/package/bmtb-bagdrugs",
+    infoHeading: "BMTB Bag Drugs v1.0",
+    updateNotes: [
+      "Advanced packaging — branded mylar bags, glass jars, and prescription bottles.",
+      "Quantity NUI — add, take all, reset, and confirm exact package counts.",
+      "Raw-to-packaged conversion — turn bulk product into labeled street-ready items.",
+      "Configurable package types, labels, and batch sizes.",
+      "Multi-framework — ESX Legacy, QBCore, and Qbox auto-detect.",
+    ],
+    requirements: [
+      "ESX Legacy, QBCore, or Qbox",
+      "ox_inventory or compatible inventory",
+      "ox_target or qb-target",
+      "ox_lib recommended",
+    ],
+    installSteps: [
+      "Drop bmtb_bagdrugs into resources/[scripts]/ or [bmtb]/ and merge install items + icons.",
+      "Ensure framework → ox_lib → inventory → target → bmtb_bagdrugs.",
+      "Edit config.lua for package types, labels, and conversion amounts.",
+      "ensure bmtb_bagdrugs — test packaging a raw item into a bag, jar, and bottle.",
+    ],
+    notes: [
+      "Tebex listing goes live August 15, 2026 at 12:00 PM ET.",
+      "Pairs with BMTB Pill Press and BMTB Trap Phone for a full drug economy.",
+    ],
+    acePermissions: [],
+    adminGuide: [
+      "Merge packaging items and icons before first restart.",
+      "Tune package types and conversion amounts in config.lua.",
+      "Test one bag, one jar, and one bottle conversion before go-live.",
+    ],
+    playerCommands: [
+      { command: "Packaging NUI", usage: "Target / item use", description: "Open the Bag Drugs menu — set quantity, take all, add, then confirm packaged output." },
+      { command: "Raw product", usage: "Inventory", description: "Convert raw items into branded bags, jars, or prescription bottles." },
+    ],
+    adminCommands: []
+  },
   {
     slug: "bmtb-physical-therapy",
     name: "BMTB Physical Therapy",
@@ -1369,6 +1421,7 @@ const products = [
 
 // YouTube publish dates from @BMTBScripts/videos (newest uploads first).
 const YOUTUBE_PUBLISH_DATES = {
+  b6YiNpMBEdk: "2026-08-15", // BMTB Bag Drugs
   Y692o3yh944: "2026-08-11", // BMTB Physical Therapy
   QKEgxFD4f7Q: "2026-08-04", // BMTB Real Money
   "7zQVfRVvzWY": "2026-07-24", // BMTB Scamming
@@ -1422,7 +1475,7 @@ const FRAMEWORK_TAG_STYLES = {
 };
 
 function isProductNew(product) {
-  return product?.slug === "bmtb-physical-therapy" || product?.slug === "bmtb-real-money" || product?.slug === "bmtb-scamming" || product?.slug === "bmtb-pillpress";
+  return product?.slug === "bmtb-bag-drugs" || product?.slug === "bmtb-physical-therapy" || product?.slug === "bmtb-real-money" || product?.slug === "bmtb-scamming" || product?.slug === "bmtb-pillpress";
 }
 
 function hasGumroadLink(product) {
@@ -1438,6 +1491,42 @@ function NewBadge({ size = "sm" }) {
     <span className={`rounded-full border border-bmtb-accent/40 bg-bmtb-accent-soft font-semibold uppercase tracking-wide text-bmtb-accent ${sizeClass}`}>
       New
     </span>
+  );
+}
+
+function isOnSale(product) {
+  return Boolean(product?.originalPrice) && product.originalPrice !== product.price;
+}
+
+function SaleBadge({ size = "sm" }) {
+  const sizeClass = size === "md"
+    ? "px-3 py-1 text-xs"
+    : "px-2.5 py-1 text-[10px]";
+
+  return (
+    <span className={`rounded-full border border-bmtb-accent bg-bmtb-accent font-semibold uppercase tracking-wide text-black ${sizeClass}`}>
+      Sale
+    </span>
+  );
+}
+
+function ProductPrice({ product, size = "md" }) {
+  const sale = isOnSale(product);
+  const priceClass = {
+    sm: "font-display text-xl font-bold text-bmtb-accent",
+    md: "font-display text-2xl font-bold text-bmtb-accent",
+    lg: "font-display text-3xl font-bold text-bmtb-accent",
+  }[size] || "font-display text-xl font-bold text-bmtb-accent";
+  const originalClass = size === "lg"
+    ? "font-display text-xl text-bmtb-muted line-through decoration-bmtb-muted/80"
+    : "font-display text-sm text-bmtb-muted line-through decoration-bmtb-muted/80";
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {sale && <span className={originalClass}>{product.originalPrice}</span>}
+      <p className={priceClass}>{product.price}</p>
+      {sale && size !== "sm" && <SaleBadge size={size === "lg" ? "md" : "sm"} />}
+    </div>
   );
 }
 
@@ -1567,11 +1656,12 @@ function ProductCard({ product, featured = false }) {
         <div className="mb-3 flex flex-wrap items-center gap-2">
           <FrameworkTags frameworks={product.frameworks} />
           {isProductNew(product) && <NewBadge />}
+          {isOnSale(product) && <SaleBadge />}
         </div>
         <h3 className="font-display text-xl font-bold tracking-tight text-white md:text-2xl">{product.name}</h3>
         <p className="mt-2 line-clamp-2 text-sm leading-6 text-bmtb-muted">{product.desc}</p>
         <div className="mt-6 flex items-center justify-between gap-3 border-t border-bmtb-line pt-5">
-          <p className="font-display text-xl font-bold text-bmtb-accent">{product.price}</p>
+          <ProductPrice product={product} size="sm" />
           <Link
             to={`/scripts/${product.slug}`}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-white transition duration-300 ease-luxury group-hover:text-bmtb-accent"
@@ -1983,6 +2073,52 @@ function HomePage() {
           <div className="grid md:grid-cols-[1.1fr_0.9fr]">
             <div className="p-6 md:p-8">
               <p className="bmtb-eyebrow">New Release</p>
+              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Bag Drugs</h2>
+              <p className="mt-3 max-w-xl text-sm leading-7 text-bmtb-muted md:text-base">
+                Advanced packaging — branded mylar bags, glass jars, and pill bottles with a quantity NUI. Trailer is live; Tebex drops today at 12:00 PM ET.
+              </p>
+              <div className="mt-3">
+                <ProductPrice product={productBySlug["bmtb-bag-drugs"]} size="md" />
+              </div>
+              <ComingSoonCountdown
+                targetDate={BAG_DRUGS_RELEASE_AT}
+                liveMessage="Release live — buy BMTB Bag Drugs on Tebex."
+              />
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/scripts/bmtb-bag-drugs" className="bmtb-btn-primary px-6 py-3">
+                  View Product
+                </Link>
+                <a href="https://youtu.be/b6YiNpMBEdk" target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-6 py-3">
+                  Watch Trailer
+                </a>
+                <a href="https://bmtbscripts.tebex.io/package/bmtb-bagdrugs" target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-6 py-3">
+                  Buy on Tebex
+                </a>
+              </div>
+            </div>
+            <div className="border-t border-bmtb-line md:border-l md:border-t-0">
+              <img
+                src="/bmtb-bagdrugs-thumb.png"
+                alt="BMTB Bag Drugs preview"
+                className="h-full min-h-[220px] w-full object-cover object-center"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 pb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="bmtb-glass overflow-hidden rounded-2xl"
+        >
+          <div className="grid md:grid-cols-[1.1fr_0.9fr]">
+            <div className="p-6 md:p-8">
+              <p className="bmtb-eyebrow">Also New</p>
               <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Physical Therapy v1.1.1</h2>
               <p className="mt-3 max-w-xl text-sm leading-7 text-bmtb-muted md:text-base">
                 Rehab RP with yoga mat sessions, skill-check exercises, therapy areas, optional Wasabi crutch bridge, and a full /ptadmin setup panel for ESX, QBCore, and Qbox.
@@ -2003,69 +2139,6 @@ function HomePage() {
                 alt="BMTB Physical Therapy preview"
                 className="h-full min-h-[220px] w-full object-cover object-center"
                 loading="lazy"
-              />
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 pb-14">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="bmtb-glass overflow-hidden rounded-2xl"
-        >
-          <div className="grid md:grid-cols-[1.1fr_0.9fr]">
-            <div className="p-6 md:p-8">
-              <p className="bmtb-eyebrow">Also New</p>
-              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB Real Money</h2>
-              <p className="mt-3 max-w-xl text-sm leading-7 text-bmtb-muted md:text-base">
-                Real cash. Real RP. No fake money — physical bills, store registers, change-making, player handoffs, and dirty money for ESX, QBCore, and Qbox.
-              </p>
-              <p className="mt-3 font-display text-xl font-bold text-bmtb-accent">$5</p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link to="/scripts/bmtb-real-money" className="bmtb-btn-primary px-6 py-3">
-                  View Product
-                </Link>
-                <a href="https://bmtbscripts.tebex.io/package/bmtb-real-money" target="_blank" rel="noreferrer" className="bmtb-btn-secondary px-6 py-3">
-                  Buy on Tebex
-                </a>
-              </div>
-            </div>
-            <div className="border-t border-bmtb-line md:border-l md:border-t-0">
-              <img
-                src="/bmtb-real-money-thumb.png"
-                alt="BMTB Real Money preview"
-                className="h-full min-h-[220px] w-full object-cover object-center"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 pb-14">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="bmtb-glass rounded-2xl p-6 md:p-8"
-        >
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="bmtb-eyebrow">Coming Soon</p>
-              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">BMTB BagDrugs</h2>
-              <p className="mt-2 max-w-xl text-sm text-bmtb-muted md:text-base">
-                Releasing August 14, 2026 at 2:00 PM ET on Tebex.
-              </p>
-            </div>
-            <div className="w-full max-w-md">
-              <ComingSoonCountdown
-                targetDate={BAG_DRUGS_RELEASE_AT}
-                liveMessage="Release live — check the store for BMTB BagDrugs."
               />
             </div>
           </div>
@@ -2286,11 +2359,14 @@ function ScriptInfoPage() {
           <div className="flex flex-wrap items-center gap-3">
             <span className="rounded-full border border-bmtb-accent/30 bg-bmtb-accent-soft px-3 py-1 text-xs font-semibold uppercase tracking-wide text-bmtb-accent">{product.tag}</span>
             {isProductNew(product) && <NewBadge size="md" />}
+            {isOnSale(product) && <SaleBadge size="md" />}
             <FrameworkTags frameworks={product.frameworks} size="md" />
           </div>
           <h1 className="mt-4 font-display text-3xl font-bold tracking-tight md:text-5xl">{product.name}</h1>
           <p className="mt-2 text-sm text-bmtb-muted">{getProductVersion(product)} • Released {getProductSortDate(product) || "No date"}</p>
-          <p className="mt-2 font-display text-2xl font-bold text-bmtb-accent">{product.price}</p>
+          <div className="mt-2">
+            <ProductPrice product={product} size="md" />
+          </div>
         </div>
       </motion.div>
 
@@ -2387,10 +2463,12 @@ function ScriptInfoPage() {
         <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
           <div className="bmtb-panel p-6">
             <p className="bmtb-eyebrow">Purchase</p>
-            <p className="mt-3 font-display text-3xl font-bold text-bmtb-accent">{product.price}</p>
+            <div className="mt-3">
+              <ProductPrice product={product} size="lg" />
+            </div>
             <div className="mt-5 grid gap-3">
               <a href={tebexLink} target="_blank" rel="noreferrer" className="bmtb-btn-primary">
-                Download on Tebex
+                {product.price === "FREE" ? "Download on Tebex" : "Buy on Tebex"}
               </a>
               {showGumroad && gumroadLink && (
                 <a href={gumroadLink} target="_blank" rel="noreferrer" className="bmtb-btn-secondary">

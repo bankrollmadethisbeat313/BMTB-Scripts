@@ -1,3 +1,4 @@
 ﻿# BMTB script registry (legacy per-script GitHub store pages)
 # format: slug|repo-name|tag
 # Store + docs live in BMTB-Scripts only — use Update-BMTB-Website.bat for site deploys.
+bmtb-bag-drugs|bmtb-bag-drugs|PREMIUM

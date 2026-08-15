@@ -8,7 +8,7 @@ const repoRoot = path.resolve(__dirname, "..");
 
 const SCRIPTS_SOURCE =
   process.env.SCRIPTS_SOURCE
-  || "C:\\Users\\bankr\\OneDrive\\Desktop\\ESX\\txData\\ESXLegacy_643A43.base\\resources\\[scripts]";
+  || "C:\\ESX\\txData\\ESXLegacy_7ED71D.base\\resources\\[scripts]";
 
 function listBmtbResources(root) {
   if (!fs.existsSync(root)) {

@@ -2,6 +2,42 @@
 
 /** @type {Record<string, Record<string, unknown>>} */
 export const docs = {
+  "bmtb-bag-drugs": {
+    acePermissions: [],
+    requirements: [
+      "ESX Legacy, QBCore, or Qbox",
+      "ox_inventory or compatible inventory",
+      "ox_target or qb-target",
+      "ox_lib recommended",
+    ],
+    installSteps: [
+      "Drop bmtb_bagdrugs into resources/[scripts]/ or [bmtb]/ and merge install items + icons.",
+      "Ensure framework → ox_lib → inventory → target → bmtb_bagdrugs.",
+      "Edit config.lua for package types, labels, and conversion amounts.",
+      "ensure bmtb_bagdrugs — test packaging a raw item into a bag, jar, and bottle.",
+    ],
+    adminGuide: [
+      "Merge packaging items and icons before first restart.",
+      "Tune package types and conversion amounts in config.lua.",
+      "Test one bag, one jar, and one bottle conversion before go-live.",
+    ],
+    playerCommands: [
+      { command: "Packaging NUI", usage: "Target / item use", description: "Open the Bag Drugs menu — set quantity, take all, add, then confirm packaged output." },
+      { command: "Raw product", usage: "Inventory", description: "Convert raw items into branded bags, jars, or prescription bottles." },
+    ],
+    adminCommands: [],
+    notes: [
+      "Tebex listing goes live August 15, 2026 at 12:00 PM ET.",
+      "Pairs with BMTB Pill Press and BMTB Trap Phone for a full drug economy.",
+    ],
+    updateNotes: [
+      "Advanced packaging — branded mylar bags, glass jars, and prescription bottles.",
+      "Quantity NUI — add, take all, reset, and confirm exact package counts.",
+      "Raw-to-packaged conversion — turn bulk product into labeled street-ready items.",
+      "Configurable package types, labels, and batch sizes.",
+      "Multi-framework — ESX Legacy, QBCore, and Qbox auto-detect.",
+    ],
+  },
   "bmtb-physical-therapy": {
     acePermissions: ["add_ace group.admin bmtb.ptadmin allow"],
     requirements: [

@@ -1,4 +1,18 @@
 {
+  "bmtb-bag-drugs": {
+    "name": "BMTB Bag Drugs",
+    "tag": "PREMIUM",
+    "price": "$10",
+    "originalPrice": "$20",
+    "thumb": "/bmtb-bagdrugs-thumb.png",
+    "tebex": "https://bmtbscripts.tebex.io/package/bmtb-bagdrugs",
+    "desc": "Advanced drug packaging — branded mylar bags, glass jars, and pill bottles with a quantity NUI for raw-to-packaged conversion.",
+    "fullDesc": "Convert raw product into street-ready branded packages — zip bags, mason jars, and prescription bottles — with a clean BMTB quantity NUI.",
+    "frameworks": ["ESX", "QBCore", "Qbox"],
+    "version": "v1.0",
+    "requirements": ["ESX Legacy, QBCore, or Qbox", "ox_inventory or compatible inventory", "ox_target or qb-target", "ox_lib recommended"],
+    "features": ["Branded mylar bags, glass jars, and prescription bottles", "Quantity NUI with add, take all, reset, and confirm", "Raw-to-packaged conversion", "Configurable package types and labels", "ESX / QBCore / Qbox auto-detect"]
+  },
   "bmtb-pillpress": {
     "name": "BMTB Pill Press",
     "tag": "FREE",

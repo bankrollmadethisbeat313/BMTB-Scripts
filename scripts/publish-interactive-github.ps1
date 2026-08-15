@@ -1,5 +1,13 @@
 # Interactive GitHub store-page publisher (README + LICENSE + promo - no source files)
+param(
+  [string]$Slug,
+  [string]$RepoName,
+  [switch]$Yes
+)
+
 $ErrorActionPreference = "Stop"
+$RequestedSlug = $Slug
+$RequestedRepoName = $RepoName
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProductJson = Join-Path $ScriptDir "github-product-data.json"
@@ -39,19 +47,7 @@ function Test-GitHubRepoExists([string]$RepoName) {
     gh repo view "$GitUser/$RepoName" --json name 2>$null | Out-Null
     $exists = ($LASTEXITCODE -eq 0)
     $ErrorActionPreference = $prev
-    return $exists
-  }
-
-  $token = $null
-  if (Get-Command gh -ErrorAction SilentlyContinue) {
-    $prev = $ErrorActionPreference
-    $ErrorActionPreference = "Continue"
-    $token = gh auth token 2>$null
-    $ErrorActionPreference = $prev
-  }
-  if ($token) {
-    $code = curl.exe -s -o NUL -w "%{http_code}" -H "Authorization: Bearer $token" "https://api.github.com/repos/$GitUser/$RepoName"
-    return $code -eq "200"
+    if ($exists) { return $true }
   }
 
   $code = curl.exe -s -o NUL -w "%{http_code}" "https://api.github.com/repos/$GitUser/$RepoName"
@@ -75,11 +71,32 @@ function Ensure-GitHubRepo([string]$Name, [string]$Description) {
   return (Test-GitHubRepoExists $Name)
 }
 
+function Get-GitHubToken {
+  $raw = "protocol=https`nhost=github.com`n`n" | git credential fill 2>$null
+  foreach ($line in @($raw -split "`n")) {
+    if ($line.StartsWith("password=")) {
+      return $line.Substring(9).Trim()
+    }
+  }
+  return $null
+}
+
 function Invoke-GitPush {
   param([switch]$Force)
-  $args = @("push", "-u", "origin", "main")
-  if ($Force) { $args += "--force" }
-  return (Invoke-GitQuiet @args)
+  $pushArgs = @("push", "-u", "origin", "main")
+  if ($Force) { $pushArgs += "--force" }
+  $code = Invoke-GitQuiet @pushArgs
+  if ($code -eq 0) { return 0 }
+
+  $token = Get-GitHubToken
+  if (-not $token) { return $code }
+
+  $prev = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  & git -c "http.extraHeader=Authorization: Bearer $token" @pushArgs 2>$null | Out-Null
+  $exitCode = $LASTEXITCODE
+  $ErrorActionPreference = $prev
+  return $exitCode
 }
 
 function Invoke-GitQuiet {
@@ -201,24 +218,36 @@ foreach ($entry in $entries) {
   Write-Host ("  {0}. {1}  [{2}] [{3}]" -f $entry.Index, $entry.Name, $entry.Tag, $entry.Status)
 }
 
-Write-Host ""
-$pickRaw = Read-Host "Pick script number"
-if (-not ($pickRaw -match '^\d+$')) {
-  Write-Host "ERROR: Invalid number."
-  exit 1
-}
-$selected = $entries | Where-Object { $_.Index -eq [int]$pickRaw } | Select-Object -First 1
-if (-not $selected) {
-  Write-Host "ERROR: Invalid number."
-  exit 1
+if ($RequestedSlug) {
+  $selected = $entries | Where-Object { $_.Slug -eq $RequestedSlug } | Select-Object -First 1
+  if (-not $selected) {
+    Write-Host "ERROR: Unknown slug: $RequestedSlug"
+    exit 1
+  }
+} else {
+  Write-Host ""
+  $pickRaw = Read-Host "Pick script number"
+  if (-not ($pickRaw -match '^\d+$')) {
+    Write-Host "ERROR: Invalid number."
+    exit 1
+  }
+  $selected = $entries | Where-Object { $_.Index -eq [int]$pickRaw } | Select-Object -First 1
+  if (-not $selected) {
+    Write-Host "ERROR: Invalid number."
+    exit 1
+  }
 }
 
 $slug = $selected.Slug
 $product = $selected.Product
 $tag = $product.tag
 $defaultRepo = $selected.DefaultRepo
-$repoInput = Read-Host "GitHub repo name [default: $defaultRepo]"
-$repoName = if ([string]::IsNullOrWhiteSpace($repoInput)) { $defaultRepo } else { $repoInput.Trim() }
+if ($Yes) {
+  $repoName = if ([string]::IsNullOrWhiteSpace($RequestedRepoName)) { $defaultRepo } else { $RequestedRepoName.Trim() }
+} else {
+  $repoInput = Read-Host "GitHub repo name [default: $defaultRepo]"
+  $repoName = if ([string]::IsNullOrWhiteSpace($repoInput)) { $defaultRepo } else { $repoInput.Trim() }
+}
 $remote = "https://github.com/$GitUser/$repoName.git"
 $repoUrl = "https://github.com/$GitUser/$repoName"
 $mode = if (Test-GitHubRepoExists $repoName) { "UPDATE" } else { "NEW" }
@@ -267,7 +296,9 @@ try {
       Write-Host "Repo not found under $GitUser : $repoUrl"
       Write-Host "Create a PUBLIC repo: https://github.com/new?name=$repoName"
       Write-Host "Must be under account: $GitUser"
-      Read-Host "Press Enter after creating the repo (or to retry push if it already exists)"
+      if (-not $Yes) {
+        Read-Host "Press Enter after creating the repo (or to retry push if it already exists)"
+      }
       if (-not (Test-GitHubRepoExists $repoName)) {
         Write-Host "WARNING: Could not verify repo - attempting push anyway..."
       } else {
@@ -288,14 +319,14 @@ try {
   } else {
     if ($mode -eq "UPDATE") {
       $defaultMsg = "Update $repoName"
-      $msg = Read-Host "Commit message [$defaultMsg]"
-      if ([string]::IsNullOrWhiteSpace($msg)) { $msg = $defaultMsg }
     } else {
       $defaultMsg = "Release $repoName"
-      $msg = Read-Host "Commit message [$defaultMsg]"
-      if ([string]::IsNullOrWhiteSpace($msg)) { $msg = $defaultMsg }
     }
-    git commit -m $msg
+    $msg = if ($Yes) { $defaultMsg } else {
+      $inputMsg = Read-Host "Commit message [$defaultMsg]"
+      if ([string]::IsNullOrWhiteSpace($inputMsg)) { $defaultMsg } else { $inputMsg }
+    }
+    git -c "user.name=$GitUser" -c "user.email=$GitUser@users.noreply.github.com" commit -m $msg
     if ($LASTEXITCODE -ne 0) { throw "git commit failed" }
   }
 
